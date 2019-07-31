@@ -20,6 +20,9 @@ from django.conf.urls import url
 
 from rest_framework import routers
 
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns # to collect static files for deployment
+
+
 #from app import views #TODO: change 'app' to our app with users
 # router = routers.DefaultRouter()
 # router.register(r'users', views.UserList, 'users')
@@ -29,3 +32,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')), # add login to api
     # path('api/', include(router.urls)),
 ]
+
+urlpatterns += staticfiles_urlpatterns() # static files for gunicorn
