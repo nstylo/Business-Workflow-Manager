@@ -8,12 +8,12 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 const test_api_url = 'https://autho.free.beeceptor.com';
 
 /**
- * takes username and password and makes a login request
+ * takes email and password and makes a login request
  */
-export async function login(username, password) {
+export async function login(email, password) {
   return await axios
     .post(test_api_url, {
-      username: username || '',
+      email: email || '',
       password: password || ''
     })
     .then(response => {
