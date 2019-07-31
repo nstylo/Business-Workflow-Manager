@@ -7,10 +7,9 @@ import { login } from '../../utils/auth_api';
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
-  username: yup
+  email: yup
     .string()
-    .min(4, 'username must be at least 4 characters')
-    .max(32, 'username must be at most 32 characters')
+    .email('enter a valid email address')
     .required(),
   password: yup
     .string()
@@ -28,37 +27,37 @@ const LoginForm = props => {
    * Tries to login the user, if response is 200, reroute to root (TODO: change to user-space), else print status to
    * user and enable the submit button
    */
-  const handleSubmit = async (values, { setStatus, setSubmitting }) => {
+  const handleSubmit = async (values, { setErrors, setSubmitting }) => {
     const { history } = props;
-    const { username, password } = values;
-    const response = await login(username, password);
+    const { email, password } = values;
+    const response = await login(email, password);
 
-    let status;
+    let errors;
     switch (response.status) {
       case 200:
         history.push('/');
         return;
       case 401:
-        status = 'username and/or password were incorrect';
+        errors = response.data.errors; // TODO: might have a different name
         break;
       default:
-        status = 'something unexpected happened';
+        errors = { default: 'something unexpected happened' };
     }
 
-    setStatus(status);
+    setErrors(errors);
     setSubmitting(false);
   };
 
   return (
     <Formik
-      initialValues={{ username: '', password: '' }}
+      initialValues={{ email: '', password: '' }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
       render={({ errors, touched, status, handleSubmit, isSubmitting }) => (
         <Form onSubmit={handleSubmit}>
           <label>
-            <Field type="text" name="username" placeholder="username" />
-            {touched.username && errors.username}
+            <Field name="email" placeholder="email" />
+            {touched.email && errors.email}
           </label>
           <label>
             <Field type="password" name="password" placeholder="password" />
@@ -67,7 +66,7 @@ const LoginForm = props => {
           <button type="submit" disabled={isSubmitting}>
             Submit
           </button>
-          <p>{status}</p>
+          <p>{errors.default}</p>
         </Form>
       )}
     />

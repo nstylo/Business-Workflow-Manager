@@ -11,7 +11,7 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 const validationSchema = yup.object().shape({
   email: yup
     .string()
-    .email('enter a valid email')
+    .email('enter a valid email address')
     .required(),
   phone: yup
     .string()
@@ -40,27 +40,25 @@ const RegistrationForm = props => {
    * Tries to register the user, if response is 200, reroute to login, else print status to
    * user and enable the submit button
    */
-  const handleSubmit = async (values, { setStatus, setSubmitting }) => {
+  const handleSubmit = async (values, { setStatus, setErrors, setSubmitting }) => {
     const { history } = props;
     const { email, phone, username, password, companyName } = values;
     const response = await register(email, phone, username, password, companyName);
+    console.log(response);
 
-    let status;
+    let errors;
     switch (response.status) {
       case 201:
         history.push('/login');
         return;
-      case 409:
-        status = 'The email address already exists';
-        break;
       case 400:
-        // TODO: get response.messages and set error messages for input fields accordingly
+        errors = response.data.errors; // TODO: might have a different name
         break;
       default:
-        status = 'something unexpected happened';
+        errors = { default: 'Something unexpected happened' };
     }
 
-    setStatus(status);
+    setErrors(errors);
     setSubmitting(false);
   };
 
@@ -98,7 +96,7 @@ const RegistrationForm = props => {
           <button type="submit" disabled={isSubmitting}>
             Submit
           </button>
-          <p>{status}</p>
+          <p>{errors.default}</p>
         </Form>
       )}
     />
