@@ -9,31 +9,44 @@ import { login } from '../../utils/auth_api';
 const validationSchema = yup.object().shape({
   username: yup
     .string()
-    .min(4, 'username must be at least 6 characters') //temp: 4 -> 6
-    .max(16, 'username must be at most 16 characters')
+    .min(4, 'username must be at least 4 characters')
+    .max(32, 'username must be at most 32 characters')
     .required(),
   password: yup
     .string()
-    .min(4, 'password must be at least 8 characters') //temp: 4 -> 6
-    .max(32, 'password is too long')
+    .min(8, 'password must be at least 8 characters')
+    .max(256, 'password must be at most 256 characters')
     .required()
 });
 
-/**
- * LoginForm built from Formik
- */
 const LoginForm = props => {
   LoginForm.propTypes = {
     history: PropTypes.object
   };
 
+  /**
+   * Tries to login the user, if response is 200, reroute to root (TODO: change to user-space), else print status to
+   * user and enable the submit button
+   */
   const handleSubmit = async (values, { setStatus, setSubmitting }) => {
     const { history } = props;
-    const response = await login(values.username, values.password);
+    const { username, password } = values;
+    const response = await login(username, password);
 
-    response.status === 200
-      ? history.push('/')
-      : setStatus('username and/or password were incorrect') && setSubmitting(false);
+    let status;
+    switch (response.status) {
+      case 200:
+        history.push('/');
+        return;
+      case 401:
+        status = 'username and/or password were incorrect';
+        break;
+      default:
+        status = 'something unexpected happened';
+    }
+
+    setStatus(status);
+    setSubmitting(false);
   };
 
   return (

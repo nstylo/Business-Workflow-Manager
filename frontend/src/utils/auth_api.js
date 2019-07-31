@@ -23,3 +23,23 @@ export async function login(username, password) {
       return err.response;
     });
 }
+
+/**
+ * takes user credentials and makes a registration request
+ */
+export async function register(email, phone, username, password, companyName) {
+  return await axios
+    .post(test_api_url, {
+      email: email || '',
+      phone: phone || '',
+      username: username || '',
+      password: password || '',
+      companyName: companyName || ''
+    })
+    .then(response => {
+      return response;
+    })
+    .catch(err => {
+      return err.response;
+    });
+}
