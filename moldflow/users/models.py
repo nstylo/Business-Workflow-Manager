@@ -81,7 +81,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     """
     # max email length 254 is defined in RFC 5321
     email = models.EmailField(max_length=254, unique=True)
-    phone = PhoneNumberField()
+    phone = PhoneNumberField() # uses phone number field library
     company = models.CharField(max_length=128)
     country = models.CharField(max_length=64)
     address = models.CharField(max_length=128)
@@ -95,6 +95,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
+    # these fields are the required fields when creating a **superuser**
     REQUIRED_FIELDS = ['phone', 'company', 'country', 'address']
 
     objects = CustomUserManager()

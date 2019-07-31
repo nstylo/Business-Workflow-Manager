@@ -5,8 +5,11 @@ from .models import CustomUser
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 class CustomUserAdmin(UserAdmin):
-    form = CustomUserChangeForm
-    add_form = CustomUserCreationForm
+    """
+    Custom admin user interface
+    """
+    form = CustomUserChangeForm # form for changing user credentials
+    add_form = CustomUserCreationForm # form for creating a new user
     model = CustomUser
 
     #The fields to be used in displaying the User model.
@@ -14,7 +17,7 @@ class CustomUserAdmin(UserAdmin):
     # that reference specific fields on auth.User.
     list_display = ('email', 'company', 'phone', 'country', 'is_admin', 'is_active')
 
-    list_filter = ('is_staff', 'country', 'is_active')
+    list_filter = ('is_staff', 'country', 'is_active') # right side panel to filter fields
     fieldsets = (
         (None, {'fields': ('email', 'password', 'is_active')}),
         ('Personal info', {'fields': ('company', 'phone', 'country', 'address',)}),
