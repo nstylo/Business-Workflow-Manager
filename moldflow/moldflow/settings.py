@@ -69,10 +69,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    '***REMOVED***',
     'corsheaders',
     'rest_framework',
+    'phonenumber_field',
+    'users.apps.UsersConfig',
 ]
+
+# see https://github.com/stefanfoulis/django-phonenumber-field
+PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 CORS_ALLOW_CREDENTIALS = True
 
