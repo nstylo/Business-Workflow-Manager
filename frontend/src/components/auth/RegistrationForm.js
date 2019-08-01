@@ -45,7 +45,7 @@ export const handleRegister = async (props, values, { setStatus, setErrors, setS
   let errors;
   switch (response.data.status_code) {
     case 201:
-      history.push('/login');
+      history.push('/register-successful'); // TODO: routing is not final
       return;
     case 400:
       errors = response.data.content.errors; // TODO: might have a different name
@@ -87,7 +87,7 @@ const RegistrationForm = props => {
             {touched.password && errors.password}
           </label>
           <label>
-            <Field type="password" name="passwordConf" placeholder="repeat password" />
+            <Field type="password" name="passwordConf" placeholder="confirm password" />
             {touched.passwordConf && errors.passwordConf}
           </label>
           <label>

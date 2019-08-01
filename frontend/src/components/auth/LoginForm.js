@@ -31,7 +31,7 @@ export const handleLogin = async (props, values, { setErrors, setSubmitting }) =
   let errors;
   switch (response.data.status_code) {
     case 200:
-      history.push('/');
+      history.push('/'); // TODO: routing is not final
       return;
     case 401:
       errors = response.data.content.errors; // TODO: might have a different name

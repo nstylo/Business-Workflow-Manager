@@ -3,32 +3,31 @@ import { Formik, Form, Field } from 'formik';
 import { withRouter } from 'react-router-dom';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
-import { reset } from '../../utils/auth_api';
+import { requestReset } from '../../utils/auth_api';
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
-  password: yup
+  email: yup
     .string()
-    .min(8, 'password must be at least 8 characters')
-    .max(256, 'password must be at most 256 characters')
-    .required(),
-  passwordConf: yup.string().oneOf([yup.ref('password'), null], 'passwords must match')
+    .max(254, 'email must be shorter than 254 characters')
+    .email('enter a valid email address')
+    .required()
 });
 
 /**
  * This form handles password reset
  */
-export const handleReset = async (props, values, { setErrors, setSubmitting }) => {
+export const handleRequestReset = async (props, values, { setErrors, setSubmitting }) => {
   const { history } = props;
-  const { password } = values;
-  const response = await reset(password); // TODO: how to identify which account
+  const { email } = values;
+  const response = await requestReset(email);
 
   let errors;
   switch (response.data.status_code) {
     case 200:
-      history.push('/reset-successful'); // TODO: routing is not final
+      history.push('/request-reset-successful'); // TODO: routing is not final
       return;
-    case 400:
+    case 404:
       errors = response.data.content.errors; // TODO: might have a different name
       break;
     default:
@@ -45,7 +44,7 @@ const LoginForm = props => {
   };
 
   const handleSubmit = async (values, options) => {
-    await handleReset(props, values, options);
+    await handleRequestReset(props, values, options);
   };
 
   return (
@@ -56,12 +55,8 @@ const LoginForm = props => {
       render={({ errors, touched, status, handleSubmit, isSubmitting }) => (
         <Form onSubmit={handleSubmit}>
           <label>
-            <Field type="password" name="password" placeholder="password" />
-            {touched.password && errors.password}
-          </label>
-          <label>
-            <Field type="password" name="passwordConf" placeholder="confirm password" />
-            {touched.passwordConf && errors.passwordConf}
+            <Field name="email" placeholder="email" />
+            {touched.email && errors.email}
           </label>
           <button type="submit" disabled={isSubmitting}>
             Submit
