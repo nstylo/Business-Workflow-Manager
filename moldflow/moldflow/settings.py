@@ -78,9 +78,9 @@ INSTALLED_APPS = [
 # see https://github.com/stefanfoulis/django-phonenumber-field
 PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser' # our custom user model
 
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True # to allow csrf session cookies
 
 CORS_URLS_REGEX = r'^/api/.*$'
 
@@ -113,7 +113,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = '***REMOVED***.wsgi.application'
+WSGI_APPLICATION = '***REMOVED***.wsgi.application' # name of our wsgi application to run with gunicorn
 
 
 # Database

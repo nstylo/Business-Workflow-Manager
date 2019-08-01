@@ -1,17 +1,18 @@
-from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
-from phonenumber_field.phonenumber import PhoneNumber
+from django.db import models
 from django.utils import timezone
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 class CustomUserManager(BaseUserManager):
     """
-    Our custom user manager
+    Manage custom user model
     """
+
     def create_user(self, email, password, phone, company, country, address):
         """
-        Creates and saves a user in the database
+        Create and save a regular user in the database
         """
         # all these fields are required
         if not email:
@@ -27,11 +28,11 @@ class CustomUserManager(BaseUserManager):
 
         # set the fields
         user = self.model(
-            email = self.normalize_email(email),
-            phone = phone,
-            company = company,
-            country = country,
-            address = address
+            email=self.normalize_email(email),
+            phone=phone,
+            company=company,
+            country=country,
+            address=address
         )
 
         user.set_password(password)
@@ -40,9 +41,12 @@ class CustomUserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, password, phone, company, country, address):
+    def create_superuser(
+            self, email, password,
+            phone, company, country, address
+    ):
         """
-        Creates and saves a superuser in the database
+        Create and save a superuser in the database
         """
         # the only requirement is having an email
         if not email:
@@ -57,15 +61,15 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("An address has not been set")
 
         user = self.create_user(
-            email = self.normalize_email(email),
-            password = password,
-            phone = phone,
-            company = company,
-            country = country,
-            address = address
+            email=self.normalize_email(email),
+            password=password,
+            phone=phone,
+            company=company,
+            country=country,
+            address=address
         )
 
-        user.is_active = True # TODO: change to False when email is in place
+        user.is_active = True  # TODO: change to False when email is in place
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
@@ -75,18 +79,20 @@ class CustomUserManager(BaseUserManager):
 
         return user
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     """
-    Custom user table
+    Define Custom user table
     """
     # max email length 254 is defined in RFC 5321
     email = models.EmailField(max_length=254, unique=True)
-    phone = PhoneNumberField() # uses phone number field library
+    phone = PhoneNumberField()  # uses phone number field library
     company = models.CharField(max_length=128)
     country = models.CharField(max_length=64)
     address = models.CharField(max_length=128)
 
-    is_active = models.BooleanField(default=False) # we want to activate users with email
+    # False, as activation is done with email
+    is_active = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(blank=True, null=True)
 

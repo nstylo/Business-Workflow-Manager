@@ -1,11 +1,11 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.utils import timezone
+from django.test import TestCase
 
-"""
-Tests for the custom user model manager
-"""
+
 class CustomUserManagerTests(TestCase):
+    """
+    Test for regular user manager
+    """
     def setUp(self):
         self.User = get_user_model()
         self.user = self.User.objects.create_user(
@@ -17,7 +17,9 @@ class CustomUserManagerTests(TestCase):
             password="testingpassword",
         )
 
-    def assertPermissions(self, *, is_staff=False, is_superuser=False, is_admin=False):
+    def assertPermissions(
+            self, *, is_staff=False, is_superuser=False, is_admin=False
+    ):
         self.assertEqual(self.user.is_staff, is_staff)
         self.assertEqual(self.user.is_superuser, is_superuser)
         self.assertEqual(self.user.is_admin, is_admin)
@@ -27,12 +29,14 @@ class CustomUserManagerTests(TestCase):
 
     def test_no_username(self):
         try:
-            self.assertIsNone(self.user.username) # no usernames get created for our user model
+            # no usernames get created for our user model
+            self.assertIsNone(self.user.username)
         except AttributeError:
             pass
 
     def test_no_permissions_on_default_account(self):
-        self.assertPermissions(is_staff=False, is_superuser=False, is_admin=False)
+        self.assertPermissions(
+            is_staff=False, is_superuser=False, is_admin=False)
 
     # test for empty entries below
     def test_no_email(self):
@@ -72,8 +76,11 @@ class CustomUserManagerTests(TestCase):
         self.assertEqual(self.user.address, '')
 
 
-
 class CustomSuperUserManagerTests(TestCase):
+    """
+    Test custom super user manager
+    """
+
     def setUp(self):
         self.User = get_user_model()
         self.user = self.User.objects.create_superuser(
@@ -89,14 +96,17 @@ class CustomSuperUserManagerTests(TestCase):
     def test_is_active(self):
         self.assertTrue(self.user.is_active)
 
-    def assertPermissions(self, *, is_staff=True, is_superuser=True, is_admin=True):
+    def assertPermissions(
+            self, *, is_staff=True, is_superuser=True, is_admin=True
+    ):
         self.assertEqual(self.user.is_staff, is_staff)
         self.assertEqual(self.user.is_superuser, is_superuser)
         self.assertEqual(self.user.is_admin, is_admin)
 
     def test_no_username(self):
         try:
-            self.assertIsNone(self.user.username) # no usernames get created for our user model
+            # no usernames get created for our user model
+            self.assertIsNone(self.user.username)
         except AttributeError:
             pass
 
@@ -139,4 +149,3 @@ class CustomSuperUserManagerTests(TestCase):
         self.user.save()
 
         self.assertEqual(self.user.address, '')
-
