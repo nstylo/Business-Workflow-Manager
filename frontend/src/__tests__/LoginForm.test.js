@@ -19,6 +19,12 @@ const setValidLogin = () =>
     return { data: { status_code: 200 } };
   });
 
+// should be called to simulate a successful login
+const setUnexpectedResponse = () =>
+  login.mockImplementationOnce(() => {
+    return { data: { status_code: 999 } };
+  });
+
 let wrapper;
 beforeEach(() => {
   wrapper = mount(<LoginForm.WrappedComponent />);
@@ -38,7 +44,7 @@ describe('Loginform', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  describe('.handleSubmit()', () => {
+  describe('.handleLogin()', () => {
     it('should call setErrors, setSubmitting on unsuccessful login', async () => {
       expect(setErrors.mock.calls.length).toBe(0);
       expect(setSubmitting.mock.calls.length).toBe(0);
@@ -47,7 +53,7 @@ describe('Loginform', () => {
       expect(setSubmitting.mock.calls.length).toBe(1);
     });
 
-    it('should call login once on unsuccessful login', async () => {
+    it('should call login once', async () => {
       expect(login.mock.calls.length).toBe(0);
       await handleLogin(props, values, { setErrors: setErrors, setSubmitting: setSubmitting });
       expect(login.mock.calls.length).toBe(1);
@@ -57,16 +63,6 @@ describe('Loginform', () => {
       expect(props.history.push.mock.calls.length).toBe(0);
       await handleLogin(props, values, { setErrors: setErrors, setSubmitting: setSubmitting });
       expect(props.history.push.mock.calls.length).toBe(0);
-    });
-
-    it('should call login on 200', async () => {
-      setValidLogin();
-      expect(login.mock.calls.length).toBe(0);
-      await handleLogin(props, values, {
-        setErrors: setErrors,
-        setSubmitting: setSubmitting
-      });
-      expect(login.mock.calls.length).toBe(1);
     });
 
     it('should not call setErrors and setSubmitting on 200', async () => {
@@ -100,6 +96,28 @@ describe('Loginform', () => {
     it('it should set setSubmitting to false on unsuccessful login', async () => {
       await handleLogin(props, values, { setErrors: setErrors, setSubmitting: setSubmitting });
       expect(setSubmitting.mock.calls[0][0]).toBe(false);
+    });
+
+    it('should call setErrors and setSubmitting on unexpected response', async () => {
+      setUnexpectedResponse();
+      expect(setErrors.mock.calls.length).toBe(0);
+      expect(setSubmitting.mock.calls.length).toBe(0);
+      await handleLogin(props, values, { setErrors: setErrors, setSubmitting: setSubmitting });
+      expect(setErrors.mock.calls.length).toBe(1);
+      expect(setSubmitting.mock.calls.length).toBe(1);
+    });
+
+    it('should not push to history on unexpected response', async () => {
+      setUnexpectedResponse();
+      expect(props.history.push.mock.calls.length).toBe(0);
+      await handleLogin(props, values, { setErrors: setErrors, setSubmitting: setSubmitting });
+      expect(props.history.push.mock.calls.length).toBe(0);
+    });
+
+    it('should set the error message correctly on unexpected response', async () => {
+      setUnexpectedResponse();
+      await handleLogin(props, values, { setErrors: setErrors, setSubmitting: setSubmitting });
+      expect(setErrors.mock.calls[0][0]).toStrictEqual({ default: 'something unexpected happened' });
     });
   });
 });

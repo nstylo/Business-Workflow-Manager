@@ -33,34 +33,38 @@ const validationSchema = yup.object().shape({
   company: yup.string()
 });
 
+/**
+ * Tries to register the user, if response is 200, reroute to login, else print status to
+ * user and enable the submit button
+ */
+export const handleRegister = async (props, values, { setStatus, setErrors, setSubmitting }) => {
+  const { history } = props;
+  const { email, username, password, phone, address, company } = values;
+  const response = await register(email, username, password, phone, address, company);
+
+  let errors;
+  switch (response.data.status_code) {
+    case 201:
+      history.push('/login');
+      return;
+    case 400:
+      errors = response.data.content.errors; // TODO: might have a different name
+      break;
+    default:
+      errors = { default: 'something unexpected happened' };
+  }
+
+  setErrors(errors);
+  setSubmitting(false);
+};
+
 const RegistrationForm = props => {
   RegistrationForm.propTypes = {
     history: PropTypes.object
   };
 
-  /**
-   * Tries to register the user, if response is 200, reroute to login, else print status to
-   * user and enable the submit button
-   */
-  const handleSubmit = async (values, { setStatus, setErrors, setSubmitting }) => {
-    const { history } = props;
-    const { email, username, password, phone, address, company } = values;
-    const { status_code, content } = await register(email, username, password, phone, address, company);
-
-    let errors;
-    switch (status_code) {
-      case 201:
-        history.push('/login');
-        return;
-      case 400:
-        errors = content.errors; // TODO: might have a different name
-        break;
-      default:
-        errors = { default: 'Something unexpected happened' };
-    }
-
-    setErrors(errors);
-    setSubmitting(false);
+  const handleSubmit = async (values, options) => {
+    await handleRegister(props, values, options);
   };
 
   return (
