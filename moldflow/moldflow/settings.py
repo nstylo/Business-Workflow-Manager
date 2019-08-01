@@ -23,7 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DJANGO_ENV = os.getenv('DJANGO_ENV')
 
-# these env vars should be set in your django venv activate file or .env in production
+# these env vars should be set in your django venv activate file
+# or .env in production
 if DJANGO_ENV == 'development':
     DEBUG = True
     ALLOWED_HOSTS = ['*']
@@ -34,12 +35,13 @@ if DJANGO_ENV == 'development':
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE = False
 
-    # to run email locally: python -m smtpd -n -c DebuggingServer localhost:1025
+    # to run email locally:
+    # python -m smtpd -n -c DebuggingServer localhost:1025
     EMAIL_HOST = 'localhost'
     EMAIL_PORT = '1025'
     EMAIL_HOST_USER = None
     EMAIL_HOST_PASSWORD = None
-else: # deployment env
+else:  # deployment env
     DEBUG = False
     ALLOWED_HOSTS = [os.getenv('HOST')]
     CSRF_COOKIE_SECURE = True
@@ -53,12 +55,13 @@ else: # deployment env
 
 CSRF_COOKIE_NAME = "csrftoken"
 
-SECURE_HSTS_SECONDS = 360 # time out non https users
-SECURE_CONTENT_TYPE_NOSNIFF = True # prevent user uploaded file sniffing
-SECURE_BROWSER_XSS_FILTER = True # cross site scripting protection
-X_FRAME_OPTIONS = "DENY" # clickjacking protection
-SECURE_HSTS_PRELOAD = True # submit site to browser preload list
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True # prevent attack on subdomain from insecure connection
+SECURE_HSTS_SECONDS = 360  # time out non https users
+SECURE_CONTENT_TYPE_NOSNIFF = True  # prevent user uploaded file sniffing
+SECURE_BROWSER_XSS_FILTER = True  # cross site scripting protection
+X_FRAME_OPTIONS = "DENY"  # clickjacking protection
+SECURE_HSTS_PRELOAD = True  # submit site to browser preload list
+# prevent attack on subdomain from insecure connection
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # Application definition
 
@@ -78,9 +81,9 @@ INSTALLED_APPS = [
 # see https://github.com/stefanfoulis/django-phonenumber-field
 PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
-AUTH_USER_MODEL = 'users.CustomUser' # our custom user model
+AUTH_USER_MODEL = 'users.CustomUser'  # our custom user model
 
-CORS_ALLOW_CREDENTIALS = True # to allow csrf session cookies
+CORS_ALLOW_CREDENTIALS = True  # to allow csrf session cookies
 
 CORS_URLS_REGEX = r'^/api/.*$'
 
@@ -113,7 +116,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = '***REMOVED***.wsgi.application' # name of our wsgi application to run with gunicorn
+# name of our wsgi application to run with gunicorn
+WSGI_APPLICATION = '***REMOVED***.wsgi.application'
 
 
 # Database
@@ -162,7 +166,6 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'user': '300/day',
         'user': '30/minute',
     }
 }
