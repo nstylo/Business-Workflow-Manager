@@ -11,11 +11,8 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 const validationSchema = yup.object().shape({
   email: yup
     .string()
+    .max(254, 'email must be shorter than 254 characters')
     .email('enter a valid email address')
-    .required(),
-  phone: yup
-    .string()
-    .matches(phoneRegExp, 'phone number is not valid')
     .required(),
   username: yup
     .string()
@@ -28,7 +25,12 @@ const validationSchema = yup.object().shape({
     .max(256, 'password must be at most 256 characters')
     .required(),
   passwordConf: yup.string().oneOf([yup.ref('password'), null], 'passwords must match'),
-  companyName: yup.string()
+  phone: yup
+    .string()
+    .matches(phoneRegExp, 'phone number is not valid')
+    .required(),
+  address: yup.string(),
+  company: yup.string()
 });
 
 const RegistrationForm = props => {
@@ -42,17 +44,16 @@ const RegistrationForm = props => {
    */
   const handleSubmit = async (values, { setStatus, setErrors, setSubmitting }) => {
     const { history } = props;
-    const { email, phone, username, password, companyName } = values;
-    const response = await register(email, phone, username, password, companyName);
-    console.log(response);
+    const { email, username, password, phone, address, company } = values;
+    const { status_code, content } = await register(email, username, password, phone, address, company);
 
     let errors;
-    switch (response.status) {
+    switch (status_code) {
       case 201:
         history.push('/login');
         return;
       case 400:
-        errors = response.data.errors; // TODO: might have a different name
+        errors = content.errors; // TODO: might have a different name
         break;
       default:
         errors = { default: 'Something unexpected happened' };
@@ -64,7 +65,7 @@ const RegistrationForm = props => {
 
   return (
     <Formik
-      initialValues={{ email: '', phone: '', username: '', password: '', companyName: '' }}
+      initialValues={{ email: '', username: '', password: '', phone: '', address: '', company: '' }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
       render={({ errors, touched, status, handleSubmit, isSubmitting }) => (
@@ -72,10 +73,6 @@ const RegistrationForm = props => {
           <label>
             <Field name="email" placeholder="email" />
             {touched.email && errors.email}
-          </label>
-          <label>
-            <Field name="phone" placeholder="phone-number" />
-            {touched.phone && errors.phone}
           </label>
           <label>
             <Field name="username" placeholder="username" />
@@ -90,8 +87,16 @@ const RegistrationForm = props => {
             {touched.passwordConf && errors.passwordConf}
           </label>
           <label>
-            <Field name="companyName" placeholder="company" />
-            {touched.companyName && errors.companyName}
+            <Field name="phone" placeholder="phone-number" />
+            {touched.phone && errors.phone}
+          </label>
+          <label>
+            <Field name="address" placeholder="address" />
+            {touched.phone && errors.phone}
+          </label>
+          <label>
+            <Field name="company" placeholder="company" />
+            {touched.company && errors.company}
           </label>
           <button type="submit" disabled={isSubmitting}>
             Submit

@@ -1,6 +1,6 @@
 import { login, register } from '../utils/auth_api';
 import axios from 'axios';
-jest.mock('axios');
+// axios mock is defined in __mocks__ in src/ and is automatically handled by jest
 
 // clear .mock.calls after each test
 afterEach(() => {
@@ -49,42 +49,46 @@ describe('register()', () => {
   });
 
   it('should read and return empty strings', async () => {
-    await register('', '', '', '', '').then(response => {
+    await register('', '', '', '', '', '').then(response => {
       expect(response.data.email).toBe('');
       expect(response.data.password).toBe('');
       expect(response.data.username).toBe('');
       expect(response.data.phone).toBe('');
-      expect(response.data.companyName).toBe('');
+      expect(response.data.address).toBe('');
+      expect(response.data.company).toBe('');
     });
   });
 
   it('should read some string and return it', async () => {
-    await register('someValue', 'someValue', 'someValue', 'someValue', 'someValue').then(response => {
+    await register('someValue', 'someValue', 'someValue', 'someValue', 'someValue', 'someValue').then(response => {
       expect(response.data.email).toBe('someValue');
       expect(response.data.password).toBe('someValue');
       expect(response.data.username).toBe('someValue');
       expect(response.data.phone).toBe('someValue');
-      expect(response.data.companyName).toBe('someValue');
+      expect(response.data.address).toBe('someValue');
+      expect(response.data.company).toBe('someValue');
     });
   });
 
   it('should read null and return empty strings', async () => {
-    await register(null, null, null, null, null).then(response => {
+    await register(null, null, null, null, null, null).then(response => {
       expect(response.data.email).toBe('');
       expect(response.data.password).toBe('');
       expect(response.data.username).toBe('');
       expect(response.data.phone).toBe('');
-      expect(response.data.companyName).toBe('');
+      expect(response.data.address).toBe('');
+      expect(response.data.company).toBe('');
     });
   });
 
   it('should read undefined and return empty strings', async () => {
-    await register(undefined, undefined, undefined, undefined, undefined).then(response => {
+    await register(undefined, undefined, undefined, undefined, undefined, undefined).then(response => {
       expect(response.data.email).toBe('');
       expect(response.data.password).toBe('');
       expect(response.data.username).toBe('');
       expect(response.data.phone).toBe('');
-      expect(response.data.companyName).toBe('');
+      expect(response.data.address).toBe('');
+      expect(response.data.company).toBe('');
     });
   });
 });

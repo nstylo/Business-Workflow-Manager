@@ -27,14 +27,15 @@ export async function login(email, password) {
 /**
  * takes user credentials and makes a registration request
  */
-export async function register(email, phone, username, password, companyName) {
+export async function register(email, username, password, phone, address, company) {
   return await axios
     .post(test_api_url, {
       email: email || '',
-      phone: phone || '',
       username: username || '',
       password: password || '',
-      companyName: companyName || ''
+      phone: phone || '',
+      address: address || '',
+      company: company || ''
     })
     .then(response => {
       return response;

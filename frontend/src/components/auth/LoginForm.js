@@ -9,6 +9,7 @@ import { login } from '../../utils/auth_api';
 const validationSchema = yup.object().shape({
   email: yup
     .string()
+    .max(254, 'email must be shorter than 254 characters')
     .email('enter a valid email address')
     .required(),
   password: yup
@@ -18,34 +19,38 @@ const validationSchema = yup.object().shape({
     .required()
 });
 
+/**
+ * Tries to login the user, if response is 200, reroute to root (TODO: change to user-space), else print status to
+ * user and enable the submit button
+ */
+export const handleLogin = async (props, values, { setErrors, setSubmitting }) => {
+  const { history } = props;
+  const { email, password } = values;
+  const response = await login(email, password);
+
+  let errors;
+  switch (response.data.status_code) {
+    case 200:
+      history.push('/');
+      return;
+    case 401:
+      errors = response.data.content.errors; // TODO: might have a different name
+      break;
+    default:
+      errors = { default: 'something unexpected happened' };
+  }
+
+  setErrors(errors);
+  setSubmitting(false);
+};
+
 const LoginForm = props => {
   LoginForm.propTypes = {
     history: PropTypes.object
   };
 
-  /**
-   * Tries to login the user, if response is 200, reroute to root (TODO: change to user-space), else print status to
-   * user and enable the submit button
-   */
-  const handleSubmit = async (values, { setErrors, setSubmitting }) => {
-    const { history } = props;
-    const { email, password } = values;
-    const response = await login(email, password);
-
-    let errors;
-    switch (response.status) {
-      case 200:
-        history.push('/');
-        return;
-      case 401:
-        errors = response.data.errors; // TODO: might have a different name
-        break;
-      default:
-        errors = { default: 'something unexpected happened' };
-    }
-
-    setErrors(errors);
-    setSubmitting(false);
+  const handleSubmit = async (values, options) => {
+    await handleLogin(props, values, options);
   };
 
   return (
