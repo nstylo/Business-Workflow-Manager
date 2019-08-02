@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://127.0.0.1:8000",
+  "proxy": "https://9d355ad4-decb-4db0-93de-ed0fc7a121b5.mock.pstmn.io",
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -19,7 +19,8 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
+      "src/components/auth/forms/auth_api.js",
+      "src/components/auth/forms/handle_submit.js",
       "!<rootDir>/node_modules/"
     ],
     "coverageThreshold": {

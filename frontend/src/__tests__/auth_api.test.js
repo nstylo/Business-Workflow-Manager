@@ -1,4 +1,9 @@
-import { login, register } from '../components/auth/forms/auth_api';
+import {
+  login,
+  register,
+  requestReset,
+  reset
+} from '../components/auth/forms/auth_api';
 import axios from 'axios';
 // axios mock is defined in __mocks__ in src/ and is automatically handled by jest
 
@@ -118,6 +123,68 @@ describe('register()', () => {
       expect(response.data.phone).toBe('');
       expect(response.data.address).toBe('');
       expect(response.data.company).toBe('');
+    });
+  });
+});
+
+describe('requestReset()', () => {
+  it('should call axios post once', async () => {
+    await requestReset(values);
+    expect(axios.post.mock.calls.length).toBe(1);
+  });
+
+  it('should read and return empty strings', async () => {
+    await requestReset(values_empty_string).then(response => {
+      expect(response.data.email).toBe('');
+    });
+  });
+
+  it('should read some string and return it', async () => {
+    await requestReset(values).then(response => {
+      expect(response.data.email).toBe(values.email);
+    });
+  });
+
+  it('should read null and return empty strings', async () => {
+    await requestReset(values_null).then(response => {
+      expect(response.data.email).toBe('');
+    });
+  });
+
+  it('should read undefined and return empty strings', async () => {
+    await requestReset(values_undefined).then(response => {
+      expect(response.data.email).toBe('');
+    });
+  });
+});
+
+describe('reset()', () => {
+  it('should call axios post once', async () => {
+    await reset(values);
+    expect(axios.put.mock.calls.length).toBe(1);
+  });
+
+  it('should read and return empty strings', async () => {
+    await reset(values_empty_string).then(response => {
+      expect(response.data.password).toBe('');
+    });
+  });
+
+  it('should read some string and return it', async () => {
+    await reset(values).then(response => {
+      expect(response.data.password).toBe(values.password);
+    });
+  });
+
+  it('should read null and return empty strings', async () => {
+    await reset(values_null).then(response => {
+      expect(response.data.password).toBe('');
+    });
+  });
+
+  it('should read undefined and return empty strings', async () => {
+    await reset(values_undefined).then(response => {
+      expect(response.data.password).toBe('');
     });
   });
 });
