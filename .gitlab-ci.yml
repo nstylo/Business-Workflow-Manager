@@ -9,6 +9,16 @@ cache:
   paths:
     - node_modules/
 
+# unit testing, lint and dependency install
+test:
+  stage: test
+  script:
+    - cd ***REMOVED***/
+    - apk add python py-pip
+    - pip install coverage
+    - python coverage run manage.py test && coverage report --skip-covered | grep TOTAL
+  coverage: /\d+\%\s*$/
+
 # staging step before production
 staging:
   image: alpine # alpine - small linux distribution ~5MB
