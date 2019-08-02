@@ -75,6 +75,9 @@ class CustomSuperUserManagerTests(TestCase):
 
 
 class CustomUserManagerEmptyFieldTests(TestCase):
+    """
+    Test if empty fields raise exceptions, and if they are the expected ones
+    """
     def setUp(self):
         self.User = get_user_model()
         self.user = self.User.objects.create_superuser(
