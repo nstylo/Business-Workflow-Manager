@@ -6,6 +6,7 @@ class CustomUserManagerTests(TestCase):
     """
     Test for regular user manager
     """
+
     def setUp(self):
         self.User = get_user_model()
         self.user = self.User.objects.create_user(
@@ -14,12 +15,10 @@ class CustomUserManagerTests(TestCase):
             country="Netherlands",
             address="sample address",
             phone="+31649802702",
-            password="testingpassword",
+            password="testingpassword123",
         )
 
-    def assertPermissions(
-            self, *, is_staff=False, is_superuser=False, is_admin=False
-    ):
+    def assertPermissions(self, *, is_staff=False, is_superuser=False, is_admin=False):
         self.assertEqual(self.user.is_staff, is_staff)
         self.assertEqual(self.user.is_superuser, is_superuser)
         self.assertEqual(self.user.is_admin, is_admin)
@@ -37,43 +36,6 @@ class CustomUserManagerTests(TestCase):
     def test_no_permissions_on_default_account(self):
         self.assertPermissions(
             is_staff=False, is_superuser=False, is_admin=False)
-
-    # test for empty entries below
-    def test_no_email(self):
-        self.user.email = ''
-        self.user.save()
-
-        self.assertEqual(self.user.email, '')
-
-    def test_no_password(self):
-        self.user.password = ''
-        self.user.save()
-
-        self.assertEqual(self.user.password, '')
-
-    def test_no_phone(self):
-        self.user.phone = ''
-        self.user.save()
-
-        self.assertEqual(self.user.phone, '')
-
-    def test_no_company(self):
-        self.user.company = ''
-        self.user.save()
-
-        self.assertEqual(self.user.company, '')
-
-    def test_no_country(self):
-        self.user.country = ''
-        self.user.save()
-
-        self.assertEqual(self.user.country, '')
-
-    def test_no_address(self):
-        self.user.address = ''
-        self.user.save()
-
-        self.assertEqual(self.user.address, '')
 
 
 class CustomSuperUserManagerTests(TestCase):
@@ -96,9 +58,7 @@ class CustomSuperUserManagerTests(TestCase):
     def test_is_active(self):
         self.assertTrue(self.user.is_active)
 
-    def assertPermissions(
-            self, *, is_staff=True, is_superuser=True, is_admin=True
-    ):
+    def assertPermissions(self, *, is_staff=True, is_superuser=True, is_admin=True):
         self.assertEqual(self.user.is_staff, is_staff)
         self.assertEqual(self.user.is_superuser, is_superuser)
         self.assertEqual(self.user.is_admin, is_admin)
@@ -113,39 +73,70 @@ class CustomSuperUserManagerTests(TestCase):
     def test_no_permissions_on_default_account(self):
         self.assertPermissions(is_staff=True, is_superuser=True, is_admin=True)
 
-    # test for empty entries below
-    def test_no_email(self):
-        self.user.email = ''
-        self.user.save()
 
-        self.assertEqual(self.user.email, '')
+class CustomUserManagerEmptyFieldTests(TestCase):
+    def setUp(self):
+        self.User = get_user_model()
+        self.user = self.User.objects.create_superuser(
+            email="test@example.com",
+            company="Shell",
+            country="Netherlands",
+            address="sample address",
+            phone="+31647802691",
+            password="testingpassw123.",
+        )
 
-    def test_no_password(self):
-        self.user.password = ''
-        self.user.save()
+    def test_empty_email(self):
+        with self.assertRaises(ValueError):
+            self.User.objects.create_user(
+                email="",
+                company=self.user.company,
+                country=self.user.company,
+                address=self.user.address,
+                phone=self.user.phone,
+                password=self.user.password,
+            )
 
-        self.assertEqual(self.user.password, '')
+    def test_empty_company(self):
+        with self.assertRaises(ValueError):
+            self.User.objects.create_user(
+                email="test@gmails.com",
+                company="",
+                country=self.user.company,
+                address=self.user.address,
+                phone=self.user.phone,
+                password=self.user.password,
+            )
 
-    def test_no_phone(self):
-        self.user.phone = ''
-        self.user.save()
+    def test_empty_country(self):
+        with self.assertRaises(ValueError):
+            self.User.objects.create_user(
+                email="test@gmails.com",
+                company="a new company",
+                country="",
+                address=self.user.address,
+                phone=self.user.phone,
+                password=self.user.password,
+            )
 
-        self.assertEqual(self.user.phone, '')
+    def test_empty_address(self):
+        with self.assertRaises(ValueError):
+            self.User.objects.create_user(
+                email="test@gmails.com",
+                company="a new company",
+                country="some country",
+                address="",
+                phone=self.user.phone,
+                password=self.user.password,
+            )
 
-    def test_no_company(self):
-        self.user.company = ''
-        self.user.save()
-
-        self.assertEqual(self.user.company, '')
-
-    def test_no_country(self):
-        self.user.country = ''
-        self.user.save()
-
-        self.assertEqual(self.user.country, '')
-
-    def test_no_address(self):
-        self.user.address = ''
-        self.user.save()
-
-        self.assertEqual(self.user.address, '')
+    def test_empty_phone(self):
+        with self.assertRaises(ValueError):
+            self.User.objects.create_user(
+                email="test@gmails.com",
+                company="a new company",
+                country="some country",
+                address="some address",
+                phone="",
+                password=self.user.password,
+            )
