@@ -1,3 +1,5 @@
 /static
 ***REMOVED***/__pycache__/
 __pycache__/
+htmlcov/
+.mypy_cache/
