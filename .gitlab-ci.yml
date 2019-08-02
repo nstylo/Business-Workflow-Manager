@@ -9,6 +9,27 @@ cache:
   paths:
     - node_modules/
 
+# unit testing, lint and dependency install
+test:
+  stage: test
+  cache: {}
+  script:
+    - cd ***REMOVED***/
+    - apk add python3-dev postgresql-dev gcc musl-dev
+    - python3 -m pip install --upgrade pip
+    - pip3 install --upgrade pip setuptools
+    - pip3 install -r req.txt
+    - python3 manage.py makemigrations users
+    - python3 manage.py migrate users
+    - python3 manage.py makemigrations
+    - python3 manage.py migrate
+    - coverage run manage.py test && coverage report | grep TOTAL
+  coverage: /\d+\%\s*$/
+
+services:
+  - postgres:latest
+
+
 # staging step before production
 staging:
   image: alpine # alpine - small linux distribution ~5MB

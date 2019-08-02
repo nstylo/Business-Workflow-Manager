@@ -23,7 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DJANGO_ENV = os.getenv('DJANGO_ENV')
 
-# these env vars should be set in your django venv activate file or .env in production
+# these env vars should be set in your django venv activate file
+# or .env in production
 if DJANGO_ENV == 'development':
     DEBUG = True
     ALLOWED_HOSTS = ['*']
@@ -34,12 +35,13 @@ if DJANGO_ENV == 'development':
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE = False
 
-    # to run email locally: python -m smtpd -n -c DebuggingServer localhost:1025
+    # to run email locally:
+    # python -m smtpd -n -c DebuggingServer localhost:1025
     EMAIL_HOST = 'localhost'
     EMAIL_PORT = '1025'
     EMAIL_HOST_USER = None
     EMAIL_HOST_PASSWORD = None
-else: # deployment env
+else:  # deployment env
     DEBUG = False
     ALLOWED_HOSTS = [os.getenv('HOST')]
     CSRF_COOKIE_SECURE = True
@@ -53,12 +55,13 @@ else: # deployment env
 
 CSRF_COOKIE_NAME = "csrftoken"
 
-SECURE_HSTS_SECONDS = 360 # time out non https users
-SECURE_CONTENT_TYPE_NOSNIFF = True # prevent user uploaded file sniffing
-SECURE_BROWSER_XSS_FILTER = True # cross site scripting protection
-X_FRAME_OPTIONS = "DENY" # clickjacking protection
-SECURE_HSTS_PRELOAD = True # submit site to browser preload list
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True # prevent attack on subdomain from insecure connection
+SECURE_HSTS_SECONDS = 360  # time out non https users
+SECURE_CONTENT_TYPE_NOSNIFF = True  # prevent user uploaded file sniffing
+SECURE_BROWSER_XSS_FILTER = True  # cross site scripting protection
+X_FRAME_OPTIONS = "DENY"  # clickjacking protection
+SECURE_HSTS_PRELOAD = True  # submit site to browser preload list
+# prevent attack on subdomain from insecure connection
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # Application definition
 
@@ -69,12 +72,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    '***REMOVED***',
     'corsheaders',
     'rest_framework',
+    'rest_auth',
+    'rest_framework.authtoken',
+    'phonenumber_field',
+    'users.apps.UsersConfig',
 ]
 
-CORS_ALLOW_CREDENTIALS = True
+# see https://github.com/stefanfoulis/django-phonenumber-field
+PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
+
+AUTH_USER_MODEL = 'users.CustomUser'  # our custom user model
+
+CORS_ALLOW_CREDENTIALS = True  # to allow csrf session cookies
 
 CORS_URLS_REGEX = r'^/api/.*$'
 
@@ -107,6 +118,7 @@ TEMPLATES = [
     },
 ]
 
+# name of our wsgi application to run with gunicorn
 WSGI_APPLICATION = '***REMOVED***.wsgi.application'
 
 
@@ -117,10 +129,11 @@ POSTGRES_USER = os.getenv('POSTGRES_USER')
 POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
 POSTGRES_HOST = os.getenv('POSTGRES_HOST')
 POSTGRES_PORT = os.getenv('POSTGRES_PORT')
+DB_NAME = os.getenv('DB_NAME')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '***REMOVED***',
+        'NAME': DB_NAME,
         'USER': POSTGRES_USER,
         'PASSWORD': POSTGRES_PASSWORD,
         'HOST': POSTGRES_HOST,
@@ -149,6 +162,8 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = '/'
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
     ],
@@ -156,12 +171,15 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'user': '300/day',
-        'user': '30/minute',
-    }
+        'user': '10/minute',
+    },
 }
 
 ACCOUNT_ACTIVATION_DAYS = 7
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
