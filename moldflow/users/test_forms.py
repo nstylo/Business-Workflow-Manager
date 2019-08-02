@@ -53,7 +53,21 @@ class UserChangeTests(TestCase):
         })
 
 
-class UserCreateTests(TestCase):
+class DuplicateUserMixin:
+    @classmethod
+    def setUp(cls):
+        cls.User = get_user_model()
+        cls.user1 = cls.User.objects.create_user(
+            email='user1@example.com',
+            company='Shell',
+            country='Netherlands',
+            address='sample address',
+            phone='+31647802691',
+            password='testingpassw123.',
+        )
+
+
+class UserCreateTests(DuplicateUserMixin, TestCase):
     """
     Tests for creating user data with forms
     """
@@ -91,4 +105,64 @@ class UserCreateTests(TestCase):
             'company': ['This field is required.'],
             'country': ['This field is required.'],
             'address': ['This field is required.']
+        })
+
+    def test_user_exists_same_mail(self):
+        form = CustomUserCreationForm(
+            {'email': 'user1@example.com',
+             'password1': 'This.password123test',
+             'password2': 'This.password123test',
+             'phone': '+31647802691',
+             'company': 'sample company name',
+             'country': 'NL',
+             'address': 'sample address'})
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors, {
+            'email': ['Custom user with this Email already exists.'],
+        })
+
+    def test_password_mismatch(self):
+        form = CustomUserCreationForm(
+            {'email': 'usern@example.com',
+             'password1': 'This.password123test',
+             'password2': 'Thispassword123test',
+             'phone': '+31647802691',
+             'company': 'sample company name',
+             'country': 'NL',
+             'address': 'sample address'})
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors, {
+            'password2': ["The two password fields didn't match."],
+        })
+
+    def test_password_common(self):
+        form = CustomUserCreationForm(
+            {'email': 'usern@example.com',
+             'password1': 'password',
+             'password2': 'password',
+             'phone': '+31647802691',
+             'company': 'sample company name',
+             'country': 'NL',
+             'address': 'sample address'})
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors, {
+            'password2': ['This password is too common.'],
+        })
+
+    def test_password_similar(self):
+        form = CustomUserCreationForm(
+            {'email': 'usern@example.com',
+             'password1': 'usern1235',
+             'password2': 'usern1235',
+             'phone': '+31647802691',
+             'company': 'sample company name',
+             'country': 'NL',
+             'address': 'sample address'})
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors, {
+            'password2': ['The password is too similar to the email.'],
         })
