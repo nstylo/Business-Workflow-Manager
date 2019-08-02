@@ -9,6 +9,47 @@ cache:
   paths:
     - node_modules/
 
+# unit testing, lint and dependency install
+test_django:
+  stage: test
+  cache: {}
+  script:
+    - cd ***REMOVED***/
+    - apk add python3-dev postgresql-dev gcc musl-dev
+    - python3 -m pip install --upgrade pip
+    - pip3 install --upgrade pip setuptools
+    - pip3 install -r req.txt
+    - python3 manage.py makemigrations users
+    - python3 manage.py migrate users
+    - python3 manage.py makemigrations
+    - python3 manage.py migrate
+    - coverage run manage.py test && coverage report | grep TOTAL
+  coverage: /\d+\%\s*$/
+
+services:
+  - postgres:latest
+
+# unit testing, lint and dependency install
+test_react:
+  stage: test
+  script:
+    - cd frontend/
+    - npm install --progress=false #install dependencies
+    - node_modules/eslint/bin/eslint.js src/ # run linter
+    - CI=true npm test -- --coverage # run tests and output coverage
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/ # regex for getting coverage percentage as int
+
+# install dependencies and build for deployment
+build:
+  stage: build
+  script:
+    - cd frontend/
+    - npm install --progress=false
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/build/ # keep built files for deployment as artifacts
+
 # staging step before production
 staging:
   image: alpine # alpine - small linux distribution ~5MB
@@ -26,7 +67,7 @@ staging:
     - ssh-keyscan -p $PORT_STAGING -H $IP_STAGING >> ~/.ssh/known_hosts
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - rsync -ave "ssh -p $PORT_STAGING" ***REMOVED*** $USER@$IP_STAGING:/home/$USER/deploy/
+    - rsync -ave "ssh -p $PORT_STAGING" frontend/build ***REMOVED*** $USER@$IP_STAGING:/home/$USER/deploy/
     - ssh -p $PORT_STAGING $USER@$IP_STAGING "cd deploy/ && docker-compose down && docker-compose up --build -d"
   cache: {}
   only:
@@ -53,7 +94,7 @@ production:
     - ssh-keyscan -p $PORT_PRODUCTION -H $IP_PRODUCTION >> ~/.ssh/known_hosts
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - rsync -ave "ssh -p $PORT_PRODUCTION" ***REMOVED*** $USER@$IP_PRODUCTION:/home/$USER/deploy/
+    - rsync -ave "ssh -p $PORT_PRODUCTION" frontend/build ***REMOVED*** $USER@$IP_PRODUCTION:/home/$USER/deploy/
     - ssh -p $PORT_PRODUCTION $USER@$IP_PRODUCTION "cd deploy/ && docker-compose down && docker-compose up --build -d"
   cache: {}
   only:

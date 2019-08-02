@@ -1,0 +1,7 @@
+[run]
+include = ./*
+branch = True
+
+[report]
+omit = */settings.py, */manage.py, *migrations/*, *init*
+exclude_lines = __str__
