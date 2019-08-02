@@ -10,7 +10,7 @@ cache:
     - node_modules/
 
 # unit testing, lint and dependency install
-test:
+test_django:
   stage: test
   cache: {}
   script:
@@ -30,7 +30,7 @@ services:
   - postgres:latest
 
 # unit testing, lint and dependency install
-test:
+test_react:
   stage: test
   script:
     - cd frontend/
