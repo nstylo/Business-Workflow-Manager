@@ -78,6 +78,15 @@ describe('login()', () => {
       expect(response.data.password).toBe('');
     });
   });
+
+  it('should read undefined and return empty strings', async () => {
+    axios.post.mockImplementationOnce(() => {
+      return Promise.reject(new Error('fail'));
+    });
+    await login(values_undefined).then(response => {
+      expect(response).toBe('fail');
+    });
+  });
 });
 
 describe('register()', () => {
@@ -125,6 +134,15 @@ describe('register()', () => {
       expect(response.data.company).toBe('');
     });
   });
+
+  it('should read undefined and return empty strings', async () => {
+    axios.post.mockImplementationOnce(() => {
+      return Promise.reject(new Error('fail'));
+    });
+    await register(values_undefined).then(response => {
+      expect(response).toBe('fail');
+    });
+  });
 });
 
 describe('requestReset()', () => {
@@ -156,6 +174,15 @@ describe('requestReset()', () => {
       expect(response.data.email).toBe('');
     });
   });
+
+  it('should read undefined and return empty strings', async () => {
+    axios.post.mockImplementationOnce(() => {
+      return Promise.reject(new Error('fail'));
+    });
+    await requestReset(values_undefined).then(response => {
+      expect(response).toBe('fail');
+    });
+  });
 });
 
 describe('reset()', () => {
@@ -185,6 +212,15 @@ describe('reset()', () => {
   it('should read undefined and return empty strings', async () => {
     await reset(values_undefined).then(response => {
       expect(response.data.password).toBe('');
+    });
+  });
+
+  it('should read undefined and return empty strings', async () => {
+    axios.put.mockImplementationOnce(() => {
+      return Promise.reject(new Error('fail'));
+    });
+    await reset(values_undefined).then(response => {
+      expect(response).toBe('fail');
     });
   });
 });

@@ -24,7 +24,7 @@ export async function login(values) {
       return response;
     })
     .catch(err => {
-      return err.response;
+      return err.message;
     });
 }
 
@@ -46,7 +46,7 @@ export async function register(values) {
       return response;
     })
     .catch(err => {
-      return err.response;
+      return err.message;
     });
 }
 
@@ -64,7 +64,7 @@ export async function requestReset(values) {
       return response;
     })
     .catch(err => {
-      return err.response;
+      return err.message;
     });
 }
 
@@ -83,6 +83,6 @@ export async function reset(values) {
       return response;
     })
     .catch(err => {
-      return err.response;
+      return err.message;
     });
 }
