@@ -1,8 +1,9 @@
 import axios from "axios";
 
-// include xsrf token in header
+// axios headers
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
+// postman api key
 axios.defaults.headers.common["x-api-key"] = "e8f411d2de5d42c485df61bc8a8ff977";
 
 // postman mock api

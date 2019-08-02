@@ -3,7 +3,11 @@
 import { login, register, requestReset, reset } from './auth_api';
 import auth_const from './auth_const';
 
-export const handleLogin = async (props, values, { setErrors, setSubmitting }) => {
+export const handleLogin = async (
+  props,
+  values,
+  { setErrors, setSubmitting }
+) => {
   const { history } = props;
   const { email, password } = values;
   const response = await login(email, password);
@@ -24,10 +28,21 @@ export const handleLogin = async (props, values, { setErrors, setSubmitting }) =
   setSubmitting(false);
 };
 
-export const handleRegister = async (props, values, { setStatus, setErrors, setSubmitting }) => {
+export const handleRegister = async (
+  props,
+  values,
+  { setStatus, setErrors, setSubmitting }
+) => {
   const { history } = props;
   const { email, username, password, phone, address, company } = values;
-  const response = await register(email, username, password, phone, address, company);
+  const response = await register(
+    email,
+    username,
+    password,
+    phone,
+    address,
+    company
+  );
 
   let errors;
   switch (response.status) {
@@ -45,7 +60,11 @@ export const handleRegister = async (props, values, { setStatus, setErrors, setS
   setSubmitting(false);
 };
 
-export const handleRequestReset = async (props, values, { setErrors, setSubmitting }) => {
+export const handleRequestReset = async (
+  props,
+  values,
+  { setErrors, setSubmitting }
+) => {
   const { history } = props;
   const { email } = values;
   const response = await requestReset(email);
@@ -66,7 +85,11 @@ export const handleRequestReset = async (props, values, { setErrors, setSubmitti
   setSubmitting(false);
 };
 
-export const handleReset = async (props, values, { setErrors, setSubmitting }) => {
+export const handleReset = async (
+  props,
+  values,
+  { setErrors, setSubmitting }
+) => {
   const { history } = props;
   const { password } = values;
   const response = await reset(password);
