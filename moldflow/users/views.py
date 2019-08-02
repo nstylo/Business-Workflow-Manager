@@ -1,7 +1,9 @@
 from django.contrib.auth import login as django_login
+from django.contrib.auth import logout as django_logout
 from rest_framework import permissions, viewsets
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK
 
 from .models import CustomUser
@@ -43,7 +45,12 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class LoginView(GenericAPIView):
     """
-    Login View
+    Check the credentials and return
+    response corresponding to status.
+    Call Django Auth login method to register User ID
+    in Django session framework
+
+    Accept the following POST parameters: email, password
     """
 
     permission_classes = [permissions.AllowAny]
@@ -58,7 +65,7 @@ class LoginView(GenericAPIView):
         """
         Define custom response message and status
         """
-        data = {"success": True}
+        data = {"detail": ("Successfully logged in.")}
         response = Response(data, status=HTTP_200_OK)
         return response
 
@@ -75,3 +82,21 @@ class LoginView(GenericAPIView):
 
         self.login()
         return self.get_response()
+
+
+class LogoutView(APIView):
+    """
+    Call Django logout method and delete the Token object
+    assigned to the current User object.
+    Accept/Return nothing.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        return self.logout(request)
+
+    def logout(self, request):
+        django_logout(request)
+        response = Response({"detail": ("Successfully logged out.")},
+                            status=HTTP_200_OK)
+        return response
