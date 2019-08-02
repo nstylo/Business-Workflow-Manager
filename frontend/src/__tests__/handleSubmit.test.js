@@ -1,26 +1,10 @@
 import handleSubmit from '../components/auth/forms/handle_submit';
 import auth_const from '../components/auth/forms/auth_const';
 
+// set up jest mock functions and callbacks
 const setErrors = jest.fn(val => val);
 const setSubmitting = jest.fn(val => val);
 const props = { history: { push: jest.fn(val => val) } };
-const values = {
-  email: 'test_mail@test.de',
-  password: 'testpassword',
-  phone: '+123456789',
-  address: 'testaddress',
-  company: 'testcompany'
-};
-
-const constants = {
-  url: '/mock_url/',
-  status: {
-    successful: 200,
-    unsuccessful: 400
-  }
-};
-
-const default_error = { default: 'unsuccessful request' };
 
 const callback_successful = jest.fn(values => {
   return Promise.resolve({
@@ -44,8 +28,29 @@ const callback_unexpected = jest.fn(values => {
   });
 });
 
+// set up mock values
+const values = {
+  email: 'test_mail@test.de',
+  password: 'testpassword',
+  phone: '+123456789',
+  address: 'testaddress',
+  company: 'testcompany'
+};
+
+// mock constants for requests, e.g. routing url..
+const constants = {
+  url: '/mock_url/',
+  status: {
+    successful: 200,
+    unsuccessful: 400
+  }
+};
+
+// mock error if response unexpected
+const default_error = { default: 'unsuccessful request' };
+
+// clear calls.length
 afterEach(() => {
-  // clear calls.length
   setErrors.mockClear();
   setSubmitting.mockClear();
   props.history.push.mockClear();

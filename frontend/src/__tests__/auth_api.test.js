@@ -2,6 +2,7 @@ import { login, register } from '../components/auth/forms/auth_api';
 import axios from 'axios';
 // axios mock is defined in __mocks__ in src/ and is automatically handled by jest
 
+// sets of mock values
 const values = {
   email: 'test_mail@test.de',
   password: 'testpassword',
@@ -34,7 +35,7 @@ const values_undefined = {
   company: undefined
 };
 
-// clear .mock.calls after each test
+// clear mock.length
 afterEach(() => {
   axios.post.mockClear();
 });
