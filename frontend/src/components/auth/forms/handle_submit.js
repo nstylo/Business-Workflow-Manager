@@ -1,11 +1,20 @@
 import auth_const from './auth_const';
 
+/**
+ * This interface requires a api request callback and 'instructions'
+ * on how to handle those depending on status codes
+ * @param {function} callback the api callback on submission
+ * @param {object} constants holds status codes and route url on success
+ * @param {object} props used for passing on history, so routing is possible
+ * @param {object} values the payload of the api call
+ * @param {object} bag formik helper functions
+ */
 export default async function handleSubmit(
-  callback, // api callback
-  constants, // TODO: dumb name, holds expected status
-  props, // props are used for history, so we can route on success
-  values, // payload for the api call
-  bag // helper formik functions
+  callback,
+  constants,
+  props,
+  values,
+  bag
 ) {
   const { setErrors, setSubmitting } = bag;
   const { status, url } = constants;

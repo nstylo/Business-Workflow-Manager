@@ -1,3 +1,5 @@
+//TODO: this is definitly not DRY enough
+
 import axios from 'axios';
 
 // axios headers
@@ -6,12 +8,12 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 // postman api key
 axios.defaults.headers.common['x-api-key'] =
   process.env.REACT_APP_PSTMN_API_KEY;
-
 // postman mock api
 const test_api_url = process.env.REACT_APP_TEST_API_URL;
 
 /**
  * takes email and password and makes a login request
+ * @param {object} values holds the payload of the request
  */
 export async function login(values) {
   const { email, password } = values;
@@ -30,6 +32,7 @@ export async function login(values) {
 
 /**
  * takes user credentials and makes a registration request
+ * @param {object} values holds the payload of the request
  */
 export async function register(values) {
   const { email, password, phone, address, company } = values;
@@ -51,6 +54,7 @@ export async function register(values) {
 
 /**
  * takes email to request a password reset
+ * @param {object} values holds the payload of the request
  */
 export async function requestReset(values) {
   const { email } = values;
@@ -68,6 +72,7 @@ export async function requestReset(values) {
 
 /**
  * takes password to update the current one
+ * @param {object} values holds the payload of the request
  * TODO: how to identify which password to update?
  */
 export async function reset(values) {
