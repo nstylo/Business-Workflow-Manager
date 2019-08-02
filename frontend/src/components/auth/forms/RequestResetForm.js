@@ -3,7 +3,9 @@ import { Formik, Form, Field } from 'formik';
 import { withRouter } from 'react-router-dom';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
-import { handleRequestReset } from './handle_submit';
+import handleRequestReset from './handle_submit';
+import { requestReset } from './auth_api';
+import auth_const from './auth_const';
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
@@ -20,7 +22,13 @@ const LoginForm = props => {
   };
 
   const handleSubmit = async (values, options) => {
-    await handleRequestReset(props, values, options);
+    await handleRequestReset(
+      requestReset,
+      auth_const.requestReset,
+      props,
+      values,
+      options
+    );
   };
 
   return (
