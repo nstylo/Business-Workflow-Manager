@@ -1,0 +1,64 @@
+image: node:alpine
+
+stages:
+  - test
+  - build
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+# staging step before production
+staging:
+  image: alpine # alpine - small linux distribution ~5MB
+  stage: deploy
+  before_script:
+    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+    - 'which rsync || ( apk add rsync )'
+    - 'which docker || ( apk add docker )'
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY_STAGING" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh
+    - chmod 600 ~/.ssh/id_rsa
+    - eval $(ssh-agent -s)
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -p $PORT_STAGING -H $IP_STAGING >> ~/.ssh/known_hosts
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - rsync -ave "ssh -p $PORT_STAGING" ***REMOVED*** $USER@$IP_STAGING:/home/$USER/deploy/
+    - ssh -p $PORT_STAGING $USER@$IP_STAGING "cd deploy/ && docker-compose down && docker-compose up --build -d"
+  cache: {}
+  only:
+    - development
+    - pipeline
+    - master
+  environment:
+    name: staging
+    url: $URL_STAGING
+
+production:
+  image: alpine
+  stage: deploy
+  before_script:
+    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+    - 'which rsync || ( apk add rsync )'
+    - 'which docker || ( apk add docker )'
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY_PRODUCTION" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh
+    - chmod 600 ~/.ssh/id_rsa
+    - eval $(ssh-agent -s)
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -p $PORT_PRODUCTION -H $IP_PRODUCTION >> ~/.ssh/known_hosts
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - rsync -ave "ssh -p $PORT_PRODUCTION" ***REMOVED*** $USER@$IP_PRODUCTION:/home/$USER/deploy/
+    - ssh -p $PORT_PRODUCTION $USER@$IP_PRODUCTION "cd deploy/ && docker-compose down && docker-compose up --build -d"
+  cache: {}
+  only:
+    - master
+  environment:
+    name: production
+    url: $URL_PRODUCTION
+  when: manual
