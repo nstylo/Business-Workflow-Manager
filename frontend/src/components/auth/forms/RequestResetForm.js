@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { withRouter } from 'react-router-dom';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
-import { requestReset } from '../../utils/auth_api';
+import { handleRequestReset } from './handle_submit';
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
@@ -13,30 +13,6 @@ const validationSchema = yup.object().shape({
     .email('enter a valid email address')
     .required()
 });
-
-/**
- * This form handles password reset
- */
-export const handleRequestReset = async (props, values, { setErrors, setSubmitting }) => {
-  const { history } = props;
-  const { email } = values;
-  const response = await requestReset(email);
-
-  let errors;
-  switch (response.data.status_code) {
-    case 200:
-      history.push('/request-reset-successful'); // TODO: routing is not final
-      return;
-    case 404:
-      errors = response.data.content.errors; // TODO: might have a different name
-      break;
-    default:
-      errors = { default: 'something unexpected happened' };
-  }
-
-  setErrors(errors);
-  setSubmitting(false);
-};
 
 const LoginForm = props => {
   LoginForm.propTypes = {

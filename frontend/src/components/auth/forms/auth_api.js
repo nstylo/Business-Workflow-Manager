@@ -3,16 +3,17 @@ import axios from 'axios';
 // include xsrf token in header
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.headers.common['x-api-key'] = 'e8f411d2de5d42c485df61bc8a8ff977';
 
-// test api url
-const test_api_url = 'http://127.0.0.1:8000';
+// postman mock api
+const test_api_url = 'https://59a86326-905c-47d9-a33e-383906e3685e.mock.pstmn.io';
 
 /**
  * takes email and password and makes a login request
  */
 export async function login(email, password) {
   return await axios
-    .post(test_api_url, {
+    .post(test_api_url + '/login/', {
       email: email || '',
       password: password || ''
     })
@@ -29,7 +30,7 @@ export async function login(email, password) {
  */
 export async function register(email, username, password, phone, address, company) {
   return await axios
-    .post(test_api_url, {
+    .post(test_api_url + '/register/', {
       email: email || '',
       username: username || '',
       password: password || '',
@@ -50,7 +51,7 @@ export async function register(email, username, password, phone, address, compan
  */
 export async function requestReset(email) {
   return await axios
-    .post(test_api_url, {
+    .post(test_api_url + '/request-reset/', {
       email: email || ''
     })
     .then(response => {
@@ -67,7 +68,7 @@ export async function requestReset(email) {
  */
 export async function reset(password) {
   return await axios
-    .patch(test_api_url, {
+    .put(test_api_url + '/reset/', {
       email: password || ''
     })
     .then(response => {

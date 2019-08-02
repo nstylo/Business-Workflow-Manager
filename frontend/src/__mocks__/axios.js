@@ -3,6 +3,11 @@ export default {
   post: jest.fn((url, data) => Promise.resolve({ url, data })),
   defaults: {
     xsrfCookieName: 'csrftocken',
-    xsrfHeaderName: 'X-CSRFTOKEN'
+    xsrfHeaderName: 'X-CSRFTOKEN',
+    headers: {
+      common: {
+        'x-api-key': 'e8f411d2de5d42c485df61bc8a8ff977'
+      }
+    }
   }
 };

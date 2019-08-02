@@ -1,4 +1,4 @@
-import { login, register } from '../utils/auth_api';
+import { login, register } from '../components/auth/forms/auth_api';
 import axios from 'axios';
 // axios mock is defined in __mocks__ in src/ and is automatically handled by jest
 

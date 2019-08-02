@@ -1,9 +1,13 @@
 import React from 'react';
-import LoginForm, { handleLogin } from '../components/auth/LoginForm';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { login } from '../utils/auth_api';
-jest.mock('../utils/auth_api');
+
+import LoginForm from '../components/auth/forms/LoginForm';
+import { handleLogin } from '../components/auth/forms/handle_submit';
+import { login } from '../components/auth/forms/auth_api';
+import auth_const from '../components/auth/forms/auth_const';
+
+jest.mock('../components/auth/forms/auth_api');
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -16,13 +20,13 @@ const values = { email: 'test_mail@test.de', password: 'testpassword' };
 // should be called to simulate a successful login
 const setValidLogin = () =>
   login.mockImplementationOnce(() => {
-    return { data: { status_code: 200 } };
+    return Promise.resolve({ status: auth_const.login.status.successful });
   });
 
 // should be called to simulate a successful login
 const setUnexpectedResponse = () =>
   login.mockImplementationOnce(() => {
-    return { data: { status_code: 999 } };
+    return Promise.resolve({ status: 999 });
   });
 
 let wrapper;
@@ -65,7 +69,7 @@ describe('Loginform', () => {
       expect(props.history.push.mock.calls.length).toBe(0);
     });
 
-    it('should not call setErrors and setSubmitting on 200', async () => {
+    it('should not call setErrors and setSubmitting on success', async () => {
       setValidLogin();
       await handleLogin(props, values, {
         setErrors: setErrors,
@@ -90,7 +94,7 @@ describe('Loginform', () => {
 
     it('should set the correct errors on unsuccessful login', async () => {
       await handleLogin(props, values, { setErrors: setErrors, setSubmitting: setSubmitting });
-      expect(setErrors.mock.calls[0][0]).toStrictEqual({ email: 'email is not registered' });
+      expect(setErrors.mock.calls[0][0]).toStrictEqual(auth_const.login.mock_errors.errors);
     });
 
     it('it should set setSubmitting to false on unsuccessful login', async () => {
@@ -117,7 +121,7 @@ describe('Loginform', () => {
     it('should set the error message correctly on unexpected response', async () => {
       setUnexpectedResponse();
       await handleLogin(props, values, { setErrors: setErrors, setSubmitting: setSubmitting });
-      expect(setErrors.mock.calls[0][0]).toStrictEqual({ default: 'something unexpected happened' });
+      expect(setErrors.mock.calls[0][0]).toStrictEqual(auth_const.default_errors.errors);
     });
   });
 });

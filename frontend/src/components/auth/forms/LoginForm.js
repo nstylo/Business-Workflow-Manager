@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { withRouter } from 'react-router-dom';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
-import { login } from '../../utils/auth_api';
+import { handleLogin } from './handle_submit';
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
@@ -18,31 +18,6 @@ const validationSchema = yup.object().shape({
     .max(256, 'password must be at most 256 characters')
     .required()
 });
-
-/**
- * Tries to login the user, if response is 200, reroute to root (TODO: change to user-space), else print status to
- * user and enable the submit button
- */
-export const handleLogin = async (props, values, { setErrors, setSubmitting }) => {
-  const { history } = props;
-  const { email, password } = values;
-  const response = await login(email, password);
-
-  let errors;
-  switch (response.data.status_code) {
-    case 200:
-      history.push('/'); // TODO: routing is not final
-      return;
-    case 401:
-      errors = response.data.content.errors; // TODO: might have a different name
-      break;
-    default:
-      errors = { default: 'something unexpected happened' };
-  }
-
-  setErrors(errors);
-  setSubmitting(false);
-};
 
 const LoginForm = props => {
   LoginForm.propTypes = {

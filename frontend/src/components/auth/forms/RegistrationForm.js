@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { withRouter } from 'react-router';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
-import { register } from '../../utils/auth_api';
+import { handleRegister } from './handle_submit';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -32,31 +32,6 @@ const validationSchema = yup.object().shape({
   address: yup.string(),
   company: yup.string()
 });
-
-/**
- * Tries to register the user, if response is 200, reroute to login, else print status to
- * user and enable the submit button
- */
-export const handleRegister = async (props, values, { setStatus, setErrors, setSubmitting }) => {
-  const { history } = props;
-  const { email, username, password, phone, address, company } = values;
-  const response = await register(email, username, password, phone, address, company);
-
-  let errors;
-  switch (response.data.status_code) {
-    case 201:
-      history.push('/register-successful'); // TODO: routing is not final
-      return;
-    case 400:
-      errors = response.data.content.errors; // TODO: might have a different name
-      break;
-    default:
-      errors = { default: 'something unexpected happened' };
-  }
-
-  setErrors(errors);
-  setSubmitting(false);
-};
 
 const RegistrationForm = props => {
   RegistrationForm.propTypes = {

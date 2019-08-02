@@ -1,13 +1,17 @@
 import React from 'react';
-import RegistrationForm, { handleRegister } from '../components/auth/RegistrationForm';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { register } from '../utils/auth_api';
-jest.mock('../utils/auth_api');
+
+import RegistrationForm from '../components/auth/forms/RegistrationForm';
+import { handleRegister } from '../components/auth/forms/handle_submit';
+import { register } from '../components/auth/forms/auth_api';
+import auth_const from '../components/auth/forms/auth_const';
+
+jest.mock('../components/auth/forms/auth_api');
 
 Enzyme.configure({ adapter: new Adapter() });
 
-// define mock functions and props
+// define mock functions, props and values
 const setErrors = jest.fn(val => val);
 const setSubmitting = jest.fn(val => val);
 const props = { history: { push: jest.fn(val => val) } };
@@ -23,13 +27,13 @@ const values = {
 // should be called to simulate a successful register
 const setValidRegistration = () =>
   register.mockImplementationOnce(() => {
-    return { data: { status_code: 201 } };
+    return Promise.resolve({ status: auth_const.register.status.successful });
   });
 
 // should be called to simulate a successful login
 const setUnexpectedResponse = () =>
   register.mockImplementationOnce(() => {
-    return { data: { status_code: 999 } };
+    return Promise.resolve({ status: 999 });
   });
 
 let wrapper;
@@ -72,7 +76,7 @@ describe('RegistrationForm', () => {
       expect(props.history.push.mock.calls.length).toBe(0);
     });
 
-    it('should call register on 200', async () => {
+    it('should call register on success', async () => {
       setValidRegistration();
       expect(register.mock.calls.length).toBe(0);
       await handleRegister(props, values, {
@@ -82,7 +86,7 @@ describe('RegistrationForm', () => {
       expect(register.mock.calls.length).toBe(1);
     });
 
-    it('should not call setErrors and setSubmitting on 200', async () => {
+    it('should not call setErrors and setSubmitting on success', async () => {
       setValidRegistration();
       await handleRegister(props, values, {
         setErrors: setErrors,
@@ -111,7 +115,7 @@ describe('RegistrationForm', () => {
 
     it('should set the correct errors on unsuccessful register', async () => {
       await handleRegister(props, values, { setErrors: setErrors, setSubmitting: setSubmitting });
-      expect(setErrors.mock.calls[0][0]).toStrictEqual({ email: 'email is already taken' });
+      expect(setErrors.mock.calls[0][0]).toStrictEqual(auth_const.register.mock_errors.errors);
     });
 
     it('it should set setSubmitting to false on unsuccessful register', async () => {
@@ -138,7 +142,7 @@ describe('RegistrationForm', () => {
     it('should set the error message correctly on unexpected response', async () => {
       setUnexpectedResponse();
       await handleRegister(props, values, { setErrors: setErrors, setSubmitting: setSubmitting });
-      expect(setErrors.mock.calls[0][0]).toStrictEqual({ default: 'something unexpected happened' });
+      expect(setErrors.mock.calls[0][0]).toStrictEqual(auth_const.default_errors.errors);
     });
   });
 });

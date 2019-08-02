@@ -1,4 +1,7 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import './App.css';
+
 import TopNav from './components/fixed/TopNav';
 import MainPage from './components/MainPage';
 import LoginPage from './components/auth/LoginPage';
@@ -11,8 +14,6 @@ import SuccessfulRequestResetPage from './components/auth/SuccessfulRequestReset
 import LogoutPage from './components/auth/LogoutPage';
 import FileUploadPage from './components/user/FileUploadPage';
 import NotFound from './components/NotFound';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import './App.css';
 
 /**
  * return and export this app

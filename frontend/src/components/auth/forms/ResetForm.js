@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { withRouter } from 'react-router-dom';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
-import { reset } from '../../utils/auth_api';
+import { handleReset } from './handle_submit';
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
@@ -14,30 +14,6 @@ const validationSchema = yup.object().shape({
     .required(),
   passwordConf: yup.string().oneOf([yup.ref('password'), null], 'passwords must match')
 });
-
-/**
- * This form handles password reset
- */
-export const handleReset = async (props, values, { setErrors, setSubmitting }) => {
-  const { history } = props;
-  const { password } = values;
-  const response = await reset(password); // TODO: how to identify which account
-
-  let errors;
-  switch (response.data.status_code) {
-    case 200:
-      history.push('/reset-successful'); // TODO: routing is not final
-      return;
-    case 400:
-      errors = response.data.content.errors; // TODO: might have a different name
-      break;
-    default:
-      errors = { default: 'something unexpected happened' };
-  }
-
-  setErrors(errors);
-  setSubmitting(false);
-};
 
 const LoginForm = props => {
   LoginForm.propTypes = {
