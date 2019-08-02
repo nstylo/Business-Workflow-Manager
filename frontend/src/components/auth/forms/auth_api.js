@@ -4,11 +4,11 @@ import axios from 'axios';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'csrftoken';
 // postman api key
-axios.defaults.headers.common['x-api-key'] = 'e8f411d2de5d42c485df61bc8a8ff977';
+axios.defaults.headers.common['x-api-key'] =
+  process.env.REACT_APP_PSTMN_API_KEY;
 
 // postman mock api
-const test_api_url =
-  'https://59a86326-905c-47d9-a33e-383906e3685e.mock.pstmn.io';
+const test_api_url = process.env.REACT_APP_TEST_API_URL;
 
 /**
  * takes email and password and makes a login request

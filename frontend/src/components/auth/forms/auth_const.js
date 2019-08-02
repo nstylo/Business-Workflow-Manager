@@ -1,3 +1,5 @@
+// this file just holds information about api calls which should be globally
+// used in order to not hardcode those
 export default {
   login: {
     url: '/',
@@ -27,7 +29,7 @@ export default {
     url: '/request-reset-successful/',
     status: {
       successful: 200,
-      unsuccessful: 401
+      unsuccessful: 400
     },
     mock_errors: {
       errors: {
@@ -39,7 +41,7 @@ export default {
     url: 'reset-successful/',
     status: {
       successful: 200,
-      unsuccessful: 401
+      unsuccessful: 400
     },
     mock_errors: {
       errors: {
