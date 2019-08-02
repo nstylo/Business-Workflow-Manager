@@ -39,6 +39,17 @@ test:
     - CI=true npm test -- --coverage # run tests and output coverage
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/ # regex for getting coverage percentage as int
 
+# install dependencies and build for deployment
+build:
+  stage: build
+  script:
+    - cd frontend/
+    - npm install --progress=false
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/build/ # keep built files for deployment as artifacts
+
 # staging step before production
 staging:
   image: alpine # alpine - small linux distribution ~5MB
