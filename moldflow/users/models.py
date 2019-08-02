@@ -14,7 +14,9 @@ class CustomUserManager(BaseUserManager):
         """
         Create and save a regular user in the database
         """
-        # all these fields are required
+        # all these fields are required, other inherited create_user
+        # functions use self.create_user, hence this does not need to be
+        # repeated
         if not email:
             raise ValueError("An email has not been set")
         if not phone:
@@ -48,18 +50,6 @@ class CustomUserManager(BaseUserManager):
         """
         Create and save a superuser in the database
         """
-        # the only requirement is having an email
-        if not email:
-            raise ValueError("An email has not been set")
-        if not phone:
-            raise ValueError("A phone number has not been set")
-        if not company:
-            raise ValueError("A company name has not been set")
-        if not country:
-            raise ValueError("A country name has not been set")
-        if not address:
-            raise ValueError("An address has not been set")
-
         user = self.create_user(
             email=self.normalize_email(email),
             password=password,
