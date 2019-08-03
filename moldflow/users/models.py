@@ -10,7 +10,9 @@ class CustomUserManager(BaseUserManager):
     Manage custom user model
     """
 
-    def create_user(self, email, password, phone, company, country, address):
+    def create_user(
+        self, email, password, phone, company, country, address, is_active=False
+    ):
         """
         Create and save a regular user in the database
         """
@@ -34,19 +36,17 @@ class CustomUserManager(BaseUserManager):
             phone=phone,
             company=company,
             country=country,
-            address=address
+            address=address,
         )
 
+        user.is_active = False  # TODO: change to False when email is in place
         user.set_password(password)
         user.last_login = timezone.now()
         user.save()
 
         return user
 
-    def create_superuser(
-            self, email, password,
-            phone, company, country, address
-    ):
+    def create_superuser(self, email, password, phone, company, country, address):
         """
         Create and save a superuser in the database
         """
@@ -56,7 +56,7 @@ class CustomUserManager(BaseUserManager):
             phone=phone,
             company=company,
             country=country,
-            address=address
+            address=address,
         )
 
         user.is_active = True  # TODO: change to False when email is in place
@@ -74,6 +74,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     """
     Define Custom user table
     """
+
     # max email length 254 is defined in RFC 5321
     email = models.EmailField(max_length=254, unique=True)
     phone = PhoneNumberField()  # uses phone number field library
@@ -90,9 +91,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     # these fields are the required fields when creating a **superuser**
-    REQUIRED_FIELDS = ['phone', 'company', 'country', 'address']
+    REQUIRED_FIELDS = ["phone", "company", "country", "address"]
 
     objects = CustomUserManager()
 

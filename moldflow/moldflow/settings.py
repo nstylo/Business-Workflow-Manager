@@ -36,7 +36,7 @@ if DJANGO_ENV == "development":
     # python -m smtpd -n -c DebuggingServer localhost:1025
     EMAIL_HOST = "localhost"
     EMAIL_PORT = "1025"
-    EMAIL_HOST_USER = None
+    EMAIL_HOST_USER = "test@gmail.com"
     EMAIL_HOST_PASSWORD = None
 else:  # deployment env
     DEBUG = False
@@ -71,9 +71,32 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "corsheaders",
     "rest_framework",
+    "rest_registration",
     "phonenumber_field",
     "users.apps.UsersConfig",
 ]
+
+REST_REGISTRATION = {
+    "REGISTER_VERIFICATION_ENABLED": True,
+    "REGISTER_EMAIL_VERIFICATION_ENABLED": True,
+    "RESET_PASSWORD_VERIFICATION_ENABLED": True,
+    "VERIFICATION_FROM_EMAIL": EMAIL_HOST_USER,
+    # TODO: route frontend urls
+    # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/register.html#verification-workflow
+    "REGISTER_VERIFICATION_URL": "http://localhost:3000/",
+    "REGISTER_EMAIL_VERIFICATION_URL": "http://localhost:3000/",
+    # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/reset_password.html
+    "RESET_PASSWORD_VERIFICATION_URL": "http://localhost:3000/",
+    "USER_HIDDEN_FIELDS": (
+        "is_active",
+        "is_admin",
+        "is_staff",
+        "is_superuser",
+        "user_permissions",
+        "groups",
+        "date_joined",
+    ),
+}
 
 # see https://github.com/stefanfoulis/django-phonenumber-field
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
@@ -158,6 +181,10 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_THROTTLE_CLASSES": ["rest_framework.throttling.UserRateThrottle"],
     "DEFAULT_THROTTLE_RATES": {"user": "10/minute"},
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ],
 }
 
 ACCOUNT_ACTIVATION_DAYS = 7
