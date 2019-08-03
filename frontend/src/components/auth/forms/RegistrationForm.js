@@ -1,11 +1,13 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import { withRouter } from 'react-router';
-import * as yup from 'yup';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { Formik, Form, Field } from 'formik';
+import * as yup from 'yup';
+
 import handleRegister from './handle_submit';
 import { register } from './auth_api';
 import auth_const from './auth_const';
+import CountrySelector from '../../CountrySelector';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -48,6 +50,7 @@ const RegistrationForm = props => {
         password: '',
         phone: '',
         address: '',
+        country: '',
         company: ''
       }}
       validationSchema={validationSchema}
@@ -77,6 +80,10 @@ const RegistrationForm = props => {
           <label>
             <Field name="address" placeholder="address" />
             {touched.phone && errors.phone}
+          </label>
+          <label>
+            <Field name="country" component={CountrySelector} />
+            {touched.country && errors.country}
           </label>
           <label>
             <Field name="company" placeholder="company" />

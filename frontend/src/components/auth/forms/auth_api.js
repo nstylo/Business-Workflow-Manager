@@ -33,13 +33,15 @@ export async function login(values) {
  * @param {object} values holds the payload of the request
  */
 export async function register(values) {
-  const { email, password, phone, address, company } = values;
+  const { email, password, phone, address, country, company } = values;
+  console.log(country);
   return await axios
     .post('/api/auth/register/', {
       email: email || '',
       password: password || '',
       phone: phone || '',
       address: address || '',
+      country: country || '',
       company: company || ''
     })
     .then(response => {
