@@ -49,6 +49,18 @@ export default {
       }
     }
   },
+  postFiles: {
+    url: null,
+    status: {
+      successful: 200,
+      unsuccessful: 401
+    },
+    mock_errors: {
+      errors: {
+        files: 'uploaded invalid files'
+      }
+    }
+  },
   default_errors: {
     errors: {
       default: 'something unexpected happened'

@@ -17,7 +17,7 @@ export async function login(values) {
   const { email, password } = values;
   return await axios
     .post('/api/auth/login/', {
-      email: email || '',
+      login: email || '', // fieldname 'login' required by django auth framework
       password: password || ''
     })
     .then(response => {
