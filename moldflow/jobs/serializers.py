@@ -11,10 +11,10 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Job
         fields = [
-            "id",
+            "url",
+            "owner",
             "name",
             "description",
-            "owner",
             "created",
             "estimated",
             "project",
