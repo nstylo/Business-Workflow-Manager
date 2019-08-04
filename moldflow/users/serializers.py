@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from .models import CustomUser
 from jobs.models import Job
+
+from .models import CustomUser
 from .permissions import IsLoggedInUserOrAdmin
 
 

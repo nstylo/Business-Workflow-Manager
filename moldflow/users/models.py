@@ -11,7 +11,8 @@ class CustomUserManager(BaseUserManager):
     """
 
     def create_user(
-        self, email, password, phone, company, country, address, is_active=False
+        self, email, password, phone, company,
+        country, address, is_active=False
     ):
         """
         Create and save a regular user in the database
@@ -46,7 +47,9 @@ class CustomUserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, password, phone, company, country, address):
+    def create_superuser(
+            self, email, password, phone, company, country, address
+    ):
         """
         Create and save a superuser in the database
         """
