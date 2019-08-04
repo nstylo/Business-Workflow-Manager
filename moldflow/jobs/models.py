@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -11,9 +13,16 @@ def upload_path(instance, filename):
                         instance where the current file is being attached.
         :param filename: The filename that was originally given to the file.
 
-        :returns: A url string for the file uploads
+        :returns: A url string for the file uploads in the format:
+                uploads/company/year/month/filename
     """
-    return "uploads/{0}/%Y/%m/{1}".format("users.CustomUser.company", filename)
+    timestamp = datetime.datetime.now()
+    year = str(timestamp.year)
+    month = str(timestamp.month)
+
+    return "uploads/{0}/{1}/{2}/{3}".format(
+        instance.owner.company, year, month, filename
+    )
 
 
 class Job(models.Model):
@@ -50,7 +59,7 @@ class Job(models.Model):
 
     class Meta:
         indexes = [models.Index(fields=["created"])]
-        ordering = ["-created"]
+        ordering = ["created"]
         verbose_name = "job"
         verbose_name_plural = "jobs"
 

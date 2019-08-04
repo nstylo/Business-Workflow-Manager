@@ -3,10 +3,22 @@ from django.contrib import admin
 from .models import Job
 
 
-class JobAdmin(admin.TabularInline):
+class JobAdmin(admin.ModelAdmin):
+    # fields seen in the user inline (dictates ordering as well)
+    list_display = (
+        "name",
+        "description",
+        "created",
+        "project",
+        "estimated",
+        "result",
+        "progress",
+    )
+
+
+class JobAdminInline(admin.TabularInline):
     model = Job
 
-    # fields seen in the user inline (dictates ordering as well)
     fields = (
         "name",
         "description",
@@ -17,8 +29,14 @@ class JobAdmin(admin.TabularInline):
         "progress",
     )
 
-    # fields that are not available to change
-    readonly_fields = ["name", "description", "created", "project"]
+    def get_readonly_fields(self, request, obj=None):
+        """
+        Make certain fields read only
+        """
+        if obj:
+            return ["name", "description", "created", "project"]
+        else:
+            return []
 
 
-# admin.site.register(Job, JobAdmin)
+admin.site.register(Job, JobAdmin)

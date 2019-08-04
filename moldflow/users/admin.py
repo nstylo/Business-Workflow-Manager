@@ -2,9 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
+from jobs.admin import JobAdmin, JobAdminInline
+
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import CustomUser
-from jobs.admin import JobAdmin
 
 
 class CustomUserAdmin(UserAdmin):
@@ -12,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
     Define Custom admin user interface
     """
 
-    inlines = [JobAdmin]
+    inlines = [JobAdminInline]
     form = CustomUserChangeForm  # form for changing user credentials
     add_form = CustomUserCreationForm  # form for creating a new user
     model = CustomUser
