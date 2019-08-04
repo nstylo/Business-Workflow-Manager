@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import mimetypes from './mimetypes';
+
+import mimetypes from '../utils/mimetypes';
 
 export default ({ field, form }) => {
   const onDrop = useCallback(

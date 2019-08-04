@@ -4,10 +4,10 @@ import { withRouter } from 'react-router';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
-import handleRegister from './handle_submit';
-import { register } from './auth_api';
-import auth_const from './auth_const';
-import CountrySelector from './CountrySelector';
+import handleRegister from '../../utils/handleSubmit';
+import { register } from '../../utils/auth_api';
+import auth_const from '../../utils/auth_const';
+import CountrySelector from '../../other/CountrySelector';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 

@@ -34,7 +34,6 @@ export async function login(values) {
  */
 export async function register(values) {
   const { email, password, phone, address, country, company } = values;
-  console.log(country);
   return await axios
     .post('/api/auth/register/', {
       email: email || '',

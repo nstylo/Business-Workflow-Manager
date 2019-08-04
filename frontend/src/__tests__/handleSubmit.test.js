@@ -1,5 +1,5 @@
-import handleSubmit from '../components/auth/forms/handle_submit';
-import auth_const from '../components/auth/forms/auth_const';
+import handleSubmit from '../components/utils/handleSubmit';
+import auth_const from '../components/utils/auth_const';
 
 // set up jest mock functions and callbacks
 const setErrors = jest.fn(val => val);

@@ -3,7 +3,7 @@ import {
   register,
   requestReset,
   reset
-} from '../components/auth/forms/auth_api';
+} from '../components/utils/auth_api';
 import axios from 'axios';
 // axios mock is defined in __mocks__ in src/ and is automatically handled by jest
 
@@ -13,6 +13,7 @@ const values = {
   password: 'testpassword',
   phone: '+123456789',
   address: 'testaddress',
+  country: 'testcountry',
   company: 'testcompany'
 };
 
@@ -21,6 +22,7 @@ const values_empty_string = {
   password: '',
   phone: '',
   address: '',
+  country: '',
   company: ''
 };
 
@@ -29,6 +31,7 @@ const values_null = {
   password: null,
   phone: null,
   address: null,
+  country: null,
   company: null
 };
 
@@ -37,6 +40,7 @@ const values_undefined = {
   password: undefined,
   phone: undefined,
   address: undefined,
+  country: undefined,
   company: undefined
 };
 
@@ -53,28 +57,28 @@ describe('login()', () => {
 
   it('should read and return empty strings', async () => {
     await login(values_empty_string).then(response => {
-      expect(response.data.email).toBe('');
+      expect(response.data.login).toBe('');
       expect(response.data.password).toBe('');
     });
   });
 
   it('should read some string and return it', async () => {
     await login(values).then(response => {
-      expect(response.data.email).toBe(values.email);
+      expect(response.data.login).toBe(values.email);
       expect(response.data.password).toBe(values.password);
     });
   });
 
   it('should read null and return empty strings', async () => {
     await login(values_null).then(response => {
-      expect(response.data.email).toBe('');
+      expect(response.data.login).toBe('');
       expect(response.data.password).toBe('');
     });
   });
 
   it('should read undefined and return empty strings', async () => {
     await login(values_undefined).then(response => {
-      expect(response.data.email).toBe('');
+      expect(response.data.login).toBe('');
       expect(response.data.password).toBe('');
     });
   });
@@ -101,6 +105,7 @@ describe('register()', () => {
       expect(response.data.password).toBe('');
       expect(response.data.phone).toBe('');
       expect(response.data.address).toBe('');
+      expect(response.data.country).toBe('');
       expect(response.data.company).toBe('');
     });
   });
@@ -111,6 +116,7 @@ describe('register()', () => {
       expect(response.data.password).toBe(values.password);
       expect(response.data.phone).toBe(values.phone);
       expect(response.data.address).toBe(values.address);
+      expect(response.data.country).toBe(values.country);
       expect(response.data.company).toBe(values.company);
     });
   });
@@ -121,6 +127,7 @@ describe('register()', () => {
       expect(response.data.password).toBe('');
       expect(response.data.phone).toBe('');
       expect(response.data.address).toBe('');
+      expect(response.data.country).toBe('');
       expect(response.data.company).toBe('');
     });
   });
@@ -131,6 +138,7 @@ describe('register()', () => {
       expect(response.data.password).toBe('');
       expect(response.data.phone).toBe('');
       expect(response.data.address).toBe('');
+      expect(response.data.country).toBe('');
       expect(response.data.company).toBe('');
     });
   });

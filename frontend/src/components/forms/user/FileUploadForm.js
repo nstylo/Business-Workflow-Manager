@@ -1,20 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import { withRouter } from 'react-router-dom';
 import * as yup from 'yup';
-import PropTypes from 'prop-types';
-import handleRequestReset from './handle_submit';
-import { requestReset } from './auth_api';
-import auth_const from './auth_const';
+
+import FileUploader from '../../other/FileUploader';
+import handlePostFiles from '../../utils/handleSubmit';
+import { postFiles } from '../../utils/user_api';
+import auth_const from '../../utils/auth_const';
 
 // define the validation schema for the input fields
-const validationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .max(254, 'email must be shorter than 254 characters')
-    .email('enter a valid email address')
-    .required()
-});
+const validationSchema = yup.object().shape({});
 
 const LoginForm = props => {
   LoginForm.propTypes = {
@@ -22,9 +18,9 @@ const LoginForm = props => {
   };
 
   const handleSubmit = async (values, options) => {
-    await handleRequestReset(
-      requestReset,
-      auth_const.requestReset,
+    await handlePostFiles(
+      postFiles,
+      auth_const.postFiles,
       props,
       values,
       options
@@ -33,14 +29,14 @@ const LoginForm = props => {
 
   return (
     <Formik
-      initialValues={{ email: '' }}
+      initialValues={{ files: [] }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
       render={({ errors, touched, status, handleSubmit, isSubmitting }) => (
         <Form onSubmit={handleSubmit}>
           <label>
-            <Field name="email" placeholder="email" />
-            {touched.email && errors.email}
+            <Field name="files" component={FileUploader} />
+            {touched.files && errors.files}
           </label>
           <button type="submit" disabled={isSubmitting}>
             Submit
