@@ -15,6 +15,7 @@ import LogoutPage from './components/pages/auth/LogoutPage';
 import FileUploadPage from './components/pages/user/FileUploadPage';
 import NotFound from './components/pages/main/NotFound';
 
+// TEMP!!!!
 import VerifyRegistrationPage from './components/pages/auth/VerifyRegistrationPage';
 
 /**
