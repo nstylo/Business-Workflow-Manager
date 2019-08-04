@@ -87,3 +87,36 @@ export async function reset(values) {
       return err.message;
     });
 }
+
+/**
+ * takes url and gets verification payload from server
+ * @param { string } url endpoint for verification payload
+ */
+export async function requestVerify(url) {
+  console.log(url);
+  url = url || '';
+  return await axios
+    .get(url)
+    .then(response => {
+      return response;
+    })
+    .catch(err => {
+      return err.message;
+    });
+}
+
+/**
+ * takes url and and sends verification payload from server
+ * @param { string } url endpoint for verification payload
+ */
+export async function sendVerify(payload) {
+  console.log(payload);
+  return await axios
+    .post('api/auth/verify-registration/', payload)
+    .then(response => {
+      return response;
+    })
+    .catch(err => {
+      return err.message;
+    });
+}

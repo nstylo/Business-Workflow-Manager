@@ -15,6 +15,8 @@ import LogoutPage from './components/pages/auth/LogoutPage';
 import FileUploadPage from './components/pages/user/FileUploadPage';
 import NotFound from './components/pages/main/NotFound';
 
+import VerifyRegistrationPage from './components/pages/auth/VerifyRegistrationPage';
+
 /**
  * return and export this app
  */
@@ -40,7 +42,8 @@ function App() {
           component={SuccessfulRequestResetPage}
         />
         <Route exact path="/reset-successful" component={SuccessfulResetPage} />
-        <Route path="/user/upload" component={FileUploadPage} />
+        <Route path="/verify-user/" component={VerifyRegistrationPage} />
+        <Route exact path="/user/upload" component={FileUploadPage} />
         <Route component={NotFound} />
       </Switch>
     </Router>
