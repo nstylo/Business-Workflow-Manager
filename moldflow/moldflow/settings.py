@@ -76,28 +76,6 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
 ]
 
-REST_REGISTRATION = {
-    "REGISTER_VERIFICATION_ENABLED": True,
-    "REGISTER_EMAIL_VERIFICATION_ENABLED": True,
-    "RESET_PASSWORD_VERIFICATION_ENABLED": True,
-    "VERIFICATION_FROM_EMAIL": EMAIL_HOST_USER,
-    # TODO: route frontend urls
-    # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/register.html#verification-workflow
-    "REGISTER_VERIFICATION_URL": "http://localhost:3000/",
-    "REGISTER_EMAIL_VERIFICATION_URL": "http://localhost:3000/",
-    # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/reset_password.html
-    "RESET_PASSWORD_VERIFICATION_URL": "http://localhost:3000/",
-    "USER_HIDDEN_FIELDS": (
-        "is_active",
-        "is_admin",
-        "is_staff",
-        "is_superuser",
-        "user_permissions",
-        "groups",
-        "date_joined",
-    ),
-}
-
 # see https://github.com/stefanfoulis/django-phonenumber-field
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 
@@ -187,11 +165,27 @@ REST_FRAMEWORK = {
     ],
 }
 
-ACCOUNT_ACTIVATION_DAYS = 7
-
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
+REST_REGISTRATION = {
+    "REGISTER_VERIFICATION_ENABLED": True,
+    "REGISTER_EMAIL_VERIFICATION_ENABLED": True,
+    "RESET_PASSWORD_VERIFICATION_ENABLED": True,
+    "VERIFICATION_FROM_EMAIL": EMAIL_HOST_USER,
+    # TODO: route frontend urls
+    # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/register.html#verification-workflow
+    "REGISTER_VERIFICATION_URL": "http://127.0.0.1:8000/",
+    "REGISTER_EMAIL_VERIFICATION_URL": "http://127.0.0.1:8000/",
+    # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/reset_password.html
+    "RESET_PASSWORD_VERIFICATION_URL": "http://127.0.0.1:8000/",
+    "USER_HIDDEN_FIELDS": (
+        "is_active",
+        "is_admin",
+        "is_staff",
+        "is_superuser",
+        "user_permissions",
+        "groups",
+        "date_joined",
+    ),
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
