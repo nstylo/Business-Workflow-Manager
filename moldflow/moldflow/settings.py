@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     "rest_registration",
     "phonenumber_field",
     "users.apps.UsersConfig",
+    "jobs",
 ]
 
 # see https://github.com/stefanfoulis/django-phonenumber-field
