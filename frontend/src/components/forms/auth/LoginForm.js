@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form as FormikForm, Field as FormikField } from 'formik';
 import { withRouter } from 'react-router-dom';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
@@ -7,6 +7,9 @@ import PropTypes from 'prop-types';
 import handleLogin from '../../utils/handleSubmit';
 import { login } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
+
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+const FormItem = Form.Item;
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
@@ -37,20 +40,24 @@ const LoginForm = props => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
       render={({ errors, touched, status, handleSubmit, isSubmitting }) => (
-        <Form onSubmit={handleSubmit}>
+        <FormikForm onSubmit={handleSubmit}>
           <label>
-            <Field name="email" placeholder="email" />
+            <FormikField name="email" placeholder="email" />
             {touched.email && errors.email}
           </label>
           <label>
-            <Field type="password" name="password" placeholder="password" />
+            <FormikField
+              type="password"
+              name="password"
+              placeholder="password"
+            />
             {touched.password && errors.password}
           </label>
           <button type="submit" disabled={isSubmitting}>
             Submit
           </button>
           <p>{errors.default}</p>
-        </Form>
+        </FormikForm>
       )}
     />
   );
