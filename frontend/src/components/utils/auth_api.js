@@ -24,7 +24,7 @@ export async function login(values) {
       return response;
     })
     .catch(err => {
-      return err.message;
+      return err.response;
     });
 }
 
@@ -47,7 +47,7 @@ export async function register(values) {
       return response;
     })
     .catch(err => {
-      return err.message;
+      return err.response;
     });
 }
 
@@ -65,7 +65,7 @@ export async function requestReset(values) {
       return response;
     })
     .catch(err => {
-      return err.message;
+      return err.response;
     });
 }
 
@@ -84,7 +84,7 @@ export async function reset(values) {
       return response;
     })
     .catch(err => {
-      return err.message;
+      return err.response;
     });
 }
 
@@ -93,7 +93,6 @@ export async function reset(values) {
  * @param { string } url endpoint for verification payload
  */
 export async function requestVerify(url) {
-  console.log(url);
   url = url || '';
   return await axios
     .get(url)
@@ -101,7 +100,7 @@ export async function requestVerify(url) {
       return response;
     })
     .catch(err => {
-      return err.message;
+      return err.response;
     });
 }
 
@@ -110,13 +109,12 @@ export async function requestVerify(url) {
  * @param { string } url endpoint for verification payload
  */
 export async function sendVerify(payload) {
-  console.log(payload);
   return await axios
     .post('api/auth/verify-registration/', payload)
     .then(response => {
       return response;
     })
     .catch(err => {
-      return err.message;
+      return err.response;
     });
 }
