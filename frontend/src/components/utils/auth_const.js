@@ -14,7 +14,7 @@ export default {
     }
   },
   register: {
-    url: '/register-successful/',
+    url: '/auth/register-successful',
     status: {
       successful: 200,
       unsuccessful: 400
@@ -26,7 +26,7 @@ export default {
     }
   },
   requestReset: {
-    url: '/request-reset-successful/',
+    url: '/auth/request-reset-successful',
     status: {
       successful: 200,
       unsuccessful: 400
@@ -38,7 +38,7 @@ export default {
     }
   },
   reset: {
-    url: 'reset-successful/',
+    url: 'auth/reset-successful/',
     status: {
       successful: 200,
       unsuccessful: 400

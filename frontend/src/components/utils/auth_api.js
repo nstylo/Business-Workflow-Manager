@@ -33,6 +33,7 @@ export async function login(values) {
  * @param {object} values holds the payload of the request
  */
 export async function register(values) {
+  console.log(values);
   const { email, password, phone, address, country, company } = values;
   return await axios
     .post('/api/auth/register/', {

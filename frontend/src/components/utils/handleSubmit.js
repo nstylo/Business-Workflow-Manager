@@ -16,8 +16,8 @@ export default async function handleSubmit(callback, constants, values, bag) {
 
   switch (response.status) {
     case status.successful:
-      history.push(url); // route
       resetForm();
+      history.push(url); // route
       return;
     case status.unsuccessful:
       setErrors(response.data.errors); // errors for the right label

@@ -7,8 +7,11 @@ import { register } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
 
 import CountrySelector from '../../other/CountrySelector';
+import countryList from 'react-select-country-list';
 import InputField from '../../other/InputField';
 import { Button, Icon } from 'antd';
+
+const countries = countryList();
 
 const RegistrationView = props => {
   const { isSubmitting } = props;
@@ -28,6 +31,13 @@ const RegistrationView = props => {
         component={InputField}
       />
       <Field
+        name="passwordConf"
+        type="password"
+        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        placeholder="Confirm your password"
+        component={InputField}
+      />
+      <Field
         name="phone"
         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Phone"
@@ -38,6 +48,12 @@ const RegistrationView = props => {
         prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Address"
         component={InputField}
+      />
+      <Field
+        name="country"
+        placeholder="Select your country"
+        options={countries}
+        component={CountrySelector}
       />
       <Field name="company" placeholder="Company" component={InputField} />
       <Button
@@ -75,6 +91,7 @@ const validationSchema = yup.object().shape({
     .matches(phoneRegExp, 'phone number is not valid')
     .required(),
   address: yup.string(),
+  country: yup.string().required(),
   company: yup.string()
 });
 
