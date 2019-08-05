@@ -14,8 +14,7 @@ axios.defaults.headers.common['x-api-key'] =
 export async function postFiles(values) {
   const { files } = values;
   return await axios
-    .post('', {
-      // TODO: define endpoint
+    .post('/api/jobs/', {
       files: files || []
     })
     .then(response => {
