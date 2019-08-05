@@ -1,4 +1,4 @@
-from rest_framework import permissions, serializers
+from rest_framework import serializers
 
 from .models import Job
 from users.permissions import IsLoggedInUserOrAdmin
@@ -19,4 +19,7 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
             "estimated",
             "project",
             "progress",
+            "result",
         ]
+
+        read_only_fields = ("result",)

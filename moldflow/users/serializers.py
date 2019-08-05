@@ -1,7 +1,5 @@
 from rest_framework import serializers
 
-from jobs.models import Job
-
 from .models import CustomUser
 from .permissions import IsLoggedInUserOrAdmin
 
@@ -14,8 +12,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     """
 
     permission_classes = [IsLoggedInUserOrAdmin]
-    jobs = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Job.objects.all())
+    jobs = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name='job-detail')
 
     class Meta:
         model = CustomUser

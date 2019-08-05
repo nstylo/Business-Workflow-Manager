@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
-from jobs.admin import JobAdmin, JobAdminInline
+from jobs.admin import JobAdminInline
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import CustomUser
