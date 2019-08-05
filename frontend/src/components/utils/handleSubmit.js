@@ -1,4 +1,5 @@
 import auth_const from './auth_const';
+import history from '../../history';
 
 /**
  * This interface requires a api request callback and 'instructions'
@@ -9,16 +10,9 @@ import auth_const from './auth_const';
  * @param {object} values the payload of the api call
  * @param {object} bag formik helper functions
  */
-export default async function handleSubmit(
-  callback,
-  constants,
-  props,
-  values,
-  bag
-) {
+export default async function handleSubmit(callback, constants, values, bag) {
   const { setErrors, setSubmitting } = bag;
   const { status, url } = constants;
-  const { history } = props;
   const response = await callback(values);
 
   switch (response.status) {

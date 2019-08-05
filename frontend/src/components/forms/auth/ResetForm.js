@@ -1,12 +1,38 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import { withRouter } from 'react-router-dom';
+import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
-import PropTypes from 'prop-types';
 
 import handleReset from '../../utils/handleSubmit';
 import { reset } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
+
+import { InputField } from './FormItems';
+import { Button, Icon } from 'antd';
+
+const ResetView = props => {
+  return (
+    <Form>
+      <Field
+        name="password"
+        type="password"
+        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        placeholder="Password"
+        component={InputField}
+      />
+      <Field
+        name="passwordConf"
+        type="password"
+        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        placeholder="Confirm password"
+        component={InputField}
+      />
+      <Button type="primary" htmlType="submit" className="login-form-button">
+        Submit
+      </Button>
+      <p>{props.errors.default}</p>
+    </Form>
+  );
+};
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
@@ -20,43 +46,10 @@ const validationSchema = yup.object().shape({
     .oneOf([yup.ref('password'), null], 'passwords must match')
 });
 
-const LoginForm = props => {
-  LoginForm.propTypes = {
-    history: PropTypes.object
-  };
-
-  const handleSubmit = async (values, options) => {
-    await handleReset(reset, auth_const.reset, props, values, options);
-  };
-
-  return (
-    <Formik
-      initialValues={{ email: '' }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-      render={({ errors, touched, status, handleSubmit, isSubmitting }) => (
-        <Form onSubmit={handleSubmit}>
-          <label>
-            <Field type="password" name="password" placeholder="password" />
-            {touched.password && errors.password}
-          </label>
-          <label>
-            <Field
-              type="password"
-              name="passwordConf"
-              placeholder="confirm password"
-            />
-            {touched.passwordConf && errors.passwordConf}
-          </label>
-          <button type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
-          <p>{errors.default}</p>
-        </Form>
-      )}
-    />
-  );
-};
-
-const LoginFormWithRouter = withRouter(LoginForm); // bound react router, to access history
-export default LoginFormWithRouter;
+export default withFormik({
+  validationSchema,
+  mapPropsToValues: () => ({ password: '' }),
+  handleSubmit: async (values, options) => {
+    await handleReset(reset, auth_const.reset, values, options);
+  }
+})(ResetView);

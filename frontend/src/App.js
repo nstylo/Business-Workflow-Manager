@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
+import history from './history';
 import './App.css';
 
 import NotFound from './components/pages/main/NotFound';
@@ -12,7 +13,7 @@ import MainRouter from './routers/MainRouter';
  */
 export default () => {
   return (
-    <Router>
+    <Router history={history}>
       <Switch>
         <Route path="/auth" component={AuthRouter} />
         <Route path="/user" component={UserRouter} />

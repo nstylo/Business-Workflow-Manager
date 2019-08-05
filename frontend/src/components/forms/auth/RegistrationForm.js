@@ -1,13 +1,51 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
-import { Formik, Form, Field } from 'formik';
+import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
 import handleRegister from '../../utils/handleSubmit';
 import { register } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
+
 import CountrySelector from '../../other/CountrySelector';
+import { InputField } from './FormItems';
+import { Button, Icon } from 'antd';
+
+const RegistrationView = props => {
+  return (
+    <Form>
+      <Field
+        name="email"
+        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        placeholder="Email"
+        component={InputField}
+      />
+      <Field
+        name="password"
+        type="password"
+        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        placeholder="Password"
+        component={InputField}
+      />
+      <Field
+        name="phone"
+        prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        placeholder="Phone"
+        component={InputField}
+      />
+      <Field
+        name="address"
+        prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        placeholder="Address"
+        component={InputField}
+      />
+      <Field name="company" placeholder="Company" component={InputField} />
+      <Button type="primary" htmlType="submit" className="login-form-button">
+        Submit
+      </Button>
+      <p>{props.errors.default}</p>
+    </Form>
+  );
+};
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -34,70 +72,17 @@ const validationSchema = yup.object().shape({
   company: yup.string()
 });
 
-const RegistrationForm = props => {
-  RegistrationForm.propTypes = {
-    history: PropTypes.object
-  };
-
-  const handleSubmit = async (values, options) => {
-    await handleRegister(register, auth_const.register, props, values, options);
-  };
-
-  return (
-    <Formik
-      initialValues={{
-        email: '',
-        password: '',
-        phone: '',
-        address: '',
-        country: '',
-        company: ''
-      }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-      render={({ errors, touched, status, handleSubmit, isSubmitting }) => (
-        <Form onSubmit={handleSubmit}>
-          <label>
-            <Field name="email" placeholder="email" />
-            {touched.email && errors.email}
-          </label>
-          <label>
-            <Field type="password" name="password" placeholder="password" />
-            {touched.password && errors.password}
-          </label>
-          <label>
-            <Field
-              type="password"
-              name="passwordConf"
-              placeholder="confirm password"
-            />
-            {touched.passwordConf && errors.passwordConf}
-          </label>
-          <label>
-            <Field name="phone" placeholder="phone-number" />
-            {touched.phone && errors.phone}
-          </label>
-          <label>
-            <Field name="address" placeholder="address" />
-            {touched.phone && errors.phone}
-          </label>
-          <label>
-            <Field name="country" component={CountrySelector} />
-            {touched.country && errors.country}
-          </label>
-          <label>
-            <Field name="company" placeholder="company" />
-            {touched.company && errors.company}
-          </label>
-          <button type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
-          <p>{errors.default}</p>
-        </Form>
-      )}
-    />
-  );
-};
-
-const LoginFormWithRouter = withRouter(RegistrationForm); // bound react router, to access history
-export default LoginFormWithRouter;
+export default withFormik({
+  validationSchema,
+  mapPropsToValues: () => ({
+    email: '',
+    password: '',
+    phone: '',
+    address: '',
+    country: '',
+    company: ''
+  }),
+  handleSubmit: async (values, options) => {
+    await handleRegister(register, auth_const.register, values, options);
+  }
+})(RegistrationView);

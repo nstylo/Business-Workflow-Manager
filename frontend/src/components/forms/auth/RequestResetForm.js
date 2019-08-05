@@ -1,12 +1,30 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import { withRouter } from 'react-router-dom';
+import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
-import PropTypes from 'prop-types';
 
 import handleRequestReset from '../../utils/handleSubmit';
 import { requestReset } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
+
+import { InputField } from './FormItems';
+import { Button, Icon } from 'antd';
+
+const RequestResetView = props => {
+  return (
+    <Form>
+      <Field
+        name="email"
+        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        placeholder="Email"
+        component={InputField}
+      />
+      <Button type="primary" htmlType="submit" className="login-form-button">
+        Submit
+      </Button>
+      <p>{props.errors.default}</p>
+    </Form>
+  );
+};
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
@@ -17,41 +35,15 @@ const validationSchema = yup.object().shape({
     .required()
 });
 
-const LoginForm = props => {
-  LoginForm.propTypes = {
-    history: PropTypes.object
-  };
-
-  const handleSubmit = async (values, options) => {
+export default withFormik({
+  validationSchema,
+  mapPropsToValues: () => ({ email: '' }),
+  handleSubmit: async (values, options) => {
     await handleRequestReset(
       requestReset,
       auth_const.requestReset,
-      props,
       values,
       options
     );
-  };
-
-  return (
-    <Formik
-      initialValues={{ email: '' }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-      render={({ errors, touched, status, handleSubmit, isSubmitting }) => (
-        <Form onSubmit={handleSubmit}>
-          <label>
-            <Field name="email" placeholder="email" />
-            {touched.email && errors.email}
-          </label>
-          <button type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
-          <p>{errors.default}</p>
-        </Form>
-      )}
-    />
-  );
-};
-
-const LoginFormWithRouter = withRouter(LoginForm); // bound react router, to access history
-export default LoginFormWithRouter;
+  }
+})(RequestResetView);
