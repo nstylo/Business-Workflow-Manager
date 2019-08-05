@@ -1,5 +1,6 @@
 Django==2.2.3
 django-jet==1.0.8
+feedparser==5.2.1
 django-cors-headers==3.0.2
 djangorestframework==3.10.1
 gunicorn==19.9.0

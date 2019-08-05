@@ -64,6 +64,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 INSTALLED_APPS = [
     "django.contrib.auth",
+    "jet.dashboard",
     "jet",
     "django.contrib.admin",
     "django.contrib.contenttypes",
