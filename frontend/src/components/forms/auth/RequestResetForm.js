@@ -6,10 +6,11 @@ import handleRequestReset from '../../utils/handleSubmit';
 import { requestReset } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
 
-import { InputField } from './FormItems';
+import InputField from '../../other/InputField';
 import { Button, Icon } from 'antd';
 
 const RequestResetView = props => {
+  const { isSubmitting } = props;
   return (
     <Form>
       <Field
@@ -18,7 +19,12 @@ const RequestResetView = props => {
         placeholder="Email"
         component={InputField}
       />
-      <Button type="primary" htmlType="submit" className="login-form-button">
+      <Button
+        type="primary"
+        htmlType="submit"
+        className="login-form-button"
+        disabled={isSubmitting}
+      >
         Submit
       </Button>
       <p>{props.errors.default}</p>

@@ -22,6 +22,6 @@ export async function postFiles(values) {
       return response;
     })
     .catch(err => {
-      return err.message;
+      return err.response;
     });
 }

@@ -1,38 +1,37 @@
-import React, { useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
-
+import React from 'react';
 import mimetypes from '../utils/mimetypes';
 
+import { Upload, Icon, message } from 'antd';
+const { Dragger } = Upload;
+
 export default ({ field, form }) => {
-  const onDrop = useCallback(
-    acceptedFiles => {
-      const reader = new FileReader();
-
-      // TODO: handle abort and error
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-      reader.onload = () => {
-        form.setFieldValue(field.name, [...field.value, reader.result]);
-      };
-
-      acceptedFiles.forEach(file => reader.readAsBinaryString(file));
-    },
-    [form, field]
-  );
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: mimetypes
-  });
-
   return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} />
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
-      ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      )}
-    </div>
+    <Dragger
+      name="file"
+      multiple={true}
+      accept={mimetypes}
+      fileList={field.value}
+      beforeUpload={file => {
+        form.setFieldValue(field.name, [...field.value, file]);
+        return false;
+      }}
+      onRemove={file => {
+        const index = field.value.indexOf(file);
+        const newValue = field.value.slice();
+        newValue.splice(index, 1);
+        form.setFieldValue(field.name, newValue);
+      }}
+    >
+      <p className="ant-upload-drag-icon">
+        <Icon type="inbox" />
+      </p>
+      <p className="ant-upload-text">
+        Click or drag file to this area to upload
+      </p>
+      <p className="ant-upload-hint">
+        Support for a single or bulk upload. Strictly prohibit from uploading
+        company data or other band files
+      </p>
+    </Dragger>
   );
 };

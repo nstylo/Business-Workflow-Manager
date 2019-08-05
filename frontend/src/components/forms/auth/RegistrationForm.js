@@ -7,10 +7,11 @@ import { register } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
 
 import CountrySelector from '../../other/CountrySelector';
-import { InputField } from './FormItems';
+import InputField from '../../other/InputField';
 import { Button, Icon } from 'antd';
 
 const RegistrationView = props => {
+  const { isSubmitting } = props;
   return (
     <Form>
       <Field
@@ -39,7 +40,12 @@ const RegistrationView = props => {
         component={InputField}
       />
       <Field name="company" placeholder="Company" component={InputField} />
-      <Button type="primary" htmlType="submit" className="login-form-button">
+      <Button
+        type="primary"
+        htmlType="submit"
+        className="login-form-button"
+        disabled={isSubmitting}
+      >
         Submit
       </Button>
       <p>{props.errors.default}</p>

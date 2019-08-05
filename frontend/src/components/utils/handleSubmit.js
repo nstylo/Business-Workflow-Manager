@@ -6,18 +6,18 @@ import history from '../../history';
  * on how to handle those depending on status codes
  * @param {function} callback the api callback on submission
  * @param {object} constants holds status codes and route url on success
- * @param {object} props used for passing on history, so routing is possible
  * @param {object} values the payload of the api call
  * @param {object} bag formik helper functions
  */
 export default async function handleSubmit(callback, constants, values, bag) {
-  const { setErrors, setSubmitting } = bag;
+  const { setErrors, setSubmitting, resetForm } = bag;
   const { status, url } = constants;
   const response = await callback(values);
 
   switch (response.status) {
     case status.successful:
       history.push(url); // route
+      resetForm();
       return;
     case status.unsuccessful:
       setErrors(response.data.errors); // errors for the right label
