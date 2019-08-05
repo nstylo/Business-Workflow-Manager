@@ -1,5 +1,6 @@
 import React from 'react';
 import { withFormik, Field, Form } from 'formik';
+import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
 import handleLogin from '../../utils/handleSubmit';
@@ -7,12 +8,21 @@ import { login } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
 
 import InputField from '../../other/InputField';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Checkbox, Form as AntForm } from 'antd';
+const FormItem = AntForm.Item;
 
 const LoginView = props => {
   const { isSubmitting } = props;
   return (
-    <Form>
+    <Form
+      style={{
+        width: '40%',
+        margin: 'auto auto',
+        padding: '20px',
+        border: 'solid rgba(0,0,0,.25) 1px',
+        borderRadius: '5px'
+      }}
+    >
       <Field
         name="email"
         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -26,14 +36,24 @@ const LoginView = props => {
         placeholder="Password"
         component={InputField}
       />
-      <Button
-        type="primary"
-        htmlType="submit"
-        className="login-form-button"
-        disabled={isSubmitting}
-      >
-        Submit
-      </Button>
+      <FormItem>
+        <span>
+          <Checkbox>Remember me</Checkbox>
+          <Link style={{ float: 'right' }} to="/auth/request-reset/">
+            Forgot Password
+          </Link>
+        </span>
+        <Button
+          style={{ width: '100%' }}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+          disabled={isSubmitting}
+        >
+          Log in
+        </Button>
+        Or <Link to="/auth/register">register now!</Link>
+      </FormItem>
       <p>{props.errors.default}</p>
     </Form>
   );
