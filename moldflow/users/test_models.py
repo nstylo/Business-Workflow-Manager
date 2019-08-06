@@ -1,5 +1,16 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
+from mixer.backend.django import mixer
+
+
+class TestCustomUser(TransactionTestCase):
+    reset_sequences = True
+
+    def test_model(self):
+        self.User = get_user_model()
+        self.User.objects.all().delete()
+        user = mixer.blend("users.CustomUser", phone="+31643842901")
+        assert user.pk == 1, "Should create a user instance"
 
 
 class CustomUserManagerTests(TestCase):
@@ -10,12 +21,12 @@ class CustomUserManagerTests(TestCase):
     def setUp(self):
         self.User = get_user_model()
         self.user = self.User.objects.create_user(
-            email='test@example.com',
-            company='Shell',
-            country='Netherlands',
-            address='sample address',
-            phone='+31649802702',
-            password='testingpassword123',
+            email="test@example.com",
+            company="Shell",
+            country="Netherlands",
+            address="sample address",
+            phone="+31649802702",
+            password="testingpassword123",
         )
 
     def assertPermissions(self, *, is_staff=False, is_superuser=False, is_admin=False):
@@ -46,12 +57,12 @@ class CustomSuperUserManagerTests(TestCase):
     def setUp(self):
         self.User = get_user_model()
         self.user = self.User.objects.create_superuser(
-            email='test@example.com',
-            company='Shell',
-            country='Netherlands',
-            address='sample address',
-            phone='+31647802691',
-            password='testingpassw123.',
+            email="test@example.com",
+            company="Shell",
+            country="Netherlands",
+            address="sample address",
+            phone="+31647802691",
+            password="testingpassw123.",
         )
 
     # TODO: Change from True to False when emailing is done
@@ -78,15 +89,16 @@ class CustomUserManagerEmptyFieldTests(TestCase):
     """
     Test if empty fields raise exceptions, and if they are the expected ones
     """
+
     def setUp(self):
         self.User = get_user_model()
         self.user = self.User.objects.create_superuser(
-            email='test@example.com',
-            company='Shell',
-            country='Netherlands',
-            address='sample address',
-            phone='+31647802691',
-            password='testingpassw123.',
+            email="test@example.com",
+            company="Shell",
+            country="Netherlands",
+            address="sample address",
+            phone="+31647802691",
+            password="testingpassw123.",
         )
 
     def test_empty_email(self):
@@ -103,7 +115,7 @@ class CustomUserManagerEmptyFieldTests(TestCase):
     def test_empty_company(self):
         with self.assertRaises(ValueError):
             self.User.objects.create_user(
-                email='test@gmails.com',
+                email="test@gmails.com",
                 company="",
                 country=self.user.company,
                 address=self.user.address,
@@ -114,8 +126,8 @@ class CustomUserManagerEmptyFieldTests(TestCase):
     def test_empty_country(self):
         with self.assertRaises(ValueError):
             self.User.objects.create_user(
-                email='test@gmails.com',
-                company='a new company',
+                email="test@gmails.com",
+                company="a new company",
                 country="",
                 address=self.user.address,
                 phone=self.user.phone,
@@ -125,9 +137,9 @@ class CustomUserManagerEmptyFieldTests(TestCase):
     def test_empty_address(self):
         with self.assertRaises(ValueError):
             self.User.objects.create_user(
-                email='test@gmails.com',
-                company='a new company',
-                country='some country',
+                email="test@gmails.com",
+                company="a new company",
+                country="some country",
                 address="",
                 phone=self.user.phone,
                 password=self.user.password,
@@ -136,10 +148,10 @@ class CustomUserManagerEmptyFieldTests(TestCase):
     def test_empty_phone(self):
         with self.assertRaises(ValueError):
             self.User.objects.create_user(
-                email='test@gmails.com',
-                company='a new company',
-                country='some country',
-                address='some address',
+                email="test@gmails.com",
+                company="a new company",
+                country="some country",
+                address="some address",
                 phone="",
                 password=self.user.password,
             )
