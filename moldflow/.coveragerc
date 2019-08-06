@@ -11,3 +11,6 @@ omit =
     */test_*,
     */urls.py
 exclude_lines = __str__
+fail_under = 80
+skip_covered = True
+show_missing = True

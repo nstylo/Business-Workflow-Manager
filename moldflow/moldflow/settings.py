@@ -90,6 +90,8 @@ CORS_ALLOW_CREDENTIALS = True  # to allow csrf session cookies
 
 CORS_URLS_REGEX = r"^/api/.*$"
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
