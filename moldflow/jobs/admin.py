@@ -19,24 +19,11 @@ class JobAdmin(admin.ModelAdmin):
 class JobAdminInline(admin.TabularInline):
     model = Job
 
-    fields = (
-        "name",
-        "description",
-        "created",
-        "project",
-        "estimated",
-        "result",
-        "progress",
-    )
+    fields = ("name", "description", "project",
+              "estimated", "result", "progress")
 
-    def get_readonly_fields(self, request, obj=None):
-        """
-        Make certain fields read only
-        """
-        if obj:
-            return ["name", "description", "created", "project"]
-        else:
-            return []
+    # these fields get input by the user
+    readonly_fields = ("name", "description", "created", "project")
 
 
 admin.site.register(Job, JobAdmin)

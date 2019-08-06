@@ -23,6 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DJANGO_ENV = os.getenv("DJANGO_ENV")
 
+HOST = os.getenv("HOST")
+
 # these env vars should be set in your django venv activate file
 # or .env in production
 if DJANGO_ENV == "development":

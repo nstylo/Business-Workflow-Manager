@@ -22,4 +22,5 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
             "result",
         ]
 
-        read_only_fields = ("result",)
+        # these fields get manually updated by staff
+        read_only_fields = ("result", "progress", "estimated")
