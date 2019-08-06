@@ -37,15 +37,17 @@ const ResetView = props => {
         placeholder="Confirm password"
         component={InputField}
       />
-      <Button
-        style={{ width: '100%' }}
-        type="primary"
-        htmlType="submit"
-        className="login-form-button"
-        disabled={isSubmitting}
-      >
-        Submit
-      </Button>
+      <FormItem>
+        <Button
+          style={{ width: '100%' }}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+          disabled={isSubmitting}
+        >
+          Submit
+        </Button>
+      </FormItem>
       <FormItem
         help={errors.default}
         validateStatus={errors.default ? 'error' : null}

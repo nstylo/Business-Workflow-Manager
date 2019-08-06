@@ -7,27 +7,45 @@ import handlePostFiles from '../../utils/handleSubmit';
 import { postFiles } from '../../utils/user_api';
 import auth_const from '../../utils/auth_const';
 
-import { Button } from 'antd';
+import { Button, Form as AntForm } from 'antd';
+
+const FormItem = AntForm.Item;
 
 const UploadView = props => {
-  const { isSubmitting } = props;
+  const { isSubmitting, errors } = props;
   return (
-    <Form>
-      <Field
-        name="files"
-        // prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-        placeholder="Upload your files here ..."
-        component={FileUploader}
+    <Form
+      style={{
+        width: '50%',
+        margin: 'auto auto',
+        padding: '20px 30px',
+        border: 'solid rgba(0,0,0,.25) 1px',
+        borderRadius: '5px'
+      }}
+    >
+      <FormItem>
+        <Field
+          name="files"
+          // prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+          placeholder="Upload your files here ..."
+          component={FileUploader}
+        />
+      </FormItem>
+      <FormItem>
+        <Button
+          style={{ width: '100%' }}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+          disabled={isSubmitting}
+        >
+          Submit
+        </Button>
+      </FormItem>
+      <FormItem
+        help={errors.default}
+        validateStatus={errors.default ? 'error' : null}
       />
-      <Button
-        type="primary"
-        htmlType="submit"
-        className="login-form-button"
-        disabled={isSubmitting}
-      >
-        Submit
-      </Button>
-      <p>{props.errors.default}</p>
     </Form>
   );
 };
