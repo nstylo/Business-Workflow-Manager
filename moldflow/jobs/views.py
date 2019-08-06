@@ -1,7 +1,8 @@
 from rest_framework import viewsets
 
-from .models import Job
 from users.permissions import IsLoggedInUserOrAdmin
+
+from .models import Job
 from .serializers import JobSerializer
 
 
@@ -24,6 +25,9 @@ class JobView(viewsets.ModelViewSet):
                 return Job.objects.filter(owner=user)
 
     def perform_create(self, serializer):
+        """
+        On creation of a job, attach it to the user who created it
+        """
         user = self.request.user
 
         if user.is_authenticated:
