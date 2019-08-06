@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
 from .models import Job
-from users.permissions import IsLoggedInUserOrAdmin
+from users.permissions import IsLoggedInUserOrStaff
 
 
 class JobSerializer(serializers.HyperlinkedModelSerializer):
-    permission_classes = [IsLoggedInUserOrAdmin]
+    permission_classes = [IsLoggedInUserOrStaff]
     owner = serializers.ReadOnlyField(source="owner.company")
 
     class Meta:
@@ -22,4 +22,5 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
             "result",
         ]
 
-        read_only_fields = ("result",)
+        # these fields get manually updated by staff
+        read_only_fields = ("result", "progress", "estimated")

@@ -3,5 +3,14 @@ include = ./*
 branch = True
 
 [report]
-omit = */settings.py, */manage.py, *migrations/*, *init*
+omit =
+    */settings.py,
+    */manage.py,
+    *migrations/*,
+    *init*,
+    */test_*,
+    */urls.py
 exclude_lines = __str__
+fail_under = 80
+skip_covered = True
+show_missing = True

@@ -23,6 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DJANGO_ENV = os.getenv("DJANGO_ENV")
 
+HOST = os.getenv("HOST")
+
 # these env vars should be set in your django venv activate file
 # or .env in production
 if DJANGO_ENV == "development":
@@ -64,6 +66,8 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 INSTALLED_APPS = [
     "django.contrib.auth",
+    "jet.dashboard",
+    "jet",
     "django.contrib.admin",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -85,6 +89,8 @@ AUTH_USER_MODEL = "users.CustomUser"  # our custom user model
 CORS_ALLOW_CREDENTIALS = True  # to allow csrf session cookies
 
 CORS_URLS_REGEX = r"^/api/.*$"
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

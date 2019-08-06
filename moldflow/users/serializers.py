@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import CustomUser
-from .permissions import IsLoggedInUserOrAdmin
+from .permissions import IsLoggedInUserOrStaff
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -11,7 +11,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     :param HyperlinkedModelSerializer: use url instead of id
     """
 
-    permission_classes = [IsLoggedInUserOrAdmin]
+    permission_classes = [IsLoggedInUserOrStaff]
     jobs = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='job-detail')
 
@@ -25,6 +25,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             "country",
             "address",
             "is_active",
-            "is_staff",
             "jobs",
         ]
+
+        read_only_fields = ("is_active",)
