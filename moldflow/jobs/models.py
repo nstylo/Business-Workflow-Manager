@@ -138,7 +138,14 @@ def compose_job_email(sender, **kwargs):
 
 
 def send_staff_email(subject, message):
-    email_sender = settings.EMAIL_HOST_USER
+    """
+    Sends an email to all staff members
+
+    :param subject: The subject line of the email
+    :param message: The email body
+    """
+    email_sender = settings.EMAIL_HOST_USER  # sender email address
+    # Get all staff member emails into a list
     staff_emails = CustomUser.objects.filter(is_staff=True, is_active=True).values_list(
         "email", flat=True
     )
