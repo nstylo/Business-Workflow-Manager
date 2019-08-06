@@ -72,5 +72,16 @@ class Job(models.Model):
         verbose_name = "job"
         verbose_name_plural = "jobs"
 
+    def get_admin_url(self):
+        """
+        Return the url for the created job
+        """
+        content_type = ContentType.objects.get_for_model(self.__class__)
+        return settings.HOST + reverse(
+            "admin:%s_%s_change" % (
+                content_type.app_label, content_type.model),
+            args=(self.id,),
+        )
+
     def __str__(self):
         return self.name
