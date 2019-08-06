@@ -7,7 +7,7 @@ import handlePostFiles from '../../utils/handleSubmit';
 import { postFiles } from '../../utils/user_api';
 import auth_const from '../../utils/auth_const';
 
-import { Button, Icon } from 'antd';
+import { Button } from 'antd';
 
 const UploadView = props => {
   const { isSubmitting } = props;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { withFormik, Form, Field } from 'formik';
+import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
 import handleRegister from '../../utils/handleSubmit';
@@ -9,14 +10,24 @@ import auth_const from '../../utils/auth_const';
 import CountrySelector from '../../other/CountrySelector';
 import countryList from 'react-select-country-list';
 import InputField from '../../other/InputField';
-import { Button, Icon } from 'antd';
+import CheckBox from '../../other/CheckBox';
+import { Button, Icon, Form as AntForm } from 'antd';
 
+const FormItem = AntForm.Item;
 const countries = countryList();
 
 const RegistrationView = props => {
-  const { isSubmitting } = props;
+  const { isSubmitting, touched, errors } = props;
   return (
-    <Form>
+    <Form
+      style={{
+        width: '40%',
+        margin: 'auto auto',
+        padding: '20px',
+        border: 'solid rgba(0,0,0,.25) 1px',
+        borderRadius: '5px'
+      }}
+    >
       <Field
         name="email"
         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -56,14 +67,24 @@ const RegistrationView = props => {
         component={CountrySelector}
       />
       <Field name="company" placeholder="Company" component={InputField} />
-      <Button
-        type="primary"
-        htmlType="submit"
-        className="login-form-button"
-        disabled={isSubmitting}
+      <FormItem
+        help={touched.conditions && errors.conditions}
+        validateStatus={errors.conditions ? 'error' : null}
       >
-        Submit
-      </Button>
+        <Field name="conditions" type="checkbox" component={CheckBox}>
+          I have read the
+        </Field>
+        <Link to="/terms-and-conditions">Terms &amp; Conditions</Link>
+        <Button
+          style={{ width: '100%' }}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+          disabled={isSubmitting}
+        >
+          Register now
+        </Button>
+      </FormItem>
       <p>{props.errors.default}</p>
     </Form>
   );
@@ -92,7 +113,10 @@ const validationSchema = yup.object().shape({
     .required(),
   address: yup.string(),
   country: yup.string().required(),
-  company: yup.string()
+  company: yup.string(),
+  conditions: yup
+    .bool()
+    .oneOf([true], 'You must agree with the Terms & Conditions')
 });
 
 export default withFormik({
@@ -103,7 +127,8 @@ export default withFormik({
     phone: '',
     address: '',
     country: '',
-    company: ''
+    company: '',
+    conditions: false
   }),
   handleSubmit: async (values, options) => {
     await handleRegister(register, auth_const.register, values, options);

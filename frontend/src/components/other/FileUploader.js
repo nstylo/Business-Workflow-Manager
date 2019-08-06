@@ -1,7 +1,7 @@
 import React from 'react';
 import mimetypes from '../utils/mimetypes';
 
-import { Upload, Icon, message } from 'antd';
+import { Upload, Icon } from 'antd';
 const { Dragger } = Upload;
 
 export default ({ field, form }) => {

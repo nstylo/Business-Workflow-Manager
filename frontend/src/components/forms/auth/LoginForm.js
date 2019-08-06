@@ -8,7 +8,8 @@ import { login } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
 
 import InputField from '../../other/InputField';
-import { Button, Icon, Checkbox, Form as AntForm } from 'antd';
+import CheckBox from '../../other/CheckBox';
+import { Button, Icon, Form as AntForm } from 'antd';
 const FormItem = AntForm.Item;
 
 const LoginView = props => {
@@ -37,12 +38,12 @@ const LoginView = props => {
         component={InputField}
       />
       <FormItem>
-        <span>
-          <Checkbox>Remember me</Checkbox>
-          <Link style={{ float: 'right' }} to="/auth/request-reset/">
-            Forgot Password
-          </Link>
-        </span>
+        <Field name="remember" component={CheckBox}>
+          Remember me!
+        </Field>
+        <Link style={{ float: 'right' }} to="/auth/request-reset/">
+          Forgot Password
+        </Link>
         <Button
           style={{ width: '100%' }}
           type="primary"

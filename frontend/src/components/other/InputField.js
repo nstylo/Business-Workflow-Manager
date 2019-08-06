@@ -9,7 +9,11 @@ export default ({ field, form: { touched, errors }, ...props }) => {
       help={errorMessage}
       validateStatus={errorMessage ? 'error' : null}
     >
-      <Input {...field} {...props}></Input>
+      {props.type === 'password' ? (
+        <Input.Password {...field} {...props}></Input.Password>
+      ) : (
+        <Input {...field} {...props}></Input>
+      )}
     </FormItem>
   );
 };
