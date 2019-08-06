@@ -5,9 +5,6 @@ import axios from 'axios';
 // axios headers
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'csrftoken';
-// postman api key
-axios.defaults.headers.common['x-api-key'] =
-  process.env.REACT_APP_PSTMN_API_KEY;
 
 /**
  * takes email and password and makes a login request
@@ -33,11 +30,20 @@ export async function login(values) {
  * @param {object} values holds the payload of the request
  */
 export async function register(values) {
-  const { email, password, phone, address, country, company } = values;
+  const {
+    email,
+    password,
+    password_confirm,
+    phone,
+    address,
+    country,
+    company
+  } = values;
   return await axios
     .post('/api/auth/register/', {
       email: email || '',
       password: password || '',
+      password_confirm: password_confirm || '',
       phone: phone || '',
       address: address || '',
       country: country || '',
@@ -58,8 +64,8 @@ export async function register(values) {
 export async function requestReset(values) {
   const { email } = values;
   return await axios
-    .post('/api/auth/password/reset/', {
-      email: email || ''
+    .post('/api/auth/send-reset-password-link/', {
+      login: email || ''
     })
     .then(response => {
       return response;
@@ -77,7 +83,7 @@ export async function requestReset(values) {
 export async function reset(values) {
   const { password } = values;
   return await axios
-    .put('/api/auth/password/reset/confirm/', {
+    .put('/api/auth/reset-password/', {
       password: password || ''
     })
     .then(response => {

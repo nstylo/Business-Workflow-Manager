@@ -14,13 +14,15 @@ export default async function handleSubmit(callback, constants, values, bag) {
   const { status, url } = constants;
   const response = await callback(values);
 
+  console.log(response);
+
   switch (response.status) {
     case status.successful:
       resetForm();
       history.push(url); // route
       return;
     case status.unsuccessful:
-      setErrors(response.data.errors); // errors for the right label
+      setErrors(response.data); // errors for the right label
       break;
     default:
       setErrors(auth_const.default_errors.errors); // error on bottom of form

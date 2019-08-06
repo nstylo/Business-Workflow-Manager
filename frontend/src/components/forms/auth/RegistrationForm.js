@@ -42,7 +42,7 @@ const RegistrationView = props => {
         component={InputField}
       />
       <Field
-        name="passwordConf"
+        name="password_confirm"
         type="password"
         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Confirm your password"
@@ -85,16 +85,14 @@ const RegistrationView = props => {
           Register now
         </Button>
       </FormItem>
-      {errors.default ? (
+      {errors.detail ? (
         <FormItem>
-          <Alert type="error" message={errors.default} showIcon />
+          <Alert type="error" message={errors.detail} showIcon />
         </FormItem>
       ) : null}
     </Form>
   );
 };
-
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
@@ -108,13 +106,10 @@ const validationSchema = yup.object().shape({
     .min(8, 'password must be at least 8 characters')
     .max(256, 'password must be at most 256 characters')
     .required(),
-  passwordConf: yup
+  password_confirm: yup
     .string()
     .oneOf([yup.ref('password'), null], 'passwords must match'),
-  phone: yup
-    .string()
-    .matches(phoneRegExp, 'phone number is not valid')
-    .required(),
+  phone: yup.string().required(),
   address: yup.string(),
   country: yup.string().required(),
   company: yup.string(),
@@ -128,6 +123,7 @@ export default withFormik({
   mapPropsToValues: () => ({
     email: '',
     password: '',
+    password_confirm: '',
     phone: '',
     address: '',
     country: '',

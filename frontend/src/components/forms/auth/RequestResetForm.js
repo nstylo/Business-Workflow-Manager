@@ -40,9 +40,9 @@ const RequestResetView = props => {
           Reset your password now
         </Button>
       </FormItem>
-      {errors.default ? (
+      {errors.detail ? (
         <FormItem>
-          <Alert type="error" message={errors.default} showIcon />
+          <Alert type="error" message={errors.detail} showIcon />
         </FormItem>
       ) : null}
     </Form>

@@ -55,9 +55,9 @@ const LoginView = props => {
         </Button>
         Or <Link to="/auth/register">register now!</Link>
       </FormItem>
-      {errors.default ? (
+      {errors.detail ? (
         <FormItem>
-          <Alert type="error" message={errors.default} showIcon />
+          <Alert type="error" message={errors.detail} showIcon />
         </FormItem>
       ) : null}
     </Form>

@@ -5,7 +5,7 @@ export default {
     url: '/',
     status: {
       successful: 200,
-      unsuccessful: 401
+      unsuccessful: 400
     },
     mock_errors: {
       errors: {
@@ -16,7 +16,7 @@ export default {
   register: {
     url: '/auth/register-successful',
     status: {
-      successful: 200,
+      successful: 201,
       unsuccessful: 400
     },
     mock_errors: {
@@ -29,7 +29,7 @@ export default {
     url: '/auth/request-reset-successful',
     status: {
       successful: 200,
-      unsuccessful: 400
+      unsuccessful: 404
     },
     mock_errors: {
       errors: {
