@@ -1,20 +1,28 @@
 import datetime
 
+from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django.core.mail import send_mail
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.urls import reverse
+
+from users.models import CustomUser
 
 
 def upload_path(instance, filename):
     """
     Define the upload file path
 
-        :param instance: An instance of the model where the FileField
-                        is defined. More specifically, this is the particular
-                        instance where the current file is being attached.
-        :param filename: The filename that was originally given to the file.
+    :param instance: An instance of the model where the FileField
+                    is defined. More specifically, this is the particular
+                    instance where the current file is being attached.
+    :param filename: The filename that was originally given to the file.
 
-        :returns: A url string for the file uploads in the format:
-                uploads/company/year/month/filename
+    :returns: A url string for the file uploads in the format:
+            uploads/company/year/month/filename
     """
     timestamp = datetime.datetime.now()
     year = str(timestamp.year)
@@ -50,7 +58,8 @@ class Job(models.Model):
     )
     created = models.DateTimeField(auto_now=False, auto_now_add=True)
     estimated = models.DateTimeField(
-        auto_now=False, auto_now_add=False, null=True)
+        auto_now=False, auto_now_add=False, null=True, blank=True
+    )
     project = models.FileField(upload_to=upload_path)
     result = models.FileField(upload_to=upload_path, null=True, blank=True)
     progress = models.PositiveSmallIntegerField(
