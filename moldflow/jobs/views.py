@@ -1,13 +1,13 @@
 from rest_framework import viewsets
 
-from users.permissions import IsLoggedInUserOrAdmin
+from users.permissions import IsLoggedInUserOrStaff
 
 from .models import Job
 from .serializers import JobSerializer
 
 
 class JobView(viewsets.ModelViewSet):
-    permission_classes = [IsLoggedInUserOrAdmin]
+    permission_classes = [IsLoggedInUserOrStaff]
     serializer_class = JobSerializer
     queryset = Job.objects.all().order_by("-created")
 

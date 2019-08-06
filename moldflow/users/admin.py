@@ -42,9 +42,10 @@ class CustomUserAdmin(UserAdmin):
                 "classes": ("wide",),
                 "fields": (
                     "email",
+                    "phone",
                     "company",
                     "country",
-                    "phone",
+                    "address",
                     "password1",
                     "password2",
                 ),

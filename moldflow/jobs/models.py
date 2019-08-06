@@ -119,7 +119,7 @@ def compose_job_email(sender, **kwargs):
 
     email_subject = "A new job has been added for {0}".format(
         job_owner_company)
-    email_message = """A new job \"{0}\" for {1} has been posted.\n
+    email_body = """A new job \"{0}\" for {1} has been posted.\n
     Please promptly update the estimated time to completion.\n
     Title: {0}\n
     Description: {2}\n
@@ -134,15 +134,15 @@ def compose_job_email(sender, **kwargs):
         job_url,
     )
 
-    send_staff_email(email_subject, email_message)
+    send_staff_email(email_subject, email_body)
 
 
-def send_staff_email(subject, message):
+def send_staff_email(subject, body):
     """
     Sends an email to all staff members
 
     :param subject: The subject line of the email
-    :param message: The email body
+    :param body: The email body
     """
     email_sender = settings.EMAIL_HOST_USER  # sender email address
     # Get all staff member emails into a list
@@ -151,4 +151,4 @@ def send_staff_email(subject, message):
     )
 
     # send an email to all staff members
-    send_mail(subject, message, email_sender, staff_emails)
+    send_mail(subject, body, email_sender, staff_emails)
