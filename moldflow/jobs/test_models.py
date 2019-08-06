@@ -13,7 +13,7 @@ class TestJobView(APITestCase):
         self.user = mixer.blend(
             "users.CustomUser", is_active=True, phone="+31230802611"
         )
-        self.job = mixer.blend("jobs.Job", owner=self.user)
+        self.job = mixer.blend(models.Job, owner=self.user)
         self.client.force_authenticate(self.user)
 
     def test_model(self):
