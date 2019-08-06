@@ -85,7 +85,10 @@ const RegistrationView = props => {
           Register now
         </Button>
       </FormItem>
-      <p>{props.errors.default}</p>
+      <FormItem
+        help={errors.default}
+        validateStatus={errors.default ? 'error' : null}
+      />
     </Form>
   );
 };

@@ -13,7 +13,7 @@ import { Button, Icon, Form as AntForm } from 'antd';
 const FormItem = AntForm.Item;
 
 const LoginView = props => {
-  const { isSubmitting } = props;
+  const { isSubmitting, errors } = props;
   return (
     <Form
       style={{
@@ -55,7 +55,10 @@ const LoginView = props => {
         </Button>
         Or <Link to="/auth/register">register now!</Link>
       </FormItem>
-      <p>{props.errors.default}</p>
+      <FormItem
+        help={errors.default}
+        validateStatus={errors.default ? 'error' : null}
+      />
     </Form>
   );
 };

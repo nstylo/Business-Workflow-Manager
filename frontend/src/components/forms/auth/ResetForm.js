@@ -7,12 +7,22 @@ import { reset } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
 
 import InputField from '../../other/InputField';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Form as AntForm } from 'antd';
+
+const FormItem = AntForm.Item;
 
 const ResetView = props => {
-  const { isSubmitting } = props;
+  const { isSubmitting, errors } = props;
   return (
-    <Form>
+    <Form
+      style={{
+        width: '40%',
+        margin: 'auto auto',
+        padding: '20px',
+        border: 'solid rgba(0,0,0,.25) 1px',
+        borderRadius: '5px'
+      }}
+    >
       <Field
         name="password"
         type="password"
@@ -28,6 +38,7 @@ const ResetView = props => {
         component={InputField}
       />
       <Button
+        style={{ width: '100%' }}
         type="primary"
         htmlType="submit"
         className="login-form-button"
@@ -35,7 +46,10 @@ const ResetView = props => {
       >
         Submit
       </Button>
-      <p>{props.errors.default}</p>
+      <FormItem
+        help={errors.default}
+        validateStatus={errors.default ? 'error' : null}
+      />
     </Form>
   );
 };

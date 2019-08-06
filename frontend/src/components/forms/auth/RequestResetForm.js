@@ -7,27 +7,43 @@ import { requestReset } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
 
 import InputField from '../../other/InputField';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Form as AntForm } from 'antd';
+
+const FormItem = AntForm.Item;
 
 const RequestResetView = props => {
-  const { isSubmitting } = props;
+  const { isSubmitting, errors } = props;
   return (
-    <Form>
+    <Form
+      style={{
+        width: '40%',
+        margin: 'auto auto',
+        padding: '20px',
+        border: 'solid rgba(0,0,0,.25) 1px',
+        borderRadius: '5px'
+      }}
+    >
       <Field
         name="email"
         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Email"
         component={InputField}
       />
-      <Button
-        type="primary"
-        htmlType="submit"
-        className="login-form-button"
-        disabled={isSubmitting}
-      >
-        Submit
-      </Button>
-      <p>{props.errors.default}</p>
+      <FormItem>
+        <Button
+          style={{ width: '100%' }}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+          disabled={isSubmitting}
+        >
+          Reset your password now
+        </Button>
+      </FormItem>
+      <FormItem
+        help={errors.default}
+        validateStatus={errors.default ? 'error' : null}
+      />
     </Form>
   );
 };
