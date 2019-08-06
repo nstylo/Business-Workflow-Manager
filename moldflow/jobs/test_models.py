@@ -13,7 +13,7 @@ class TestJobView(APITestCase):
         self.user = mixer.blend(
             "users.CustomUser", is_active=True, phone="+31230802611"
         )
-        self.job = mixer.blend(models.Job, owner=self.user)
+        self.job = mixer.blend("jobs.Job", owner=self.user)
         self.client.force_authenticate(self.user)
 
     def test_model(self):
@@ -66,5 +66,10 @@ class TestEmails(APITestCase):
         assert mail.outbox[0].body == body
 
         assert mail.outbox[0].from_email == settings.EMAIL_HOST_USER
-        assert mail.outbox[0].to == [self.user1.email, self.user2.email, self.user3.email]
+        assert mail.outbox[0].to == [
+            self.user1.email,
+            self.user2.email,
+            self.user3.email,
+        ]
 
+        # TODO: Test post_save signal compose_job_email
