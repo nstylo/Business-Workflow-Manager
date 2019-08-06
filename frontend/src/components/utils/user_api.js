@@ -12,10 +12,12 @@ axios.defaults.headers.common['x-api-key'] =
  * @param {object} values holds the payload of the request
  */
 export async function postFiles(values) {
-  const { files } = values;
+  const { files, title, description } = values;
   return await axios
     .post('/api/jobs/', {
-      files: files || []
+      files: files || [],
+      title: title || '',
+      description: description || ''
     })
     .then(response => {
       return response;

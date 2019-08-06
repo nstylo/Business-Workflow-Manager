@@ -7,7 +7,7 @@ import { requestReset } from '../../utils/auth_api';
 import auth_const from '../../utils/auth_const';
 
 import InputField from '../../other/InputField';
-import { Button, Icon, Form as AntForm } from 'antd';
+import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
 const FormItem = AntForm.Item;
 
@@ -40,10 +40,11 @@ const RequestResetView = props => {
           Reset your password now
         </Button>
       </FormItem>
-      <FormItem
-        help={errors.default}
-        validateStatus={errors.default ? 'error' : null}
-      />
+      {errors.default ? (
+        <FormItem>
+          <Alert type="error" message={errors.default} showIcon />
+        </FormItem>
+      ) : null}
     </Form>
   );
 };

@@ -26,7 +26,7 @@ export default props => {
           <Breadcrumb.Item>App</Breadcrumb.Item>
         </Breadcrumb>
         <Layout style={{ padding: '24px 0', background: '#fff' }}>
-          <Content style={{ padding: '0 24px', height: '100vh' }}>
+          <Content style={{ padding: '0 24px', height: '100%' }}>
             {props.children}
           </Content>
         </Layout>

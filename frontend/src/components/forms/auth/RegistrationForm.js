@@ -11,7 +11,7 @@ import CountrySelector from '../../other/CountrySelector';
 import countryList from 'react-select-country-list';
 import InputField from '../../other/InputField';
 import CheckBox from '../../other/CheckBox';
-import { Button, Icon, Form as AntForm } from 'antd';
+import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
 const FormItem = AntForm.Item;
 const countries = countryList();
@@ -85,10 +85,11 @@ const RegistrationView = props => {
           Register now
         </Button>
       </FormItem>
-      <FormItem
-        help={errors.default}
-        validateStatus={errors.default ? 'error' : null}
-      />
+      {errors.default ? (
+        <FormItem>
+          <Alert type="error" message={errors.default} showIcon />
+        </FormItem>
+      ) : null}
     </Form>
   );
 };

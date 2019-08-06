@@ -9,7 +9,7 @@ import auth_const from '../../utils/auth_const';
 
 import InputField from '../../other/InputField';
 import CheckBox from '../../other/CheckBox';
-import { Button, Icon, Form as AntForm } from 'antd';
+import { Button, Icon, Alert, Form as AntForm } from 'antd';
 const FormItem = AntForm.Item;
 
 const LoginView = props => {
@@ -55,10 +55,11 @@ const LoginView = props => {
         </Button>
         Or <Link to="/auth/register">register now!</Link>
       </FormItem>
-      <FormItem
-        help={errors.default}
-        validateStatus={errors.default ? 'error' : null}
-      />
+      {errors.default ? (
+        <FormItem>
+          <Alert type="error" message={errors.default} showIcon />
+        </FormItem>
+      ) : null}
     </Form>
   );
 };

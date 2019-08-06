@@ -7,7 +7,9 @@ import handlePostFiles from '../../utils/handleSubmit';
 import { postFiles } from '../../utils/user_api';
 import auth_const from '../../utils/auth_const';
 
-import { Button, Form as AntForm } from 'antd';
+import InputField from '../../other/InputField';
+import TextArea from '../../other/TextArea';
+import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
 const FormItem = AntForm.Item;
 
@@ -23,14 +25,26 @@ const UploadView = props => {
         borderRadius: '5px'
       }}
     >
+      <Field
+        name="title"
+        prefix={<Icon type="pushpin" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        placeholder="Your job title ..."
+        component={InputField}
+      />
       <FormItem>
         <Field
           name="files"
-          // prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+          prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
           placeholder="Upload your files here ..."
           component={FileUploader}
         />
       </FormItem>
+      <Field
+        name="description"
+        prefix={<Icon type="" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        placeholder="Describe your project ..."
+        component={TextArea}
+      />
       <FormItem>
         <Button
           style={{ width: '100%' }}
@@ -42,20 +56,25 @@ const UploadView = props => {
           Submit
         </Button>
       </FormItem>
-      <FormItem
-        help={errors.default}
-        validateStatus={errors.default ? 'error' : null}
-      />
+      {errors.default ? (
+        <FormItem>
+          <Alert type="error" message={errors.default} showIcon />
+        </FormItem>
+      ) : null}
     </Form>
   );
 };
 
 // define the validation schema for the input fields
-const validationSchema = yup.object().shape({});
+const validationSchema = yup.object().shape({
+  files: yup.array().required(),
+  title: yup.string().required(),
+  description: yup.string()
+});
 
 export default withFormik({
   validationSchema,
-  mapPropsToValues: () => ({ files: [] }),
+  mapPropsToValues: () => ({ files: [], title: '', description: '' }),
   handleSubmit: async (values, options) => {
     await handlePostFiles(postFiles, auth_const.postFiles, values, options);
   }
