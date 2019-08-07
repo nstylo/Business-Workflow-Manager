@@ -78,14 +78,10 @@ export async function requestReset(values) {
 /**
  * takes password to update the current one
  * @param {object} values holds the payload of the request
- * TODO: how to identify which password to update?
  */
 export async function reset(values) {
-  const { password } = values;
   return await axios
-    .put('/api/auth/reset-password/', {
-      password: password || ''
-    })
+    .post('/api/auth/reset-password/', values)
     .then(response => {
       return response;
     })

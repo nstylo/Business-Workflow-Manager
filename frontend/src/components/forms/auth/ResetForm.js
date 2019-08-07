@@ -73,6 +73,12 @@ export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ password: '' }),
   handleSubmit: async (values, options) => {
-    await handleReset(reset, auth_const.reset, values, options);
+    const queryParams = options.props.getQueryParams();
+    await handleReset(
+      reset,
+      auth_const.reset,
+      { ...values, ...queryParams },
+      options
+    );
   }
 })(ResetView);
