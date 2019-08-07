@@ -2,11 +2,10 @@ import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
-import FileUploader from '../../other/FileUploader';
-import handlePostFiles from '../../utils/handleSubmit';
-import { postFiles } from '../../utils/user_api';
-import auth_const from '../../utils/auth_const';
+import { handleSubmit } from '../../../utils/form_submit';
+import form_const from '../../../utils/form_const';
 
+import FileUploader from '../../other/FileUploader';
 import InputField from '../../other/InputField';
 import TextArea from '../../other/TextArea';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
@@ -76,6 +75,6 @@ export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ files: [], title: '', description: '' }),
   handleSubmit: async (values, options) => {
-    await handlePostFiles(postFiles, auth_const.postFiles, values, options);
+    await handleSubmit(form_const.postFiles, values, options);
   }
 })(UploadView);

@@ -1,5 +1,5 @@
-import handleSubmit from '../components/utils/handleSubmit';
-import auth_const from '../components/utils/auth_const';
+import handleSubmit from '../utils/form_submit';
+import form_const from '../utils/form_const';
 import history from '../history';
 
 jest.spyOn(history, 'push');
@@ -136,7 +136,7 @@ describe('handleSubmit', () => {
   it('should set the correct errors on unexpected callback', async () => {
     await handleSubmit(callback_unexpected, constants, values, options);
     expect(setErrors.mock.calls[0][0]).toStrictEqual(
-      auth_const.default_errors.errors
+      form_const.default_errors.errors
     );
   });
 });

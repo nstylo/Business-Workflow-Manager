@@ -3,9 +3,8 @@ import { withFormik, Field, Form } from 'formik';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
-import handleLogin from '../../utils/handleSubmit';
-import { login } from '../../utils/auth_api';
-import auth_const from '../../utils/auth_const';
+import { handleSubmit } from '../../../utils/form_submit';
+import form_const from '../../../utils/form_const';
 
 import InputField from '../../other/InputField';
 import CheckBox from '../../other/CheckBox';
@@ -25,7 +24,7 @@ const LoginView = props => {
       }}
     >
       <Field
-        name="email"
+        name="login"
         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Email"
         component={InputField}
@@ -53,7 +52,7 @@ const LoginView = props => {
         >
           Log in
         </Button>
-        Or <Link to="/auth/register">register now!</Link>
+        Or <Link to="/auth/register/">register now!</Link>
       </FormItem>
       {errors.detail ? (
         <FormItem>
@@ -66,7 +65,7 @@ const LoginView = props => {
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
-  email: yup
+  login: yup
     .string()
     .max(254, 'email must be shorter than 254 characters')
     .email('enter a valid email address')
@@ -80,8 +79,8 @@ const validationSchema = yup.object().shape({
 
 export default withFormik({
   validationSchema,
-  mapPropsToValues: () => ({ email: '', password: '' }),
+  mapPropsToValues: () => ({ login: '', password: '' }),
   handleSubmit: async (values, options) => {
-    await handleLogin(login, auth_const.login, values, options);
+    await handleSubmit(form_const.login, values, options);
   }
 })(LoginView);

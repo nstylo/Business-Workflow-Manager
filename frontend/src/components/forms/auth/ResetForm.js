@@ -2,9 +2,8 @@ import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
-import handleReset from '../../utils/handleSubmit';
-import { reset } from '../../utils/auth_api';
-import auth_const from '../../utils/auth_const';
+import { handleSubmit } from '../../../utils/form_submit';
+import form_const from '../../../utils/form_const';
 
 import InputField from '../../other/InputField';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
@@ -73,11 +72,10 @@ export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ password: '' }),
   handleSubmit: async (values, options) => {
-    const queryParams = options.props.getQueryParams();
-    await handleReset(
-      reset,
-      auth_const.reset,
-      { ...values, ...queryParams },
+    const queryParams = options.props.getQueryParams(); // get query params
+    await handleSubmit(
+      form_const.reset,
+      { ...values, ...queryParams }, // submit query params and password
       options
     );
   }

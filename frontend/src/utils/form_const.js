@@ -1,8 +1,8 @@
-// this file just holds information about api calls which should be globally
-// used in order to not hardcode those
+// this file contains constants for form submissions
 export default {
   login: {
-    url: '/',
+    redirect_url: '/',
+    request_url: '/api/auth/login/',
     status: {
       successful: 200,
       unsuccessful: 400
@@ -14,7 +14,8 @@ export default {
     }
   },
   register: {
-    url: '/auth/verification-email-sent',
+    redirect_url: '/auth/verification-email-sent',
+    request_url: '/api/auth/register/',
     status: {
       successful: 201,
       unsuccessful: 400
@@ -26,7 +27,8 @@ export default {
     }
   },
   requestReset: {
-    url: '/auth/request-reset-successful',
+    redirect_url: '/auth/request-reset-successful',
+    request_url: '/api/auth/send-reset-password-link/',
     status: {
       successful: 200,
       unsuccessful: 404
@@ -38,7 +40,8 @@ export default {
     }
   },
   reset: {
-    url: 'auth/reset-successful/',
+    redirect_url: 'auth/reset-successful/',
+    request_url: '/api/auth/reset-password/',
     status: {
       successful: 200,
       unsuccessful: 400
@@ -50,7 +53,8 @@ export default {
     }
   },
   postFiles: {
-    url: null,
+    redirect_url: null,
+    request_url: '/api/jobs/',
     status: {
       successful: 200,
       unsuccessful: 401

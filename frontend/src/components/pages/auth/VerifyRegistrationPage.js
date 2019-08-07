@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getQueryParams, sendVerify } from '../../utils/auth_api';
+import { getQueryParams, post } from '../../../utils/requests';
 
 const VerifyRegistrationPage = props => {
   const [isVerified, setIsVerified] = useState(null);
 
   useEffect(() => {
     const params = getQueryParams();
-    console.log(params);
-    sendVerify('/api/auth/verify-registration/', params)
+    post('/api/auth/verify-registration/', params)
       .then(response =>
         response.status === 200 ? setIsVerified(true) : setIsVerified(false)
       )
-      .catch(err => console.log(err));
+      .catch(err => null); // TODO: handle error
   }, []);
 
   if (isVerified === true) {

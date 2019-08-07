@@ -3,9 +3,8 @@ import { withFormik, Form, Field } from 'formik';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
-import handleRegister from '../../utils/handleSubmit';
-import { register } from '../../utils/auth_api';
-import auth_const from '../../utils/auth_const';
+import { handleSubmit } from '../../../utils/form_submit';
+import form_const from '../../../utils/form_const';
 
 import CountrySelector from '../../other/CountrySelector';
 import countryList from 'react-select-country-list';
@@ -131,6 +130,6 @@ export default withFormik({
     conditions: false
   }),
   handleSubmit: async (values, options) => {
-    await handleRegister(register, auth_const.register, values, options);
+    await handleSubmit(form_const.register, values, options);
   }
 })(RegistrationView);

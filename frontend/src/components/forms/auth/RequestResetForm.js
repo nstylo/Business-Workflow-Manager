@@ -2,9 +2,8 @@ import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
-import handleRequestReset from '../../utils/handleSubmit';
-import { requestReset } from '../../utils/auth_api';
-import auth_const from '../../utils/auth_const';
+import { handleSubmit } from '../../../utils/form_submit';
+import form_const from '../../../utils/form_const';
 
 import InputField from '../../other/InputField';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
@@ -24,7 +23,7 @@ const RequestResetView = props => {
       }}
     >
       <Field
-        name="email"
+        name="login"
         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Email"
         component={InputField}
@@ -51,7 +50,7 @@ const RequestResetView = props => {
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
-  email: yup
+  login: yup
     .string()
     .max(254, 'email must be shorter than 254 characters')
     .email('enter a valid email address')
@@ -60,13 +59,8 @@ const validationSchema = yup.object().shape({
 
 export default withFormik({
   validationSchema,
-  mapPropsToValues: () => ({ email: '' }),
+  mapPropsToValues: () => ({ login: '' }),
   handleSubmit: async (values, options) => {
-    await handleRequestReset(
-      requestReset,
-      auth_const.requestReset,
-      values,
-      options
-    );
+    await handleSubmit(form_const.requestReset, values, options);
   }
 })(RequestResetView);
