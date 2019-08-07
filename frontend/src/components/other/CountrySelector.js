@@ -25,7 +25,6 @@ export default ({ field, form, placeholder, ...props }) => {
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         onSelect={option => {
-          console.log(option);
           return form.setFieldValue(name, option);
         }}
       >

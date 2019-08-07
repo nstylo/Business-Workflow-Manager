@@ -2,7 +2,8 @@ import {
   login,
   register,
   requestReset,
-  reset
+  reset,
+  getQueryParams
 } from '../components/utils/auth_api';
 import axios from 'axios';
 // axios mock is defined in __mocks__ in src/ and is automatically handled by jest
@@ -221,6 +222,10 @@ describe('reset()', () => {
     await reset(values_undefined).then(response => {
       expect(response.data.password).toBe('');
     });
+  });
+
+  it('should return an object', async () => {
+    const params = await getQueryParams();
   });
 
   // it('should respond with a fail', async () => {

@@ -14,7 +14,7 @@ export default {
     }
   },
   register: {
-    url: '/auth/register-successful',
+    url: '/auth/verification-email-sent',
     status: {
       successful: 201,
       unsuccessful: 400

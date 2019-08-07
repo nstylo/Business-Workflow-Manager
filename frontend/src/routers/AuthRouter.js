@@ -13,7 +13,7 @@ import SuccessfulRequestResetPage from '../components/pages/auth/SuccessfulReque
 import AuthLayout from '../components/fixed/AuthLayout';
 import NotFound from '../components/pages/main/NotFound';
 
-// TEMP!!!!
+import VerificationEmailSentPage from '../components/pages/auth/VerificationEmailSentPage';
 import VerifyRegistrationPage from '../components/pages/auth/VerifyRegistrationPage';
 
 export default ({ match }) => {
@@ -47,6 +47,10 @@ export default ({ match }) => {
           exact
           path={`${match.url}/reset-successful`}
           component={SuccessfulResetPage}
+        />
+        <Route
+          path={`${match.url}/verification-email-sent`}
+          component={VerificationEmailSentPage}
         />
         <Route
           path={`${match.url}/verify-user`}

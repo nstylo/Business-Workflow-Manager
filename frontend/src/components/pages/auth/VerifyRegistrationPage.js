@@ -1,37 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { requestVerify, sendVerify } from '../../utils/auth_api';
-
-const verify = async () => {
-  const currUrl = window.location.href;
-  const payload = await requestVerify(currUrl);
-  console.log(payload);
-  const response = await sendVerify(payload);
-
-  switch (response.status) {
-    case 200:
-      return true;
-    case 401:
-      return false;
-    default:
-      console.log('something unexpected happened');
-      return false;
-  }
-};
+import { getQueryParams, sendVerify } from '../../utils/auth_api';
 
 const VerifyRegistrationPage = props => {
   const [isVerified, setIsVerified] = useState(null);
 
   useEffect(() => {
-    verify()
-      .then(answer => setIsVerified(answer))
+    const params = getQueryParams();
+    console.log(params);
+    sendVerify('/api/auth/verify-registration/', params)
+      .then(response =>
+        response.status === 200 ? setIsVerified(true) : setIsVerified(false)
+      )
       .catch(err => console.log(err));
   }, []);
 
   if (isVerified === true) {
     return (
       <div>
-        <Link to="/login">login now!</Link>
+        <Link to="/auth/login">login now!</Link>
         verified!
       </div>
     );

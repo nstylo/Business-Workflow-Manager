@@ -91,13 +91,13 @@ export async function reset(values) {
 }
 
 /**
- * takes url and gets verification payload from server
+ * takes url and and sends verification payload from server
  * @param { string } url endpoint for verification payload
  */
-export async function requestVerify(url) {
-  url = url || '';
+export async function sendVerify(url, payload) {
+  const ur = '/api/auth/verify-registration/';
   return await axios
-    .get(url)
+    .post(url, payload)
     .then(response => {
       return response;
     })
@@ -106,17 +106,11 @@ export async function requestVerify(url) {
     });
 }
 
-/**
- * takes url and and sends verification payload from server
- * @param { string } url endpoint for verification payload
- */
-export async function sendVerify(payload) {
-  return await axios
-    .post('api/auth/verify-registration/', payload)
-    .then(response => {
-      return response;
-    })
-    .catch(err => {
-      return err.response;
-    });
+export function getQueryParams() {
+  let urlParams = new URLSearchParams(window.location.search);
+  return {
+    user_id: urlParams.get('user_id'),
+    timestamp: urlParams.get('timestamp'),
+    signature: urlParams.get('signature')
+  };
 }
