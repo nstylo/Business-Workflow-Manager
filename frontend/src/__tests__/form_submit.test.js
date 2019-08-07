@@ -10,6 +10,9 @@ const setSubmitting = jest.fn(val => val);
 const resetForm = jest.fn(val => val);
 const options = { setErrors, setSubmitting, resetForm };
 
+// mock error if response unexpected
+const default_error = { default: 'unsuccessful request' };
+
 const callback_successful = jest.fn(values => {
   return Promise.resolve({
     status: constants.status.successful,
@@ -49,9 +52,6 @@ const constants = {
     unsuccessful: 400
   }
 };
-
-// mock error if response unexpected
-const default_error = { default: 'unsuccessful request' };
 
 // clear calls.length
 afterEach(() => {

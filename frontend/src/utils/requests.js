@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-// create local instance of axios
-const instance = axios.create({
-  xsrfHeaderName: 'X-CSRFTOKEN',
-  xsrfCookieName: 'csrftoken'
-});
+// axios headers
+axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.withCredentials = true;
 
 /**
  * handles post requests globally
@@ -12,8 +11,8 @@ const instance = axios.create({
  * @param { object } values the payload of the request
  */
 export async function post(url, values) {
-  return await instance
-    .post(url, values)
+  return await axios
+    .post(url, values, { withCredentials: true })
     .then(response => {
       return response;
     })

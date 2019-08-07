@@ -40,7 +40,7 @@ export default {
     }
   },
   reset: {
-    redirect_url: 'auth/reset-successful/',
+    redirect_url: '/auth/reset-successful/',
     request_url: '/api/auth/reset-password/',
     status: {
       successful: 200,

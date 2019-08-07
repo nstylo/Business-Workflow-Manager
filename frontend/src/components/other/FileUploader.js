@@ -1,5 +1,5 @@
 import React from 'react';
-import mimetypes from '../utils/mimetypes';
+import mimetypes from '../../utils/mimetypes';
 
 import { Upload, Icon, Alert } from 'antd';
 const { Dragger } = Upload;
