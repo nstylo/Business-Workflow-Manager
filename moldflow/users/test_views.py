@@ -1,5 +1,4 @@
-from django.contrib.auth import get_user_model
-from django.test import RequestFactory, TransactionTestCase
+from django.test import RequestFactory
 from mixer.backend.django import mixer
 from rest_framework.test import APITestCase
 
