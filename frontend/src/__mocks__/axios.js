@@ -1,5 +1,8 @@
 export default {
-  create: obj => {
-    post: jest.fn(() => {});
+  post: jest.fn(() => Promise.resolve({ data: {} })),
+  defaults: {
+    xsrfHeaderName: 'X-CSRFTOKEN',
+    xsrfCookieName: 'csrftoken',
+    withCredentials: true
   }
 };

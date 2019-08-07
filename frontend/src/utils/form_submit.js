@@ -15,6 +15,7 @@ export async function handleSubmit(constants, values, bag) {
 
   const response = await post(request_url, values); // make request
 
+  // .status .data defined by axios
   switch (response.status) {
     case status.successful:
       resetForm();

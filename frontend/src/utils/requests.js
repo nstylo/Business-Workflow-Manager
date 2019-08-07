@@ -12,12 +12,21 @@ axios.defaults.withCredentials = true;
  */
 export async function post(url, values) {
   return await axios
-    .post(url, values, { withCredentials: true })
+    .post(url, values)
     .then(response => {
       return response;
     })
     .catch(err => {
-      return err.response;
+      // .response .request .message are defined by axios
+      if (err.response) {
+        // if axios returned status =/= 2xx
+        return err.response;
+      }
+      if (err.request) {
+        // request was made but nothing received
+        return err.request;
+      }
+      return err.message; // something went wrong with setting up the request
     });
 }
 
@@ -33,3 +42,6 @@ export function getQueryParams() {
     signature: urlParams.get('signature')
   };
 }
+
+// for testing reasons
+export default { post, getQueryParams };
