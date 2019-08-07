@@ -40,6 +40,7 @@ if DJANGO_ENV == "development":
     EMAIL_PORT = "1025"
     EMAIL_HOST_USER = "test@gmail.com"
     EMAIL_HOST_PASSWORD = None
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:  # deployment env
     DEBUG = False
     ALLOWED_HOSTS = [os.getenv("HOST")]
@@ -51,6 +52,7 @@ else:  # deployment env
     EMAIL_USE_TLS = True
     EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
     EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 CSRF_COOKIE_NAME = "csrftoken"
 
@@ -90,7 +92,6 @@ CORS_ALLOW_CREDENTIALS = True  # to allow csrf session cookies
 
 CORS_URLS_REGEX = r"^/api/.*$"
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
