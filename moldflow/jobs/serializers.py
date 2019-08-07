@@ -12,7 +12,7 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
         model = Job
         fields = [
             "url",
-            "owner",
+            "owner",  # TODO: make owner the user id or create another user entry
             "name",
             "description",
             "created",
