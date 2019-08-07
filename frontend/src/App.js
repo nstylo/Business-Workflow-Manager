@@ -14,7 +14,6 @@ import SuccessfulRequestResetPage from './components/auth/SuccessfulRequestReset
 import LogoutPage from './components/auth/LogoutPage';
 import FileUploadPage from './components/user/FileUploadPage';
 import NotFound from './components/NotFound';
-import ReactGA from 'react-ga';
 
 /**
  * return and export this app

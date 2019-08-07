@@ -11,6 +11,5 @@ class TestJobView(APITestCase):
         req = RequestFactory().get("/api/jobs/")
         resp = views.JobView.as_view({"get": "list"})(req)
 
-        print(resp.data)
         assert resp.status_code == 403, 'Only logged in or staff users should be allowed to see jobs'
-        assert resp.data == {"detail:": "Authentication credentials were not provided."}
+        assert resp.data['detail'] == "Authentication credentials were not provided."
