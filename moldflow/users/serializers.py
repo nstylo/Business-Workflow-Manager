@@ -13,7 +13,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     permission_classes = [IsLoggedInUserOrStaff]
     jobs = serializers.HyperlinkedRelatedField(
-        many=True, read_only=True, view_name='job-detail')
+        many=True, read_only=True, view_name="job-detail"
+    )
 
     class Meta:
         model = CustomUser
