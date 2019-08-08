@@ -1,7 +1,6 @@
 import { post } from '../utils/requests';
 import mockAxios from 'axios';
 
-
 describe('post()', () => {
   afterEach(() => {
     mockAxios.post.mockClear();
@@ -15,9 +14,13 @@ describe('post()', () => {
 
   it('should have called axios with the right params', async () => {
     await post('/test/url/', { test: 'test' });
-    expect(mockAxios.post).toHaveBeenCalledWith('/test/url/', {
-      test: 'test'
-    });
+    expect(mockAxios.post).toHaveBeenCalledWith(
+      '/test/url/',
+      {
+        test: 'test'
+      },
+      undefined // third param is optional
+    );
   });
 
   it('should return axios response', async () => {

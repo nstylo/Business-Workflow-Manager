@@ -35,10 +35,11 @@ export async function post(url, values, headers) {
 /**
  * handles get requests globally
  * @param { string } url the api endpoint of the request
+ * @param { object } [headers] the payload of the request
  */
-export async function get(url) {
+export async function get(url, headers) {
   return await axios
-    .get(url, { baseURL: 'http://127.0.0.1:8000' })
+    .get(url, { baseURL: 'http://127.0.0.1:8000' }, headers)
     .then(response => {
       return response;
     })

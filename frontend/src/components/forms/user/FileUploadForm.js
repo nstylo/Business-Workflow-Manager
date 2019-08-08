@@ -1,7 +1,7 @@
 import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
-import MIMETYPES from '../../../utils/mimetypes';
+// import MIMETYPES from '../../../utils/mimetypes';
 
 import { handleSubmit } from '../../../utils/form_submit';
 import FORM_CONST from '../../../utils/form_const';
