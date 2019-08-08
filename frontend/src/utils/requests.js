@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// TODO: dont make global settings for axios
 // axios headers
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -9,10 +10,11 @@ axios.defaults.withCredentials = true;
  * handles post requests globally
  * @param { string } url the api endpoint of the request
  * @param { object } values the payload of the request
+ * @param { object } [headers] the payload of the request
  */
-export async function post(url, values) {
+export async function post(url, values, headers) {
   return await axios
-    .post(url, values)
+    .post(url, values, headers)
     .then(response => {
       return response;
     })

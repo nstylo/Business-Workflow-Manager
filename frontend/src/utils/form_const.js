@@ -56,7 +56,7 @@ export default {
     redirect_url: null,
     request_url: '/api/jobs/',
     status: {
-      successful: 200,
+      successful: 201,
       unsuccessful: 401
     },
     mock_errors: {

@@ -1,9 +1,10 @@
 import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
+import MIMETYPES from '../../../utils/mimetypes';
 
 import { handleSubmit } from '../../../utils/form_submit';
-import form_const from '../../../utils/form_const';
+import FORM_CONST from '../../../utils/form_const';
 
 import FileUploader from '../../other/FileUploader';
 import InputField from '../../other/InputField';
@@ -25,15 +26,14 @@ const UploadView = props => {
       }}
     >
       <Field
-        name="title"
+        name="name"
         prefix={<Icon type="pushpin" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Your job title ..."
         component={InputField}
       />
       <FormItem>
         <Field
-          name="files"
-          prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+          name="project"
           placeholder="Upload your files here ..."
           component={FileUploader}
         />
@@ -66,15 +66,25 @@ const UploadView = props => {
 
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
-  files: yup.array().required(),
-  title: yup.string().required(),
+  project: yup.mixed().required('Upload your file'),
+  // .test('fileSize', 'File Size is too large', value => value.size <= 1e9)
+  // .test('fileType', 'Unsupported file format', value =>
+  // MIMETYPES.includes(value.type)
+  // ),
+  name: yup.string().required(),
   description: yup.string()
 });
 
 export default withFormik({
   validationSchema,
-  mapPropsToValues: () => ({ files: [], title: '', description: '' }),
-  handleSubmit: async (values, options) => {
-    await handleSubmit(form_const.postFiles, values, options);
+  mapPropsToValues: () => ({ project: null, name: '', description: '' }),
+  handleSubmit: async (values, bag) => {
+    let formData = new FormData(); // make file/multipart upload
+    formData.append('project', values.project);
+    formData.append('name', values.name);
+    formData.append('description', values.description);
+    const headers = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+    await handleSubmit(FORM_CONST.postFiles, formData, bag, headers);
   }
 })(UploadView);

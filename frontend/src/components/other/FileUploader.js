@@ -1,27 +1,43 @@
-import React from 'react';
-import mimetypes from '../../utils/mimetypes';
+import React, { useState, useEffect } from 'react';
+import MIMETYPES from '../../utils/mimetypes';
 
 import { Upload, Icon, Alert } from 'antd';
 const { Dragger } = Upload;
 
+/**
+ * File upload for forms
+ * @param { object } props
+ * @param { object } props.field holds field specific values, e.g. uploaded files
+ * @param { object } props.form holds callbacks to form, e.g. setFieldValue
+ */
 export default ({ field, form }) => {
-  const { errors } = form;
+  const { touched, errors } = form; // get errors
+  const [fileArr, setFileArr] = useState([]);
+
+  useEffect(() => {
+    // update local state depending on form state
+    if (field.value) {
+      // TODO: increase type safety
+      // if field contains a file
+      setFileArr([field.value]);
+    } else {
+      setFileArr([]);
+    }
+  }, [field.value]);
+
   return (
     <div>
       <Dragger
         name="file"
-        multiple={true}
-        accept={mimetypes}
-        fileList={field.value}
+        multiple={false}
+        accept={MIMETYPES}
+        fileList={fileArr}
         beforeUpload={file => {
-          form.setFieldValue(field.name, [...field.value, file]);
-          return false;
+          form.setFieldValue(field.name, file); // set field state
+          return false; // don't use default antd submit
         }}
         onRemove={file => {
-          const index = field.value.indexOf(file);
-          const newValue = field.value.slice();
-          newValue.splice(index, 1);
-          form.setFieldValue(field.name, newValue);
+          form.setFieldValue(field.name, null); // set field state
         }}
       >
         <p className="ant-upload-drag-icon">
@@ -32,7 +48,7 @@ export default ({ field, form }) => {
         </p>
         <p className="ant-upload-hint"></p>
       </Dragger>
-      {errors[field.name] ? (
+      {touched[field.name] && errors[field.name] ? (
         <Alert
           style={{ margin: '10px 0 0 0' }}
           message={errors[field.name]}
