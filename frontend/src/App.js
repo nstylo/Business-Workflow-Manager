@@ -8,10 +8,6 @@ import AuthRouter from './routers/AuthRouter';
 import UserRouter from './routers/UserRouter';
 import MainRouter from './routers/MainRouter';
 
-import ReactGA from 'react-ga';
-
-ReactGA.initialize('UA-145153613-1');
-ReactGA.pageview(window.location.pathname + window.location.search);
 /**
  * return and export this app
  */
