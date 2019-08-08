@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000/",
+  "proxy": "http://127.0.0.1:8000",
   "dependencies": {
     "antd": "^3.21.0",
     "axios": "^0.19.0",
@@ -17,8 +17,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-select-country-list": "^2.0.1",
-    "yup": "^0.27.0",
-    "react-ga": "^2.6.0"
+    "yup": "^0.27.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
