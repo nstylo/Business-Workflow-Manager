@@ -25,6 +25,7 @@ class EmailJobStaff(EmailJob):
     """
     Handles sending staff emails when a new job gets created
     """
+
     def _compose_subject_staff(self):
         """
         Compose the job email subject for staff
@@ -61,4 +62,40 @@ Job url: {5}""".format(
         self._get_staff()
         self._compose_subject_staff()
         self._compose_body_staff()
+        send_mail(self.subject, self.body, self.sender, self.receiver)
+
+
+class EmailJobClient(EmailJob):
+    """
+    Handles sending client emails when a new job gets created
+    """
+
+    def _compose_subject_client(self):
+        """
+        Compose the job email subject for client
+        """
+        self.subject = "A new job has been posted for {0}.".format(
+            self.job.owner.company
+        )
+
+    def _compose_body_client(self):
+        """
+        The body of the email for sending out a
+        notification that a job has been added to client
+        """
+        self.body = """The results of your \"{0}\" project have been uploaded!"
+You can now see your results project at: {1}
+Kind Regards,\n***REMOVED***""".format(
+            self.job.name, self.job.get_admin_url()
+        )
+
+    def _get_client(self):
+        self.receiver = self.job.owner.__class__.objects.filter(
+            is_active=True
+        ).values_list("email", flat=True)
+
+    def send_mail(self):
+        self._get_client()
+        self._compose_subject_client()
+        self._compose_body_client()
         send_mail(self.subject, self.body, self.sender, self.receiver)

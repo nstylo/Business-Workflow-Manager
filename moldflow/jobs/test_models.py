@@ -1,8 +1,10 @@
 from django.conf import settings
+from django.core import mail
 from mixer.backend.django import mixer
 from rest_framework.test import APITestCase
 
 from jobs.models import upload_path
+from jobs.models import Job
 
 from . import models
 
@@ -41,3 +43,9 @@ class TestJobView(APITestCase):
         mock_upload_path = upload_path(self.job, "file.txt")
 
         assert self.job.project == mock_upload_path
+
+    # def test_email_on_save(self):
+        # self.job.save()
+        # j = Job.objects.create(owner=self.user)
+        # print(mail.outbox)
+        # assert len(mail.outbox) == 1, "Email has to be sent"
