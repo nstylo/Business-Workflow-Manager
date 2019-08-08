@@ -6,12 +6,9 @@ import { get } from '../utils/requests';
  * either renders the passed on component or reroutes to login page
  */
 export default class ProtectedRoute extends Component {
-  constructor() {
-    super();
-    this.state = {
-      isAuthenticated: null // did not get response yet if null
-    };
-  }
+  state = {
+    isAuthenticated: null // did not get response yet if null
+  };
 
   /**
    * check if user is logged in, i.e. get 405 back

@@ -1,7 +1,7 @@
 // this file contains constants for form submissions
 export default {
   login: {
-    redirect_url: '/',
+    redirect_url: '/user/upload/',
     request_url: '/api/auth/login/',
     status: {
       successful: 200,
@@ -14,7 +14,7 @@ export default {
     }
   },
   register: {
-    redirect_url: '/auth/verification-email-sent',
+    redirect_url: '/auth/verification-email-sent/',
     request_url: '/api/auth/register/',
     status: {
       successful: 201,
@@ -27,7 +27,7 @@ export default {
     }
   },
   requestReset: {
-    redirect_url: '/auth/request-reset-successful',
+    redirect_url: '/auth/request-reset-successful/',
     request_url: '/api/auth/send-reset-password-link/',
     status: {
       successful: 200,

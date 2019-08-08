@@ -12,7 +12,7 @@ export default ({ match }) => {
     <UserLayout>
       <Switch>
         <Route exact path={`${match.url}`} component={UserMainPage} />
-        <Route exact path={`${match.url}/upload`} component={UserUploadPage} />
+        <Route exact path={`${match.url}/upload/`} component={UserUploadPage} />
         <Route component={NotFound} />
       </Switch>
     </UserLayout>

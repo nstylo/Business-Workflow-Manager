@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const LogoutPage = props => {
-  return <div>LogoutPage</div>;
-};
+export default class LogoutPage extends Component {
+  state = {};
 
-export default LogoutPage;
+  render() {
+    return <div>logout</div>;
+  }
+}
