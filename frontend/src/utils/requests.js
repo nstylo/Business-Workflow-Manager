@@ -31,6 +31,30 @@ export async function post(url, values) {
 }
 
 /**
+ * handles get requests globally
+ * @param { string } url the api endpoint of the request
+ */
+export async function get(url) {
+  return await axios
+    .get(url, { baseURL: 'http://127.0.0.1:8000' })
+    .then(response => {
+      return response;
+    })
+    .catch(err => {
+      // .response .request .message are defined by axios
+      if (err.response) {
+        // if axios returned status =/= 2xx
+        return err.response;
+      }
+      if (err.request) {
+        // request was made but nothing received
+        return err.request;
+      }
+      return err.message; // something went wrong with setting up the request
+    });
+}
+
+/**
  * get query parameters for email verification
  * @return { object } json containing user_id, timestamp, signature
  */

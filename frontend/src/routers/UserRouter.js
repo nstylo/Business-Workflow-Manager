@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 
 import FileUploadPage from '../components/pages/user/FileUploadPage';
 
@@ -10,7 +11,11 @@ export default ({ match }) => {
   return (
     <UserLayout>
       <Switch>
-        <Route exact path={`${match.url}/upload`} component={FileUploadPage} />
+        <ProtectedRoute
+          exact
+          path={`${match.url}/upload`}
+          component={FileUploadPage}
+        />
         <Route component={NotFound} />
       </Switch>
     </UserLayout>
