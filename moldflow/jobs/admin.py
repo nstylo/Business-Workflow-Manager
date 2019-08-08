@@ -5,7 +5,8 @@ from .models import Job
 
 class JobAdmin(admin.ModelAdmin):
     # fields seen in the user inline (dictates ordering as well)
-    list_display = (
+    model = Job
+    fields = (
         "name",
         "description",
         "created",
@@ -14,6 +15,8 @@ class JobAdmin(admin.ModelAdmin):
         "result",
         "progress",
     )
+
+    readonly_fields = ("name", "description", "created", "project", "owner")
 
 
 class JobAdminInline(admin.TabularInline):

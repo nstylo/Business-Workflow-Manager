@@ -29,4 +29,4 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             "jobs",
         ]
 
-        read_only_fields = ("is_active",)
+        read_only_fields = ("is_active", "jobs", "url", "jobs")
