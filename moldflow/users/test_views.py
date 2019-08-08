@@ -49,7 +49,6 @@ class TestUsersViewNonStaff(APITestCase):
         self.client.force_authenticate(self.user)
 
     def test_non_staff_own(self):
-
         resp = self.client.get("/api/users/{0}/".format(self.user.pk))
 
         assert resp.data.get("url") == "http://testserver/api/users/{0}/".format(
