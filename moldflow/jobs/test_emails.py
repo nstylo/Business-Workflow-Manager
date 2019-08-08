@@ -89,19 +89,13 @@ class TestEmailJobClient(TestCase):
     def test_compose_job_body_client(self):
         self.job_email._compose_body_client()
 
-        body = """A new job \"{0}\" has been posted for {1}.
-Please update the estimated time to completion ASAP.
-Description: {2}
-Email: {3}
-Timestamp: {4}
-Job url: {5}""".format(
-            self.job.name,
-            self.job.owner.company,
-            self.job.description,
-            self.job.owner.email,
-            self.job.created,
-            self.job.get_admin_url(),
+        body = """The results of your \"{0}\" project have been uploaded!"
+You can now see your results at your profile
+If you are satisfied without service, please leave us some feedback!
+Kind Regards,\n***REMOVED***""".format(
+            self.job.name, self.job.get_admin_url()
         )
+
         assert self.job_email.body == body
 
     def test_send_mail_client(self):
@@ -116,6 +110,6 @@ Job url: {5}""".format(
         assert self.job_email.subject is not False, "Email subject can't be empty"
         assert self.job_email.body is not False, "Email body can't be empty"
         assert len(mail.outbox) == 1, "Email has to be sent"
-        assert len(mail.outbox[0].to) == 1, "There are 2 receiving client members"
+        assert len(mail.outbox[0].to) == 1, "There is exactly 1 receiving client member"
         assert mail.outbox[0].subject == self.job_email.subject, "Email subject has to match"
         assert mail.outbox[0].body == self.job_email.body, "Email body has to match"

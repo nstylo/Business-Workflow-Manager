@@ -84,18 +84,14 @@ class EmailJobClient(EmailJob):
         notification that a job has been added to client
         """
         self.body = """The results of your \"{0}\" project have been uploaded!"
-You can now see your results project at: {1}
+You can now see your results at your profile
+If you are satisfied without service, please leave us some feedback!
 Kind Regards,\n***REMOVED***""".format(
             self.job.name, self.job.get_admin_url()
         )
 
-    def _get_client(self):
-        self.receiver = self.job.owner.__class__.objects.filter(
-            is_active=True
-        ).values_list("email", flat=True)
-
     def send_mail(self):
-        self._get_client()
+        self.job.owner.email
         self._compose_subject_client()
         self._compose_body_client()
         send_mail(self.subject, self.body, self.sender, self.receiver)
