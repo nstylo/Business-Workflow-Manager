@@ -23,11 +23,3 @@ export default () => {
     </Router>
   );
 };
-
-// <Route component={MainLayout}>
-//   <Route exact path="/" component={MainPage} />
-// </Route>
-// <Route path="/user/" component={UserLayout}>
-//   <Route exact path="/upload/" component={FileUploadPage} />
-// </Route>
-// <Route component={NotFound} />
