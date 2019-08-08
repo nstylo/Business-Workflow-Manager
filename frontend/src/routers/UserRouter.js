@@ -5,7 +5,7 @@ import UserUploadPage from '../components/pages/user/UserUploadPage';
 import UserMainPage from '../components/pages/user/UserMainPage';
 
 import UserLayout from '../components/fixed/UserLayout';
-import NotFound from '../components/pages/main/NotFound';
+import NotFound from '../components/pages/public/NotFound';
 
 export default ({ match }) => {
   return (
