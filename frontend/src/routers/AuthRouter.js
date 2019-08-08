@@ -11,7 +11,7 @@ import RequestResetPage from '../components/pages/auth/RequestResetPage';
 import SuccessfulRequestResetPage from '../components/pages/auth/SuccessfulRequestResetPage';
 
 import AuthLayout from '../components/fixed/AuthLayout';
-import NotFound from '../components/pages/main/NotFound';
+import NotFound from '../components/pages/public/NotFound';
 
 import VerificationEmailSentPage from '../components/pages/auth/VerificationEmailSentPage';
 import VerifyRegistrationPage from '../components/pages/auth/VerifyRegistrationPage';
