@@ -5,6 +5,7 @@ import axios from 'axios';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://127.0.0.1:8000';
 
 /**
  * handles post requests globally
@@ -12,9 +13,9 @@ axios.defaults.withCredentials = true;
  * @param { object } values the payload of the request
  * @param { object } [headers] the payload of the request
  */
-export async function post(url, values, headers) {
+export async function post(url, values, headers = {}) {
   return await axios
-    .post(url, values, headers)
+    .post(url, values, { headers: headers })
     .then(response => {
       return response;
     })
@@ -35,11 +36,10 @@ export async function post(url, values, headers) {
 /**
  * handles get requests globally
  * @param { string } url the api endpoint of the request
- * @param { object } [headers] the payload of the request
  */
 export async function get(url, headers) {
   return await axios
-    .get(url, { baseURL: 'http://127.0.0.1:8000' }, headers)
+    .get(url, headers)
     .then(response => {
       return response;
     })
