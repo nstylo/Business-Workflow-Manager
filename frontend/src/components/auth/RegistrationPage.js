@@ -1,5 +1,5 @@
 import React from 'react';
-import RegistrationForm from '../../forms/auth/RegistrationForm';
+import RegistrationForm from './forms/RegistrationForm';
 
 const RegistrationPage = props => {
   return <RegistrationForm />;
