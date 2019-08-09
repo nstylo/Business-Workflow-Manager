@@ -63,7 +63,6 @@ class Job(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)], default=0
     )
 
-    __original_project = None
     __original_result = None
 
     class Meta:
@@ -74,7 +73,6 @@ class Job(models.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.__original_project = self.project
         self.__original_result = self.result
 
     def save(self, *args, **kwargs):
@@ -82,19 +80,17 @@ class Job(models.Model):
         Override save and send an email to staff stating that a new job
         was added, or send en email to the client, when the results are uploaded
         """
-        # gets triggered if  a new project is posted
-        if self.project != self.__original_project:
-            staff_email = EmailJobStaff(self)
-            staff_email.send_mail()
         if self.pk:  # only happens if object is in db
             # gets triggered if the result file gets uploaded
             if self.result != self.__original_result:
-                client_email = EmailJobClient(self)
+                client_email = EmailJobClient(self)  # notify the client
                 client_email.send_mail()
-                self.progress = 100
+                self.progress = 100  # if a result is uploaded, the job is finished
+        else:  # the job is not in the database yet, a new job gets created
+            staff_email = EmailJobStaff(self)
+            staff_email.send_mail()
 
         super().save()
-        self.__original_project = self.project
         self.__original_result = self.result
 
     def get_admin_url(self):

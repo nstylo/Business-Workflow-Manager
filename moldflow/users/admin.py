@@ -4,7 +4,6 @@ from django.contrib.auth.models import Group
 
 from jobs.admin import JobAdminInline
 
-from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import CustomUser
 
 
@@ -14,7 +13,6 @@ class CustomUserAdmin(UserAdmin):
     """
 
     inlines = [JobAdminInline]
-    form = CustomUserChangeForm  # form for changing user credentials
     model = CustomUser
 
     # The fields to be used in displaying the User model.
@@ -23,7 +21,6 @@ class CustomUserAdmin(UserAdmin):
     list_display = ("email", "company",
                     "country", "is_staff", "is_active")
 
-    # right side panel to filter fields
     list_filter = ("is_staff", "country", "is_active")
     fieldsets = (
         (None, {"fields": ("email", "password", "is_active")}),
