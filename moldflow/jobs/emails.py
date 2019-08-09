@@ -72,8 +72,8 @@ class EmailJobClient(EmailJob):
         """
         Compose the job email subject for client
         """
-        self.subject = "A new job has been posted for {0}.".format(
-            self.job.owner.company
+        self.subject = "Your job \"{0}\" has finished!".format(
+            self.job.name
         )
 
     def _compose_body_client(self):
