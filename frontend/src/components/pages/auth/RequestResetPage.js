@@ -1,5 +1,5 @@
 import React from 'react';
-import RequestResetForm from './forms/RequestResetForm';
+import RequestResetForm from '../../forms/auth/RequestResetForm';
 
 const RequestResetPage = props => {
   return <RequestResetForm />;
