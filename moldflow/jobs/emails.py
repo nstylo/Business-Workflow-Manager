@@ -1,19 +1,14 @@
+from smtplib import SMTPException
+
 from django.conf import settings
 from django.core.mail import EmailMessage, send_mail
 
 
 class EmailJob(EmailMessage):
-    def __init__(
-        self,
-        job,
-        subject="",
-        body="",
-        sender=[settings.EMAIL_HOST_USER],
-        receiver=["receiver@mail.com"],
-    ):
+    def __init__(self, job, subject="", body="", receiver=["receiver@mail.com"]):
         self.subject = subject
         self.body = body
-        self.sender = sender
+        self.sender = [settings.EMAIL_HOST_USER]
         self.receiver = receiver
         self.job = job
 
@@ -54,6 +49,9 @@ Job url: {5}""".format(
         )
 
     def _get_staff(self):
+        """
+        Set the mail receivers to all staff members that are active
+        """
         self.receiver = self.job.owner.__class__.objects.filter(
             is_staff=True, is_active=True
         ).values_list("email", flat=True)
@@ -85,13 +83,33 @@ class EmailJobClient(EmailJob):
         """
         self.body = """The results of your \"{0}\" project have been uploaded!"
 You can now see your results at your profile
-If you are satisfied without service, please leave us some feedback!
+If you are satisfied with our service, please leave us some feedback!
 Kind Regards,\n***REMOVED***""".format(
             self.job.name, self.job.get_admin_url()
         )
 
+    def _set_receiver(self):
+        """
+        Get clients that exist and are active
+        """
+        receiver = [self.job.owner.email]
+        active = self.job.owner.is_active
+        if receiver is not None and active:
+            self.receiver = receiver
+            return True
+        else:
+            return False
+
     def send_mail(self):
-        self.job.owner.email
-        self._compose_subject_client()
-        self._compose_body_client()
-        send_mail(self.subject, self.body, self.sender, self.receiver)
+        """
+        Send an email to the client stating that their project
+        results have been uploaded, only if the client is active
+        """
+        if self._set_receiver():
+            self._compose_subject_client()
+            self._compose_body_client()
+            send_mail(self.subject, self.body, self.sender, self.receiver)
+        else:
+            raise ValueError(
+                "The receiver of the email either does not exist or is not active"
+            )
