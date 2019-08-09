@@ -14,10 +14,6 @@ import SuccessfulRequestResetPage from './components/auth/SuccessfulRequestReset
 import LogoutPage from './components/auth/LogoutPage';
 import FileUploadPage from './components/user/FileUploadPage';
 import NotFound from './components/NotFound';
-import ReactGA from 'react-ga';
-
-ReactGA.initialize('UA-145153613-1');
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 /**
  * return and export this app

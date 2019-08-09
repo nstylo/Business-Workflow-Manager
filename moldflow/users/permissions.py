@@ -6,7 +6,8 @@ class IsLoggedInUserOrStaff(permissions.BasePermission):
     Only the logged in user or a staff member permission
     """
     def has_permission(self, request, view):
-        return request.user or request.user.is_staff
+        if request.user.is_authenticated:
+            return request.user or request.user.is_staff
 
 
 class IsStaffUser(permissions.BasePermission):

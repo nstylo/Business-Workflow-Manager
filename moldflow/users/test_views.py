@@ -1,14 +1,32 @@
-from django.contrib.auth import get_user_model
-from django.test import RequestFactory, TransactionTestCase
+from django.test import RequestFactory
 from mixer.backend.django import mixer
 from rest_framework.test import APITestCase
 
 from . import views
 
 
-class TestUsersViewNonStaff(APITestCase):
+class TestUsersViewNotAuthenticated(APITestCase):
+    def test_create(self):
+        resp = self.client.post(
+            "/api/users/",
+            {
+                "email": "test24@gmail.com",
+                "phone": "+31641602602",
+                "company": "test",
+                "country": "test",
+                "address": "test",
+            },
+        )
+
+        assert (
+            resp.status_code == 405
+        ), "Nobody should be able to POST to this view (create an account)."
+        assert (
+            resp.data
+            == "This endpoint does not allow for registration, use /api/auth/register/ instead."
+        )
+
     def test_anonymous(self):
-        self.client.logout()
         req = RequestFactory().get("/api/users/")
         resp = views.UserViewSet.as_view({"get": "list"})(req)
 
@@ -17,8 +35,10 @@ class TestUsersViewNonStaff(APITestCase):
             resp.status_code == 403
         ), "Only logged in users (or staff) can view their user."
 
-    def test_non_staff_own(self):
-        user = mixer.blend(
+
+class TestUsersViewNonStaff(APITestCase):
+    def setUp(self):
+        self.user = mixer.blend(
             "users.CustomUser",
             is_admin=False,
             is_staff=False,
@@ -26,34 +46,25 @@ class TestUsersViewNonStaff(APITestCase):
             is_active=True,
             phone="+31230802611",
         )
-        self.client.force_authenticate(user)
+        self.client.force_authenticate(self.user)
 
-        resp = self.client.get("/api/users/{0}/".format(user.pk))
+    def test_non_staff_own(self):
+        resp = self.client.get("/api/users/{0}/".format(self.user.pk))
 
         assert resp.data.get("url") == "http://testserver/api/users/{0}/".format(
-            user.pk
+            self.user.pk
         )
         assert resp.data.get("is_active") is True
-        assert resp.data.get("email") == user.email
-        assert resp.data.get("company") == user.company
-        assert resp.data.get("country") == user.country
-        assert resp.data.get("address") == user.address
-        assert resp.data.get("phone") == user.phone
+        assert resp.data.get("email") == self.user.email
+        assert resp.data.get("company") == self.user.company
+        assert resp.data.get("country") == self.user.country
+        assert resp.data.get("address") == self.user.address
+        assert resp.data.get("phone") == self.user.phone
         assert (
             resp.status_code == 200
         ), "A logged in user should be able to see his own credentials."
 
     def test_non_staff_list(self):
-        user = mixer.blend(
-            "users.CustomUser",
-            is_admin=False,
-            is_staff=False,
-            is_superuser=False,
-            is_active=True,
-            phone="+31230802611",
-        )
-        self.client.force_authenticate(user)
-
         resp = self.client.get("/api/users/")
 
         assert resp.status_code == 403, "A non staff member can't see the user list."
@@ -62,45 +73,24 @@ class TestUsersViewNonStaff(APITestCase):
         }
 
     def test_non_staff_put_invalid(self):
-        user = mixer.blend(
-            "users.CustomUser",
-            is_admin=False,
-            is_staff=False,
-            is_superuser=False,
-            is_active=True,
-            phone="+35230802611",
-        )
-        self.client.force_authenticate(user)
-
         new_email = "asd@asdas.com"
         resp = self.client.put(
-            "/api/users/{0}/".format(user.pk), {"email": new_email})
+            "/api/users/{0}/".format(self.user.pk), {"email": new_email})
 
         assert resp.status_code == 400, "All required PUT fields need to be put in"
-        # TODO: find how to parse ErrorDetail
-        # assert resp.data.get("phone") == {"[ErrorDetail(string='This field is required.', code='required')]"}
-        # assert resp.data.get("company") == {"This field is required."}
-        # assert resp.data.get("country") == "This field is required."
-        # assert resp.data.get("address") == "This field is required."
+        assert resp.data.get("phone")[0] == "This field is required."
+        assert resp.data.get("company")[0] == "This field is required."
+        assert resp.data.get("country")[0] == "This field is required."
+        assert resp.data.get("address")[0] == "This field is required."
 
     def test_non_staff_put_valid(self):
-        user = mixer.blend(
-            "users.CustomUser",
-            is_admin=False,
-            is_staff=False,
-            is_superuser=False,
-            is_active=True,
-            phone="+35230802611",
-        )
-        self.client.force_authenticate(user)
-
         new_email = "asd@asdas.com"
         new_phone = "+31659002647"
         new_company = "New company test"
         new_country = "NL"
         new_address = "askdljaslk"
         resp = self.client.put(
-            "/api/users/{0}/".format(user.pk),
+            "/api/users/{0}/".format(self.user.pk),
             {
                 "phone": new_phone,
                 "email": new_email,
@@ -126,38 +116,29 @@ class TestUsersViewNonStaff(APITestCase):
         ), "The new address name should be set"
 
     def test_non_staff_patch_valid(self):
-        user = mixer.blend(
-            "users.CustomUser",
-            is_admin=False,
-            is_staff=False,
-            is_superuser=False,
-            is_active=True,
-            phone="+35230802611",
-        )
-        self.client.force_authenticate(user)
         new_phone = "+31650702607"
         resp = self.client.patch(
-            "/api/users/{0}/".format(user.pk), {"phone": new_phone}
+            "/api/users/{0}/".format(self.user.pk), {"phone": new_phone}
         )
 
         new_email = "testnewemail@gmail.com"
         resp = self.client.patch(
-            "/api/users/{0}/".format(user.pk), {"email": new_email}
+            "/api/users/{0}/".format(self.user.pk), {"email": new_email}
         )
 
         new_company = "New Company Name"
         resp = self.client.patch(
-            "/api/users/{0}/".format(user.pk), {"company": new_company}
+            "/api/users/{0}/".format(self.user.pk), {"company": new_company}
         )
 
         new_country = "New Country Name"
         resp = self.client.patch(
-            "/api/users/{0}/".format(user.pk), {"country": new_country}
+            "/api/users/{0}/".format(self.user.pk), {"country": new_country}
         )
 
         new_address = "New address Name"
         resp = self.client.patch(
-            "/api/users/{0}/".format(user.pk), {"address": new_address}
+            "/api/users/{0}/".format(self.user.pk), {"address": new_address}
         )
 
         assert (
@@ -178,15 +159,13 @@ class TestUsersViewNonStaff(APITestCase):
         ), "The new address name should be set"
 
     def test_non_staff_destroy(self):
-        user = mixer.blend("users.CustomUser",
-                           is_active=True, phone="+35239802611")
         # user we are going to delete
         user1 = mixer.blend("users.CustomUser", phone="+31640708402")
-        self.client.force_authenticate(user)
+        self.client.force_authenticate(self.user)
 
-        assert user.is_admin is False, "We don't want extra permissions"
-        assert user.is_staff is False, "We don't want extra permissions"
-        assert user.is_superuser is False, "We don't want extra permissions"
+        assert self.user.is_admin is False, "We don't want extra permissions"
+        assert self.user.is_staff is False, "We don't want extra permissions"
+        assert self.user.is_superuser is False, "We don't want extra permissions"
 
         resp = self.client.delete("/api/users/{0}/".format(user1.pk))
 
@@ -196,15 +175,17 @@ class TestUsersViewNonStaff(APITestCase):
 
 
 class TestUsersViewStaff(APITestCase):
-    def test_staff_list(self):
-        user = mixer.blend(
+    def setUp(self):
+        self.user = mixer.blend(
             "users.CustomUser", is_staff=True, is_active=True, phone="+35239802611"
         )
-        self.client.force_authenticate(user)
+        self.client.force_authenticate(self.user)
 
-        assert user.is_admin is False, "We want only a staff, not admin member."
-        assert user.is_staff is True, "We want staff member permissions."
-        assert user.is_superuser is False, "We want only a staff, not superuser member."
+    def test_staff_list(self):
+
+        assert self.user.is_admin is False, "We want only a staff, not admin member."
+        assert self.user.is_staff is True, "We want staff member permissions."
+        assert self.user.is_superuser is False, "We want only a staff, not superuser member."
 
         resp = self.client.get("/api/users/")
 
@@ -213,45 +194,15 @@ class TestUsersViewStaff(APITestCase):
         ), "Staff members should be able to see the user list."
 
     def test_staff_destroy(self):
-        user = mixer.blend(
-            "users.CustomUser", is_staff=True, is_active=True, phone="+35239802611"
-        )
         # user we are going to delete
         user1 = mixer.blend("users.CustomUser", phone="+31640708402")
-        self.client.force_authenticate(user)
 
-        assert user.is_admin is False, "We want only a staff, not admin member."
-        assert user.is_staff is True, "We want staff member permissions."
-        assert user.is_superuser is False, "We want only a staff, not superuser member."
+        assert self.user.is_admin is False, "We want only a staff, not admin member."
+        assert self.user.is_staff is True, "We want staff member permissions."
+        assert self.user.is_superuser is False, "We want only a staff, not superuser member."
 
         resp = self.client.delete("/api/users/{0}/".format(user1.pk))
 
         assert (
             resp.status_code == 204
         ), "A staff member should be able to delete another user."
-
-
-class TestTransaction(TransactionTestCase):
-    reset_sequences = True
-
-    def test_create(self):
-        self.User = get_user_model()
-        self.User.objects.all().delete()
-        resp = self.client.post(
-            "/api/users/",
-            {
-                "email": "test24@gmail.com",
-                "phone": "+31641602602",
-                "company": "test",
-                "country": "test",
-                "address": "test",
-            },
-        )
-
-        assert (
-            resp.status_code == 405
-        ), "Nobody should be able to POST to this view (create an account)."
-        assert (
-            resp.data
-            == "This endpoint does not allow for registration, use /api/auth/register/ instead."
-        )
