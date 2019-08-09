@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { API_URL } from './url_config';
 
 // TODO: dont make global settings for axios
 // axios headers
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://127.0.0.1:8000';
+axios.defaults.baseURL = API_URL;
 
 /**
  * handles post requests globally

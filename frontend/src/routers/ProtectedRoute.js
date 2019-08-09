@@ -14,7 +14,7 @@ export default class ProtectedRoute extends Component {
    * check if user is logged in, i.e. get 405 back
    */
   componentDidMount() {
-    get('/api/auth/logout/').then(response => {
+    get('/auth/logout/').then(response => {
       if (response.status === 405) {
         this.setState({
           isAuthenticated: true

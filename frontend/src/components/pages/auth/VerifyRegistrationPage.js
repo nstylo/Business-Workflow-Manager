@@ -7,7 +7,7 @@ const VerifyRegistrationPage = props => {
 
   useEffect(() => {
     const params = getQueryParams();
-    post('/api/auth/verify-registration/', params)
+    post('/auth/verify-registration/', params)
       .then(response =>
         response.status === 200 ? setIsVerified(true) : setIsVerified(false)
       )

@@ -80,7 +80,7 @@ const validationSchema = yup.object().shape({
 export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ login: '', password: '' }),
-  handleSubmit: async (values, options) => {
-    await handleSubmit(form_const.login, values, options);
+  handleSubmit: async (values, bag) => {
+    await handleSubmit(form_const.login, values, bag);
   }
 })(LoginView);
