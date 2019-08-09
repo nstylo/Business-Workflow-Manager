@@ -19,7 +19,7 @@ export async function handleSubmit(constants, values, bag) {
   switch (response.status) {
     case status.successful:
       resetForm();
-      history.push(redirect_url); // route
+      redirect_url && history.push(redirect_url); // route if url exists
       return;
     case status.unsuccessful:
       setErrors(response.data); // errors for the right label

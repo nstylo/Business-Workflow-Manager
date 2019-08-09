@@ -1,8 +1,8 @@
 // this file contains constants for form submissions
 export default {
   login: {
-    redirect_url: '/user/upload/',
-    request_url: '/api/auth/login/',
+    redirect_url: '/user/',
+    request_url: '/auth/login/',
     status: {
       successful: 200,
       unsuccessful: 400
@@ -15,7 +15,7 @@ export default {
   },
   register: {
     redirect_url: '/auth/verification-email-sent/',
-    request_url: '/api/auth/register/',
+    request_url: '/auth/register/',
     status: {
       successful: 201,
       unsuccessful: 400
@@ -28,7 +28,7 @@ export default {
   },
   requestReset: {
     redirect_url: '/auth/request-reset-successful/',
-    request_url: '/api/auth/send-reset-password-link/',
+    request_url: '/auth/send-reset-password-link/',
     status: {
       successful: 200,
       unsuccessful: 404
@@ -41,7 +41,7 @@ export default {
   },
   reset: {
     redirect_url: '/auth/reset-successful/',
-    request_url: '/api/auth/reset-password/',
+    request_url: '/auth/reset-password/',
     status: {
       successful: 200,
       unsuccessful: 400
@@ -54,7 +54,7 @@ export default {
   },
   postFiles: {
     redirect_url: null,
-    request_url: '/api/jobs/',
+    request_url: '/jobs/',
     status: {
       successful: 201,
       unsuccessful: 401
