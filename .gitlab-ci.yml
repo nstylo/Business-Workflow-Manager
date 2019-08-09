@@ -37,7 +37,7 @@ test_react:
     - npm install --progress=false #install dependencies
     - node_modules/eslint/bin/eslint.js src/ # run linter
     # - CI=true npm test -- --coverage # run tests and output coverage
-  CI=true npm test -- --coverage --collectCoverageFrom=src/utils/**/*.js
+      - CI=true npm test -- --coverage --collectCoverageFrom=src/utils/**/*.js
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/ # regex for getting coverage percentage as int
 
 # install dependencies and build for deployment
