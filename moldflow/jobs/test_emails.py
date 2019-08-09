@@ -74,8 +74,8 @@ class TestEmailJobClient(TestCase):
     def test_compose_job_subject_client(self):
         self.job_email._compose_subject_client()
 
-        subject = "A new job has been posted for {0}.".format(
-            self.user.company)
+        subject = "Your job \"{0}\" has finished!".format(
+            self.job.name)
         assert self.job_email.subject == subject
 
     def test_compose_job_body_client(self):

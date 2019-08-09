@@ -83,14 +83,15 @@ class Job(models.Model):
         if self.pk:  # only happens if object is in db
             # gets triggered if the result file gets uploaded
             if self.result != self.__original_result:
+                super().save()
                 client_email = EmailJobClient(self)  # notify the client
                 client_email.send_mail()
                 self.progress = 100  # if a result is uploaded, the job is finished
         else:  # the job is not in the database yet, a new job gets created
+            super().save()
             staff_email = EmailJobStaff(self)
             staff_email.send_mail()
 
-        super().save()
         self.__original_result = self.result
 
     def get_admin_url(self):
