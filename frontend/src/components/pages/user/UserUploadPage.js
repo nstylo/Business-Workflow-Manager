@@ -1,7 +1,8 @@
 import React from 'react';
+import FileUploadForm from '../../forms/user/FileUploadForm';
 
 const FileUploadPage = props => {
-  return <div>FileUploadPage</div>;
+  return <FileUploadForm />;
 };
 
 export default FileUploadPage;
