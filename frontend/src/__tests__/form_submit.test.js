@@ -1,5 +1,4 @@
 import { handleSubmit } from '../utils/form_submit';
-import form_const from '../utils/form_const';
 import history from '../history';
 
 const requests = require('../utils/requests');
@@ -24,32 +23,10 @@ const constants = {
   }
 };
 
-// mock error if response unexpected
-const default_error = { default: 'unsuccessful request' };
-
-// const callback_successful = jest.fn(values => {
-//   return Promise.resolve({
-//     status: constants.status.successful, // status and data defined by axios
-//     data: {}
-//   });
-// });
-//
-// const callback_unsuccessful = jest.fn(values => {
-//   return Promise.resolve({
-//     status: constants.status.unsuccessful,
-//     data: {
-//       errors: default_error
-//     }
-//   });
-// });
-
 afterEach(() => {
   setErrors.mockClear();
   setSubmitting.mockClear();
   history.push.mockClear();
-  // callback_successful.mockClear();
-  // callback_unsuccessful.mockClear();
-  //   callback_unexpected.mockClear();
 });
 
 describe('handleSubmit', () => {
