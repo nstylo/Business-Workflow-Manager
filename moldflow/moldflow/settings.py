@@ -209,17 +209,6 @@ JET_THEMES = [
     {"theme": "light-gray", "color": "#222", "title": "Light Gray"},
 ]
 
-JET_SIDE_MENU_ITEMS = [
-    {"app_label": "jobs", "items": [{"name": "job"}]},
-    {"app_label": "users", "items": [{"name": "customuser"}]},
-    {
-        "label": "GitLab repository",
-        "url": "https://gitlab.com/MrCappuccino/mod",
-        "url_blank": True,
-    },
-]
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
