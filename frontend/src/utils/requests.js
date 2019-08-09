@@ -13,9 +13,9 @@ axios.defaults.baseURL = 'http://127.0.0.1:8000';
  * @param { object } values the payload of the request
  * @param { object } [headers] the payload of the request
  */
-export async function post(url, values, headers = {}) {
+export async function post(url, values, config = {}) {
   return await axios
-    .post(url, values, { headers: headers })
+    .post(url, values, config)
     .then(response => {
       return response;
     })
@@ -37,9 +37,9 @@ export async function post(url, values, headers = {}) {
  * handles get requests globally
  * @param { string } url the api endpoint of the request
  */
-export async function get(url, headers) {
+export async function get(url, config = {}) {
   return await axios
-    .get(url, headers)
+    .get(url, config)
     .then(response => {
       return response;
     })

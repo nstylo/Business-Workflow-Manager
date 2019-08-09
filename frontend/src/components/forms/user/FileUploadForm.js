@@ -83,8 +83,8 @@ export default withFormik({
     formData.append('project', values.project);
     formData.append('name', values.name);
     formData.append('description', values.description);
-    const headers = { 'Content-Type': 'multipart/form-data' };
+    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
-    await handleSubmit(FORM_CONST.postFiles, formData, bag, headers);
+    await handleSubmit(FORM_CONST.postFiles, formData, bag, config);
   }
 })(UploadView);
