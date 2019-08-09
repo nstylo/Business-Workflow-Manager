@@ -72,4 +72,4 @@ export function getQueryParams() {
 }
 
 // for testing reasons
-export default { post, getQueryParams };
+export default { post, get, getQueryParams };

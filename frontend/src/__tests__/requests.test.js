@@ -35,7 +35,31 @@ describe('post()', () => {
     expect(actualResponse).toBe(expectedResponse);
   });
 
-  it('should output error if axios promise reject', async () => {
+  it('should output response status =/= 2xx', async () => {
+    const expectedResponse = 'test response';
+
+    mockAxios.post.mockReturnValue(
+      Promise.reject({ response: expectedResponse })
+    );
+
+    const actualResponse = await post(null, null, null);
+
+    expect(actualResponse).toBe(expectedResponse);
+  });
+
+  it('should output request if nothing was received', async () => {
+    const expectedResponse = 'test request';
+
+    mockAxios.post.mockReturnValue(
+      Promise.reject({ request: expectedResponse })
+    );
+
+    const actualResponse = await post(null, null, null);
+
+    expect(actualResponse).toBe(expectedResponse);
+  });
+
+  it('should output error message if something failed when setting up request', async () => {
     const expectedResponse = 'something failed';
 
     mockAxios.post.mockReturnValue(Promise.reject(new Error(expectedResponse)));
@@ -77,7 +101,31 @@ describe('get()', () => {
     expect(actualResponse).toBe(expectedResponse);
   });
 
-  it('should output error if axios promise reject', async () => {
+  it('should output response status =/= 2xx', async () => {
+    const expectedResponse = 'test response';
+
+    mockAxios.get.mockReturnValue(
+      Promise.reject({ response: expectedResponse })
+    );
+
+    const actualResponse = await get(null, null);
+
+    expect(actualResponse).toBe(expectedResponse);
+  });
+
+  it('should output request if nothing was received', async () => {
+    const expectedResponse = 'test request';
+
+    mockAxios.get.mockReturnValue(
+      Promise.reject({ request: expectedResponse })
+    );
+
+    const actualResponse = await get(null, null);
+
+    expect(actualResponse).toBe(expectedResponse);
+  });
+
+  it('should output error message if something failed when setting up request', async () => {
     const expectedResponse = 'something failed';
 
     mockAxios.get.mockReturnValue(Promise.reject(new Error(expectedResponse)));
