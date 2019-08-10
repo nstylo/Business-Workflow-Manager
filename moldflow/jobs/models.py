@@ -25,8 +25,8 @@ def upload_path(instance, filename):
     year = str(timestamp.year)
     month = str(timestamp.month)
 
-    return "uploads/{0}/{1}/{2}/{3}".format(
-        instance.owner.company, year, month, filename
+    return "uploads/{0}/{1}/{2}/{3}/{4}".format(
+        instance.owner.company, year, month, instance.name, filename
     )
 
 
@@ -48,7 +48,7 @@ class Job(models.Model):
 
     """
 
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=32)
     description = models.CharField(max_length=1024, default="")
     owner = models.ForeignKey(
         "users.CustomUser", related_name="jobs", on_delete=models.CASCADE
@@ -83,10 +83,12 @@ class Job(models.Model):
         if self.pk:  # only happens if object is in db
             # gets triggered if the result file gets uploaded
             if self.result != self.__original_result:
+                super().save(*args, **kwargs)
                 client_email = EmailJobClient(self)  # notify the client
                 client_email.send_mail()
                 self.progress = 100  # if a result is uploaded, the job is finished
         else:  # the job is not in the database yet, a new job gets created
+            super().save(*args, **kwargs)
             staff_email = EmailJobStaff(self)
             staff_email.send_mail()
 
