@@ -13,7 +13,7 @@ export default props => {
    * TODO: handle error
    */
   async function logout() {
-    await post('/api/auth/logout/', { revoke_token: true }).then(response =>
+    await post('/auth/logout/', { revoke_token: true }).then(response =>
       history.push('/auth/login/')
     );
   }
