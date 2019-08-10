@@ -1,12 +1,9 @@
 let BACKEND_URL;
 const hostname = window && window.location && window.location.hostname;
 
-if (hostname === '***REMOVED***.ml') {
-  // production
-  BACKEND_URL = 'https://***REMOVED***.ml';
-} else if (hostname === '***REMOVED***.ga') {
-  // staging
-  BACKEND_URL = 'https://***REMOVED***.ga';
+if (hostname === '***REMOVED***.ml' || hostname === '***REMOVED***.ga') {
+  // production + staging
+  BACKEND_URL = `https://${hostname}`;
 } else {
   // development
   BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://127.0.0.1:8000';
