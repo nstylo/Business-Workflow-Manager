@@ -92,7 +92,6 @@ class Job(models.Model):
             staff_email = EmailJobStaff(self)
             staff_email.send_mail()
 
-        super().save()
         self.__original_result = self.result
 
     def get_admin_url(self):

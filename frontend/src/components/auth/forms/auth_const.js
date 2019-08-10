@@ -1,11 +1,11 @@
-// this file contains constants for form submissions
+// this file just holds information about api calls which should be globally
+// used in order to not hardcode those
 export default {
   login: {
-    redirect_url: '/user/upload/',
-    request_url: '/api/auth/login/',
+    url: '/',
     status: {
       successful: 200,
-      unsuccessful: 400
+      unsuccessful: 401
     },
     mock_errors: {
       errors: {
@@ -14,10 +14,9 @@ export default {
     }
   },
   register: {
-    redirect_url: '/auth/verification-email-sent/',
-    request_url: '/api/auth/register/',
+    url: '/register-successful/',
     status: {
-      successful: 201,
+      successful: 200,
       unsuccessful: 400
     },
     mock_errors: {
@@ -27,11 +26,10 @@ export default {
     }
   },
   requestReset: {
-    redirect_url: '/auth/request-reset-successful/',
-    request_url: '/api/auth/send-reset-password-link/',
+    url: '/request-reset-successful/',
     status: {
       successful: 200,
-      unsuccessful: 404
+      unsuccessful: 400
     },
     mock_errors: {
       errors: {
@@ -40,8 +38,7 @@ export default {
     }
   },
   reset: {
-    redirect_url: '/auth/reset-successful/',
-    request_url: '/api/auth/reset-password/',
+    url: 'reset-successful/',
     status: {
       successful: 200,
       unsuccessful: 400
@@ -49,19 +46,6 @@ export default {
     mock_errors: {
       errors: {
         password: 'please enter a valid password'
-      }
-    }
-  },
-  postFiles: {
-    redirect_url: null,
-    request_url: '/api/jobs/',
-    status: {
-      successful: 201,
-      unsuccessful: 401
-    },
-    mock_errors: {
-      errors: {
-        files: 'uploaded invalid files'
       }
     }
   },
