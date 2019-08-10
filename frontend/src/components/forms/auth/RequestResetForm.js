@@ -13,15 +13,7 @@ const FormItem = AntForm.Item;
 const RequestResetView = props => {
   const { isSubmitting, errors } = props;
   return (
-    <Form
-      style={{
-        width: '40%',
-        margin: 'auto auto',
-        padding: '20px',
-        border: 'solid rgba(0,0,0,.25) 1px',
-        borderRadius: '5px'
-      }}
-    >
+    <Form className="form-auth">
       <Field
         name="login"
         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}

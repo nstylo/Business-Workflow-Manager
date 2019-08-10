@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import history from './history';
-import './App.css';
+import './App.less';
 
 import NotFound from './components/pages/public/NotFound';
 import AuthRouter from './routers/AuthRouter';

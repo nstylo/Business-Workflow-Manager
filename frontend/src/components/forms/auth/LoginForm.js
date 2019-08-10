@@ -14,23 +14,17 @@ const FormItem = AntForm.Item;
 const LoginView = props => {
   const { isSubmitting, errors } = props;
   return (
-    <Form
-      style={{
-        width: '40%',
-        margin: 'auto auto',
-        padding: '20px',
-        border: 'solid rgba(0,0,0,.25) 1px',
-        borderRadius: '5px'
-      }}
-    >
+    <Form className="form-auth">
       <Field
         name="login"
+        className="form-input"
         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Email"
         component={InputField}
       />
       <Field
         name="password"
+        className="form-input"
         type="password"
         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Password"
@@ -47,7 +41,7 @@ const LoginView = props => {
           style={{ width: '100%' }}
           type="primary"
           htmlType="submit"
-          className="login-form-button"
+          className="form-button"
           disabled={isSubmitting}
         >
           Log in
