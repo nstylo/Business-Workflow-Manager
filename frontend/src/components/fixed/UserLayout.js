@@ -25,7 +25,6 @@ export default props => {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={['2']}
           style={{ height: '100%', float: 'right' }}
         >
           <Menu.Item key="1" onClick={logout}>
@@ -39,12 +38,7 @@ export default props => {
           style={{ padding: '24px 0', background: '#fff', height: '100%' }}
         >
           <Sider width={200} style={{ background: '#fff' }}>
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
-              style={{ height: '100%' }}
-            >
+            <Menu mode="inline" style={{ height: '100%' }}>
               <SubMenu
                 key="projects"
                 title={
