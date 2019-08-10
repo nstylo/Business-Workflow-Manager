@@ -180,10 +180,10 @@ REST_REGISTRATION = {
     "VERIFICATION_FROM_EMAIL": EMAIL_HOST_USER,
     # TODO: route frontend urls
     # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/register.html#verification-workflow
-    "REGISTER_VERIFICATION_URL": "http://127.0.0.1:8000/",
-    "REGISTER_EMAIL_VERIFICATION_URL": "http://127.0.0.1:8000/",
+    "REGISTER_VERIFICATION_URL": "/auth/verify-user/",
+    "REGISTER_EMAIL_VERIFICATION_URL": "/",
     # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/reset_password.html
-    "RESET_PASSWORD_VERIFICATION_URL": "http://127.0.0.1:8000/",
+    "RESET_PASSWORD_VERIFICATION_URL": "/auth/reset/",
     "USER_HIDDEN_FIELDS": (
         "is_active",
         "is_admin",
