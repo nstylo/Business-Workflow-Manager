@@ -59,6 +59,20 @@ export async function get(url, config = {}) {
 }
 
 /**
+ * queries the backend if user authenticated
+ * @return { boolean } whether user is logged in
+ */
+export function isAuthenticated() {
+  get('/auth/logout/').then(response => {
+    if (response.status === 405) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+}
+
+/**
  * get query parameters for email verification
  * @return { object } json containing user_id, timestamp, signature
  */
