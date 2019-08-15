@@ -1,10 +1,7 @@
 import { handleSubmit } from '../utils/form_submit';
-import history from '../history';
 
 const requests = require('../utils/requests');
 jest.unmock('../utils/requests');
-
-jest.spyOn(history, 'push');
 
 // set up jest mock functions and callbacks
 const setErrors = jest.fn(val => val);
@@ -26,7 +23,6 @@ const constants = {
 afterEach(() => {
   setErrors.mockClear();
   setSubmitting.mockClear();
-  history.push.mockClear();
 });
 
 describe('handleSubmit', () => {
@@ -94,28 +90,6 @@ describe('handleSubmit', () => {
     expect(setSubmitting).toHaveBeenCalledTimes(0);
     await handleSubmit(constants, {}, bag);
     expect(setSubmitting).toHaveBeenCalledTimes(1);
-  });
-
-  it('should push to history on successful post', async () => {
-    // mock post
-    requests.post = jest.fn(() =>
-      Promise.resolve({ status: constants.status.successful, data: {} })
-    );
-
-    expect(history.push).toHaveBeenCalledTimes(0);
-    await handleSubmit(constants, {}, bag);
-    expect(history.push).toHaveBeenCalledTimes(1);
-  });
-
-  it('should NOT push to history on unexpected post', async () => {
-    // mock post
-    requests.post = jest.fn(() =>
-      Promise.resolve({ status: constants.status.unsuccessful, data: {} })
-    );
-
-    expect(history.push).toHaveBeenCalledTimes(0);
-    await handleSubmit(constants, {}, bag);
-    expect(history.push).toHaveBeenCalledTimes(0);
   });
 
   it('should pass on the correct values to post', async () => {

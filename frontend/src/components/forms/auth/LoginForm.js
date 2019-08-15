@@ -3,12 +3,14 @@ import { withFormik, Field, Form } from 'formik';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
+import history from '../../../history';
 import { handleSubmit } from '../../../utils/form_submit';
 import form_const from '../../../utils/form_const';
 
 import InputField from '../../other/InputField';
 import CheckBox from '../../other/CheckBox';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
+
 const FormItem = AntForm.Item;
 
 const LoginView = props => {
@@ -75,6 +77,11 @@ export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ login: '', password: '' }),
   handleSubmit: async (values, bag) => {
-    await handleSubmit(form_const.login, values, bag);
+    await handleSubmit(form_const.login, values, bag).then(response => {
+      if (response.status === form_const.login.status.successful) {
+        bag.props.setAuthenticated(true); // set global login state
+        history.push(form_const.login.redirect_url); // redirect
+      }
+    });
   }
 })(LoginView);

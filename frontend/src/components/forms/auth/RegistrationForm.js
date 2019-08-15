@@ -5,6 +5,7 @@ import * as yup from 'yup';
 
 import { handleSubmit } from '../../../utils/form_submit';
 import form_const from '../../../utils/form_const';
+import history from '../../../history';
 
 import CountrySelector from '../../other/CountrySelector';
 import countryList from 'react-select-country-list';
@@ -13,7 +14,7 @@ import CheckBox from '../../other/CheckBox';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
 const FormItem = AntForm.Item;
-const countries = countryList();
+const countries = countryList(); // list data
 
 const RegistrationView = props => {
   const { isSubmitting, touched, errors } = props;
@@ -122,6 +123,10 @@ export default withFormik({
     conditions: false
   }),
   handleSubmit: async (values, options) => {
-    await handleSubmit(form_const.register, values, options);
+    await handleSubmit(form_const.register, values, options).then(response => {
+      if (response.status === form_const.register.status.successful) {
+        history.push(form_const.register.redirect_url);
+      }
+    });
   }
 })(RegistrationView);

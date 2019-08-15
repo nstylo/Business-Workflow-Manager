@@ -2,6 +2,7 @@ import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
+import history from '../../../history';
 import { handleSubmit } from '../../../utils/form_submit';
 import form_const from '../../../utils/form_const';
 
@@ -63,12 +64,16 @@ const validationSchema = yup.object().shape({
 export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ password: '' }),
-  handleSubmit: async (values, options) => {
-    const queryParams = options.props.getQueryParams(); // get query params
+  handleSubmit: async (values, bag) => {
+    const queryParams = bag.props.getQueryParams(); // get query params
     await handleSubmit(
       form_const.reset,
       { ...values, ...queryParams }, // submit query params and password
-      options
-    );
+      bag
+    ).then(response => {
+      if (response.status === form_const.reset.status.successful) {
+        history.push(form_const.reset.redirect_url); // redirect
+      }
+    });
   }
 })(ResetView);

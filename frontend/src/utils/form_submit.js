@@ -1,5 +1,4 @@
 import form_const from './form_const';
-import history from '../history';
 import { post } from './requests';
 
 /**
@@ -11,7 +10,7 @@ import { post } from './requests';
  */
 export async function handleSubmit(constants, values, bag) {
   const { setErrors, setSubmitting, resetForm } = bag;
-  const { status, redirect_url, request_url } = constants;
+  const { status, request_url } = constants;
 
   const response = await post(request_url, values); // make request
 
@@ -19,15 +18,15 @@ export async function handleSubmit(constants, values, bag) {
   switch (response.status) {
     case status.successful:
       resetForm();
-      redirect_url && history.push(redirect_url); // route if url exists
-      return;
+      break;
     case status.unsuccessful:
       setErrors(response.data); // errors for the right label
+      setSubmitting(false); // enable submit button on failure
       break;
     default:
       // set default errors if unexpected event
       setErrors(form_const.default_errors.errors);
+      setSubmitting(false); // enable submit button on failure
   }
-
-  setSubmitting(false); // enable submit button on failure
+  return response;
 }
