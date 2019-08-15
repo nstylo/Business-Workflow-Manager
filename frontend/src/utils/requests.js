@@ -62,7 +62,7 @@ export async function get(url, config = {}) {
  * queries the backend if user authenticated
  * @return { boolean } whether user is logged in
  */
-export async function isAuthenticated() {
+export async function checkAuthenticated() {
   return await get('/auth/logout/').then(response => {
     if (response.status === 405) {
       return true;

@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import AuthContext from ''; // TODO: import context
+import { AuthContext } from '../App';
 
 /**
  * either renders the passed on component or reroutes to login page
  */
-export default () => {
-  const isAuthenticated = useContext(AuthContext);
-  const { component: Component, ...rest } = this.props;
+export default props => {
+  const { isAuthenticated } = useContext(AuthContext);
+  const { component: Component, ...rest } = props;
   return (
     <Route
       {...rest}
