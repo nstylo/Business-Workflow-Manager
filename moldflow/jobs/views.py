@@ -9,7 +9,8 @@ from .serializers import JobSerializer
 class JobView(viewsets.ModelViewSet):
     permission_classes = [IsLoggedInUserOrStaff]
     serializer_class = JobSerializer
-    queryset = Job.objects.all().order_by("-created")
+    # https://docs.djangoproject.com/en/2.2/ref/models/querysets/#order-by
+    queryset = Job.objects.all().order_by("created")
 
     def get_queryset(self):
         """
