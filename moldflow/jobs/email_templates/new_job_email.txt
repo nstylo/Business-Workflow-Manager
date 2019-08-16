@@ -1,0 +1,25 @@
+Hi there,
+
+Please update the estimated time to job completion as soon as possible.
+
+Job url: {{ admin_url }}
+
+Name: {{ name }}
+Description: {{ name }}
+Owner Email: {{ owner }}
+Owner Company: {{ company }}
+Timestamp: {{ created }}
+File: {{ project }}
+
+Good luck on the project!
+
+Kind Regards,
+
+Soulless email bot
+
+
+
+
+
+
+Beep Boop
