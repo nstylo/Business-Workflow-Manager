@@ -53,7 +53,7 @@ class CustomUserAdmin(UserAdmin):
 
     # what fields can be searched
     search_fields = ("email", "company", "country", "phone")
-    ordering = ("email",)
+    ordering = ("is_staff", "company", "country")
     filter_horizontal = ()
 
 

@@ -1,7 +1,7 @@
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core.mail import EmailMessage, send_mail
 from django.template.loader import render_to_string
-from django.contrib.sites.models import Site
 
 
 class EmailJob(EmailMessage):
@@ -35,34 +35,25 @@ class EmailJobStaff(EmailJob):
         notification that a job has been added to staff
         """
         # url for the user uploaded project file
-        project_url = Site.objects.get_current().domain + settings.MEDIA_URL + str(self.job.project)
-
-        self.html_body = render_to_string(
-            "new_job_email.html",
-            {
-                "company": self.job.owner.company,
-                "name": self.job.name,
-                "description": self.job.description,
-                "owner": self.job.owner.email,
-                "created": self.job.created,
-                "admin_url": self.job.get_admin_url(),
-                "project": project_url,
-            },
+        project_url = (
+            Site.objects.get_current().domain
+            + settings.MEDIA_URL
+            + str(self.job.project)
         )
+
+        context = {
+            "company": self.job.owner.company,
+            "name": self.job.name,
+            "description": self.job.description,
+            "owner": self.job.owner.email,
+            "created": self.job.created,
+            "admin_url": self.job.get_admin_url(),
+            "project": project_url,
+        }
+        self.html_body = render_to_string("new_job_email.html", context)
 
         # alternative email for those that cannot render html
-        self.plain_body = render_to_string(
-            "new_job_email.txt",
-            {
-                "company": self.job.owner.company,
-                "name": self.job.name,
-                "description": self.job.description,
-                "owner": self.job.owner.email,
-                "created": self.job.created,
-                "admin_url": self.job.get_admin_url(),
-                "project": project_url,
-            },
-        )
+        self.plain_body = render_to_string("new_job_email.txt", context)
 
     def _get_staff(self):
         """
@@ -90,11 +81,24 @@ class EmailJobClient(EmailJob):
     Handles sending client emails when a new job gets created
     """
 
+    def __init__(
+        self, job, update=False, subject="", body="", receiver=["receiver@mail.com"]
+    ):
+        self.update = update
+        self.subject = subject
+        self.plain_body = body
+        self.sender = [settings.EMAIL_HOST_USER]
+        self.receiver = receiver
+        self.job = job
+
     def _compose_subject_client(self):
         """
         Compose the job email subject for client
         """
-        self.subject = 'Your job "{0}" has finished!'.format(self.job.name)
+        if self.update:
+            self.subject = 'Your job "{0}" results have been updated!'.format(self.job.name)
+        else:
+            self.subject = 'Your job "{0}" results have been uploaded!'.format(self.job.name)
 
     def _compose_body_client(self):
         """
@@ -104,22 +108,13 @@ class EmailJobClient(EmailJob):
         # TODO: rename to ..../project/the specific project url/
         project_url = Site.objects.get_current().domain + "/user/projects/"
 
-        self.html_body = render_to_string(
-            "finished_job_email.html",
-            {
-                "name": self.job.name,
-                "url": project_url,
-            },
-        )
+        context = {"name": self.job.name,
+                   "url": project_url, "update": self.update}
+
+        self.html_body = render_to_string("job_results_email.html", context)
 
         # alternative email for those that cannot render html
-        self.plain_body = render_to_string(
-            "finished_job_email.txt",
-            {
-                "name": self.job.name,
-                "url": project_url,
-            },
-        )
+        self.plain_body = render_to_string("job_results_email.txt", context)
 
     def _set_receiver(self):
         """

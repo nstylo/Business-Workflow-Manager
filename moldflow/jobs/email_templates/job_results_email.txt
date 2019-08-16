@@ -1,6 +1,6 @@
 Dear Sir/Madam,
 
-The results of project "{{ name }}" have been uploaded!
+The results of project "{{ name }}" have been{% if update %} updated {% else %} uploaded{% endif %}!
 Please find your results on your profile page at: {{ url }}
 
 If you are satisfied with our service, we kindly ask you to leave us some feedback.

@@ -53,13 +53,6 @@ class TestEmailJobClient(TestCase):
         self.job = mixer.blend("jobs.Job", owner=self.user)
         self.job_email = EmailJobClient(job=self.job)
 
-    def test_compose_job_subject_client(self):
-        self.job_email._compose_subject_client()
-
-        subject = "Your job \"{0}\" has finished!".format(
-            self.job.name)
-        assert self.job_email.subject == subject
-
     def test_send_mail_client(self):
         self.job_email.send_mail()
 

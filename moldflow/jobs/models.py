@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
@@ -21,7 +21,7 @@ def upload_path(instance, filename):
     :returns: A url string for the file uploads in the format:
             uploads/company/year/month/filename
     """
-    timestamp = datetime.datetime.now()
+    timestamp = timezone.now()
     year = str(timestamp.year)
     month = str(timestamp.month)
 
@@ -81,17 +81,29 @@ class Job(models.Model):
         was added, or send en email to the client, when the results are uploaded
         """
         if self.pk:  # only happens if object is in db
-            # gets triggered if the result file gets uploaded
+            # gets triggered if the result file gets uploaded, only if it was null
             if self.result != self.__original_result:
-                self.progress = 100  # if a result is uploaded, the job is finished
-                super().save(*args, **kwargs)
-                client_email = EmailJobClient(self)  # notify the client
-                client_email.send_mail()
+                # It's the first result file
+                if not self.__original_result:
+                    self.progress = 100  # if a result is uploaded, the job is finished
+                    self.estimated = timezone.now()
+                    super().save(*args, **kwargs)
+                    client_email = EmailJobClient(self)  # notify the client
+                    client_email.send_mail()
+                    return
+                # The results are updated
+                else:
+                    super().save(*args, **kwargs)
+                    client_email = EmailJobClient(self, update=True)  # notify the client
+                    client_email.send_mail()
+                    return
         else:  # the job is not in the database yet, a new job gets created
             super().save(*args, **kwargs)
             staff_email = EmailJobStaff(self)
             staff_email.send_mail()
+            return
 
+        super().save(*args, **kwargs)
         self.__original_result = self.result
 
     def get_admin_url(self):

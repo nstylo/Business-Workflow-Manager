@@ -41,7 +41,7 @@ if DJANGO_ENV == "development":
     EMAIL_HOST_USER = "test@gmail.com"
     EMAIL_HOST_PASSWORD = None
     EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-    EMAIL_FILE_PATH = '/tmp/emails'
+    EMAIL_FILE_PATH = "/tmp/emails"
 else:  # deployment env
     DEBUG = False
     ALLOWED_HOSTS = [os.getenv("HOST")]
