@@ -13,7 +13,7 @@ class EmailJob(EmailMessage):
         self.job = job
 
     def send_mail(self):
-        send_mail(self.subject, self.body, self.sender, self.receiver)
+        send_mail(self.subject, self.plain_body, self.sender, self.receiver)
 
 
 class EmailJobStaff(EmailJob):
