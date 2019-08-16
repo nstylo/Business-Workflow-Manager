@@ -31,6 +31,7 @@ class TestJobView(APITestCase):
     def test_admin_url(self):
         job_url = models.Job.get_admin_url(self.job)
 
-        assert job_url == settings.HOST + "/admin/jobs/job/{0}/change/".format(
+        # TODO: change example.com to proper domain name
+        assert job_url == "example.com" + "/admin/jobs/job/{0}/change/".format(
             self.job.pk
         )

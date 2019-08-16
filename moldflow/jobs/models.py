@@ -1,12 +1,12 @@
 import datetime
 
-from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 
-from .emails import EmailJobStaff, EmailJobClient
+from .emails import EmailJobClient, EmailJobStaff
 
 
 def upload_path(instance, filename):
@@ -83,10 +83,10 @@ class Job(models.Model):
         if self.pk:  # only happens if object is in db
             # gets triggered if the result file gets uploaded
             if self.result != self.__original_result:
+                self.progress = 100  # if a result is uploaded, the job is finished
                 super().save(*args, **kwargs)
                 client_email = EmailJobClient(self)  # notify the client
                 client_email.send_mail()
-                self.progress = 100  # if a result is uploaded, the job is finished
         else:  # the job is not in the database yet, a new job gets created
             super().save(*args, **kwargs)
             staff_email = EmailJobStaff(self)
@@ -99,7 +99,7 @@ class Job(models.Model):
         Return the url for the created job
         """
         content_type = ContentType.objects.get_for_model(self.__class__)
-        return settings.HOST + reverse(
+        return Site.objects.get_current().domain + reverse(
             "admin:%s_%s_change" % (
                 content_type.app_label, content_type.model),
             args=(self.id,),
