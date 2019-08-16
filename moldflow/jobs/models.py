@@ -1,12 +1,12 @@
 import datetime
 
-from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 
-from .emails import EmailJobStaff, EmailJobClient
+from .emails import EmailJobClient, EmailJobStaff
 
 
 def upload_path(instance, filename):
@@ -25,8 +25,8 @@ def upload_path(instance, filename):
     year = str(timestamp.year)
     month = str(timestamp.month)
 
-    return "uploads/{0}/{1}/{2}/{3}".format(
-        instance.owner.company, year, month, filename
+    return "uploads/{0}/{1}/{2}/{3}/{4}".format(
+        instance.owner.company, year, month, instance.name, filename
     )
 
 
@@ -48,7 +48,7 @@ class Job(models.Model):
 
     """
 
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=32)
     description = models.CharField(max_length=1024, default="")
     owner = models.ForeignKey(
         "users.CustomUser", related_name="jobs", on_delete=models.CASCADE
@@ -83,12 +83,12 @@ class Job(models.Model):
         if self.pk:  # only happens if object is in db
             # gets triggered if the result file gets uploaded
             if self.result != self.__original_result:
-                super().save()
+                self.progress = 100  # if a result is uploaded, the job is finished
+                super().save(*args, **kwargs)
                 client_email = EmailJobClient(self)  # notify the client
                 client_email.send_mail()
-                self.progress = 100  # if a result is uploaded, the job is finished
         else:  # the job is not in the database yet, a new job gets created
-            super().save()
+            super().save(*args, **kwargs)
             staff_email = EmailJobStaff(self)
             staff_email.send_mail()
 
@@ -99,7 +99,7 @@ class Job(models.Model):
         Return the url for the created job
         """
         content_type = ContentType.objects.get_for_model(self.__class__)
-        return settings.HOST + reverse(
+        return Site.objects.get_current().domain + reverse(
             "admin:%s_%s_change" % (
                 content_type.app_label, content_type.model),
             args=(self.id,),

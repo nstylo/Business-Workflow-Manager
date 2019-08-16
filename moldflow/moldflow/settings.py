@@ -40,7 +40,8 @@ if DJANGO_ENV == "development":
     EMAIL_PORT = "1025"
     EMAIL_HOST_USER = "test@gmail.com"
     EMAIL_HOST_PASSWORD = None
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+    EMAIL_FILE_PATH = '/tmp/emails'
 else:  # deployment env
     DEBUG = False
     ALLOWED_HOSTS = [os.getenv("HOST")]
@@ -76,12 +77,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
+    "django.contrib.sites",
     "rest_framework",
     "rest_registration",
     "phonenumber_field",
     "users.apps.UsersConfig",
     "jobs",
 ]
+
+SITE_ID = 1
 
 # see https://github.com/stefanfoulis/django-phonenumber-field
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
@@ -109,7 +113,7 @@ ROOT_URLCONF = "***REMOVED***.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR + "/jobs/email_templates/"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -166,7 +170,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication"
     ],
     "DEFAULT_THROTTLE_CLASSES": ["rest_framework.throttling.UserRateThrottle"],
-    "DEFAULT_THROTTLE_RATES": {"user": "10/minute"},
+    "DEFAULT_THROTTLE_RATES": {"user": "30/minute"},
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
@@ -180,10 +184,10 @@ REST_REGISTRATION = {
     "VERIFICATION_FROM_EMAIL": EMAIL_HOST_USER,
     # TODO: route frontend urls
     # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/register.html#verification-workflow
-    "REGISTER_VERIFICATION_URL": "http://127.0.0.1:8000/",
-    "REGISTER_EMAIL_VERIFICATION_URL": "http://127.0.0.1:8000/",
+    "REGISTER_VERIFICATION_URL": "/auth/verify-user/",
+    "REGISTER_EMAIL_VERIFICATION_URL": "/",
     # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/reset_password.html
-    "RESET_PASSWORD_VERIFICATION_URL": "http://127.0.0.1:8000/",
+    "RESET_PASSWORD_VERIFICATION_URL": "/auth/reset/",
     "USER_HIDDEN_FIELDS": (
         "is_active",
         "is_admin",
