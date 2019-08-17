@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import MIMETYPES from '../../utils/mimetypes';
+import FILETYPES from '../../utils/filetypes';
 
 import { Upload, Icon, Alert } from 'antd';
 const { Dragger } = Upload;
@@ -30,7 +30,7 @@ export default ({ field, form }) => {
       <Dragger
         name="file"
         multiple={false}
-        accept={MIMETYPES}
+        accept={FILETYPES}
         fileList={fileArr}
         beforeUpload={file => {
           form.setFieldValue(field.name, file); // set field state

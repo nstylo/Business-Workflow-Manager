@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
 import history from '../../../history';
-import { handleSubmit } from '../../../utils/form_submit';
-import form_const from '../../../utils/form_const';
+import { handleSubmit } from '../../../utils/requests';
+import FORM_CONST from '../../../utils/form_const';
 
 import InputField from '../../other/InputField';
 import CheckBox from '../../other/CheckBox';
@@ -77,10 +77,10 @@ export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ login: '', password: '' }),
   handleSubmit: async (values, bag) => {
-    await handleSubmit(form_const.login, values, bag).then(response => {
-      if (response.status === form_const.login.status.successful) {
+    await handleSubmit(FORM_CONST.login, values, bag).then(response => {
+      if (response.status === FORM_CONST.login.status.successful) {
         bag.props.setAuthenticated(true); // set global login state
-        history.push(form_const.login.redirect_url); // redirect
+        history.push(FORM_CONST.login.redirect_url); // redirect
       }
     });
   }

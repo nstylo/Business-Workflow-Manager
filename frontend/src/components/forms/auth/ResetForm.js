@@ -3,8 +3,8 @@ import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
 import history from '../../../history';
-import { handleSubmit } from '../../../utils/form_submit';
-import form_const from '../../../utils/form_const';
+import { handleSubmit } from '../../../utils/requests';
+import FORM_CONST from '../../../utils/form_const';
 
 import InputField from '../../other/InputField';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
@@ -67,12 +67,12 @@ export default withFormik({
   handleSubmit: async (values, bag) => {
     const queryParams = bag.props.getQueryParams(); // get query params
     await handleSubmit(
-      form_const.reset,
+      FORM_CONST.reset,
       { ...values, ...queryParams }, // submit query params and password
       bag
     ).then(response => {
-      if (response.status === form_const.reset.status.successful) {
-        history.push(form_const.reset.redirect_url); // redirect
+      if (response.status === FORM_CONST.reset.status.successful) {
+        history.push(FORM_CONST.reset.redirect_url); // redirect
       }
     });
   }
