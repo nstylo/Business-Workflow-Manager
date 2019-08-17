@@ -24,8 +24,7 @@ class EmailJob(EmailMessage):
 
     def send_mail(self):
         """
-        Send an email to the client stating that their project
-        results have been uploaded, only if the client is active
+        Send emails out to recipients with subjects and bodies
         """
         if self._get_recipients():
             self._get_subject()
@@ -50,7 +49,7 @@ class EmailJobStaff(EmailJob):
 
     def _get_subject(self):
         """
-        Compose the job email subject for staff
+        Set subject of email for a new job posting
         """
         self.subject = "A new job has been posted for {0}.".format(
             self.job.owner.company
@@ -58,8 +57,7 @@ class EmailJobStaff(EmailJob):
 
     def _get_body(self):
         """
-        The body of the email for sending out a
-        notification that a job has been added to staff
+        Set body of email for a new job posting
         """
         # url for the user uploaded project file
         # .url gets relative url
@@ -81,7 +79,7 @@ class EmailJobStaff(EmailJob):
 
     def _get_recipients(self):
         """
-        Set the mail receivers to all staff members that are active
+        Set the email recipients to all staff members that are active
         """
         # transform to list to check if empty
         receiver = list(
@@ -102,12 +100,17 @@ class EmailJobClient(EmailJob):
     """
 
     def __init__(self, update=False, *args, **kwargs):
+        """
+        Initialize update variable to distinguish an updated result
+
+        :param update: Flag dictating if the result file is new or simply updated
+        """
         self.update = update
         super().__init__(*args, **kwargs)
 
     def _get_subject(self):
         """
-        Compose the job email subject for client
+        Set subject of the email for result file upload/update to be sent to the client
         """
         if self.update:
             self.subject = 'Your job "{0}" results have been updated!'.format(
@@ -120,8 +123,7 @@ class EmailJobClient(EmailJob):
 
     def _get_body(self):
         """
-        The body of the email for sending out a
-        notification that a job has been added to client
+        Set body of the email for result file upload/update to be sent to the client
         """
         # TODO: rename to ..../project/the specific project url/
         project_url = Site.objects.get_current().domain + "/user/projects/"
@@ -136,7 +138,7 @@ class EmailJobClient(EmailJob):
 
     def _get_recipients(self):
         """
-        Get clients that exist and are active
+        Set the recipient of the email to the owner of the job, if he is active
         """
         receiver = [self.job.owner.email]
         active = self.job.owner.is_active
