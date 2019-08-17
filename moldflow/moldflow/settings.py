@@ -40,7 +40,8 @@ if DJANGO_ENV == "development":
     EMAIL_PORT = "1025"
     EMAIL_HOST_USER = "test@gmail.com"
     EMAIL_HOST_PASSWORD = None
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+    EMAIL_FILE_PATH = "/tmp/emails"
 else:  # deployment env
     DEBUG = False
     ALLOWED_HOSTS = [os.getenv("HOST")]
@@ -76,12 +77,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
+    "django.contrib.sites",
     "rest_framework",
     "rest_registration",
     "phonenumber_field",
     "users.apps.UsersConfig",
     "jobs",
 ]
+
+SITE_ID = 1
 
 # see https://github.com/stefanfoulis/django-phonenumber-field
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
@@ -109,7 +113,7 @@ ROOT_URLCONF = "***REMOVED***.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR + "/jobs/email_templates/"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -193,6 +197,21 @@ REST_REGISTRATION = {
         "groups",
         "date_joined",
     ),
+    "REGISTER_VERIFICATION_EMAIL_TEMPLATES": {
+        "subject": BASE_DIR + "/jobs/email_templates/register/subject.txt",
+        "text_body": BASE_DIR + "/jobs/email_templates/register/body.txt",
+        "html_body": BASE_DIR + "/jobs/email_templates/register/body.html",
+    },
+    "REGISTER_EMAIL_VERIFICATION_EMAIL_TEMPLATES": {
+        "subject": BASE_DIR + "/jobs/email_templates/register_email/subject.txt",
+        "text_body": BASE_DIR + "/jobs/email_templates/register_email/body.txt",
+        "html_body": BASE_DIR + "/jobs/email_templates/register_email/body.html",
+    },
+    "RESET_PASSWORD_VERIFICATION_EMAIL_TEMPLATES": {
+        "subject": BASE_DIR + "/jobs/email_templates/reset_password/subject.txt",
+        "text_body": BASE_DIR + "/jobs/email_templates/reset_password/body.txt",
+        "html_body": BASE_DIR + "/jobs/email_templates/reset_password/body.html",
+    },
 }
 
 # Internationalization
