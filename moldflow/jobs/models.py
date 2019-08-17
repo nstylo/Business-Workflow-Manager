@@ -88,13 +88,13 @@ class Job(models.Model):
                     self.progress = 100  # if a result is uploaded, the job is finished
                     self.estimated = timezone.now()
                     super().save(*args, **kwargs)
-                    client_email = EmailJobClient(self)  # notify the client
+                    client_email = EmailJobClient(job=self)  # notify the client
                     client_email.send_mail()
                     return
                 # The results are updated
                 else:
                     super().save(*args, **kwargs)
-                    client_email = EmailJobClient(self, update=True)  # notify the client
+                    client_email = EmailJobClient(job=self, update=True)  # notify the client
                     client_email.send_mail()
                     return
         else:  # the job is not in the database yet, a new job gets created
