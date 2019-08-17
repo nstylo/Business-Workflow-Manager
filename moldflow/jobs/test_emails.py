@@ -1,48 +1,108 @@
 from django.core import mail
 from django.test import TestCase
 from mixer.backend.django import mixer
+from rest_framework.test import APITestCase
 
-from jobs.emails import EmailJob, EmailJobStaff, EmailJobClient
+from jobs.emails import EmailJobClient
 
 
-class TestEmailJobStaff(TestCase):
-    def setUp(self):
-        self.user = mixer.blend(
-            "users.CustomUser", is_active=True, phone="+31230802611"
+class TestEmailJobStaff(APITestCase):
+    def test_send_mail_staff_good(self):
+        user1 = mixer.blend(
+            "users.CustomUser", is_staff=False, is_active=True, phone="+31230802611"
         )
-        self.job = mixer.blend("jobs.Job", owner=self.user)
-        self.job_email = EmailJobStaff(job=self.job)
-
-    def test_send_mail(self):
-        email = EmailJob(subject="Test subject", body="Test body", job=self.job)
-        email.send_mail()
-
-        assert len(mail.outbox) == 1, "Email has to be sent"
-        assert mail.outbox[0].subject == email.subject, "Email subject has to match"
-        assert mail.outbox[0].body == email.plain_body, "Email body has to match"
-
-    def test_compose_job_subject_staff(self):
-        self.job_email._get_subject()
-
-        subject = "A new job has been posted for {0}.".format(
-            self.user.company)
-        assert self.job_email.subject == subject
-
-    def test_send_mail_staff(self):
-        mixer.blend(
+        user2 = mixer.blend(
+            "users.CustomUser", is_staff=False, is_active=False, phone="+31230802611"
+        )
+        staff1 = mixer.blend(
             "users.CustomUser", is_staff=True, is_active=True, phone="+31230802611"
         )
-        mixer.blend(
-            "users.CustomUser", is_staff=True, is_active=True, phone="+31230802611"
+        staff2 = mixer.blend(
+            "users.CustomUser", is_staff=True, is_active=False, phone="+31230852611"
         )
-        self.job_email.send_mail()
+        staff3 = mixer.blend(
+            "users.CustomUser", is_staff=True, is_active=True, phone="+31230852611"
+        )
 
-        assert self.job_email.subject is not False, "Email subject can't be empty"
-        assert self.job_email.plain_body is not False, "Email body can't be empty"
-        assert len(mail.outbox) == 1, "Email has to be sent"
-        assert len(mail.outbox[0].to) == 2, "There are 2 receiving staff members"
-        assert mail.outbox[0].subject == self.job_email.subject, "Email subject has to match"
-        assert mail.outbox[0].body == self.job_email.plain_body, "Email body has to match"
+        # the mail gets sent on a job create event
+        job = mixer.blend("jobs.Job", owner=user1)
+
+        assert (
+            "Please update the estimated time to job completion as soon as possible."
+            in mail.outbox[0].body
+        )
+
+        assert (
+            "Owner Company: " + job.owner.company in mail.outbox[0].body
+        ), "The owner company details need to be sent"
+
+        assert (
+            "Owner Company: " + user1.company in mail.outbox[0].body
+        ), "The owner company details need to be sent"
+
+        assert (
+            "Name: " + job.name in mail.outbox[0].body
+        ), "The name of the job needs to be sent"
+
+        assert (
+            "Description: " + job.description in mail.outbox[0].body
+        ), "The description of the job needs to be sent"
+
+        assert (
+            "Owner Email: " + job.owner.email in mail.outbox[0].body
+        ), "The owner's email of the job needs to be sent"
+
+        assert (
+            "Owner Email: " + user1.email in mail.outbox[0].body
+        ), "The owner's email of the job needs to be sent"
+
+        # let's get the File url matched line
+        # check that the url (first 6 chars are "File: ") has no spaces
+        file_url_line = [
+            line for line in mail.outbox[0].body.split("\n") if "File:" in line
+        ][0][6:]
+        assert " " not in file_url_line, "The url cannot have spaces"
+        assert file_url_line is not False, "The url can't be empty"
+
+        assert len(mail.outbox) == 1, "A single email has to be sent"
+        assert len(
+            mail.outbox[0].to) == 2, "There are 2 receiving staff members"
+        assert (
+            staff1.email in mail.outbox[0].to
+        ), "The activated staff user should be sent the email"
+        assert (
+            staff3.email in mail.outbox[0].to
+        ), "The activated staff user should be sent the email"
+        assert (
+            staff2.email not in mail.outbox[0].to
+        ), "The unactivated staff user shouldn't be in the to list"
+
+    def test_send_mail_staff_bad(self):
+        user1 = mixer.blend(
+            "users.CustomUser", is_staff=False, is_active=True, phone="+31230832611"
+        )
+
+        mixer.blend(
+            "users.CustomUser", is_staff=True, is_active=False, phone="+31230832611"
+        )
+        self.client.force_authenticate(user1)
+
+        job_name = "New job name"
+        job_description = "New job description"
+        job_file = "req.txt"
+        with self.assertRaises(ValueError) as context:
+            with open(job_file) as file:
+                self.client.post(
+                    "/api/jobs/",
+                    {"name": job_name, "description": job_description, "project": file},
+                )
+
+            self.assertTrue(
+                "The receiver of the email either does not exist or is not active"
+                in context.exception
+            )
+
+        assert len(mail.outbox) == 0, "No email got sent"
 
 
 class TestEmailJobClient(TestCase):
@@ -50,26 +110,46 @@ class TestEmailJobClient(TestCase):
         self.user = mixer.blend(
             "users.CustomUser", is_active=True, is_staff=False, phone="+31230802611"
         )
+        # so the staff email gets sent and we don't get an exception
+        mixer.blend(
+            "users.CustomUser", is_active=True, is_staff=True, phone="+31230802611"
+        )
         self.job = mixer.blend("jobs.Job", owner=self.user)
         self.job_email = EmailJobClient(job=self.job)
 
     def test_send_mail_client(self):
-        self.job_email.send_mail()
+        self.job.result = "test"
+        self.job.save()
 
-        assert self.job_email.subject is not False, "Email subject can't be empty"
-        assert self.job_email.plain_body is not False, "Email body can't be empty"
-        assert len(mail.outbox) == 1, "Email has to be sent"
-        assert len(mail.outbox[0].to) == 1, "There is exactly 1 receiving client member"
-        assert mail.outbox[0].subject == self.job_email.subject, "Email subject has to match"
-        assert mail.outbox[0].body == self.job_email.plain_body, "Email body has to match"
+        assert len(mail.outbox) == 2, "Both Staff and customer emails have to be sent"
+        assert len(
+            mail.outbox[0].to) == 1, "There is exactly 1 receiving client member"
+
+        assert self.job.name in mail.outbox[1].subject
+        assert self.job.name in mail.outbox[1].body
+        assert "/user/projects/" in mail.outbox[1].body, "The url needs to be there"
+        assert "Kind Regards," in mail.outbox[1].body, "The url needs to be there"
+        assert "Dear Sir/Madam," in mail.outbox[1].body, "The url needs to be there"
+        assert "***REMOVED***" in mail.outbox[1].body, "The url needs to be there"
 
 
-class TestEmailJobClientNotActive(TestCase):
-    def test_send_mail_client_not_active(self):
+class TestEmailJobClientBad(TestCase):
+    def setUp(self):
         self.user = mixer.blend(
-            "users.CustomUser", is_staff=False, is_active=False, phone="+31230802611"
+            "users.CustomUser", is_active=False, is_staff=False, phone="+31230802611"
+        )
+        # so the staff email gets sent and we don't get an exception
+        mixer.blend(
+            "users.CustomUser", is_active=True, is_staff=True, phone="+31230802611"
         )
         self.job = mixer.blend("jobs.Job", owner=self.user)
         self.job_email = EmailJobClient(job=self.job)
-        with self.assertRaises(ValueError):
+
+    def test_send_mail_client(self):
+        with self.assertRaises(ValueError) as context:
             self.job_email.send_mail()
+
+            self.assertTrue(
+                "The receiver of the email either does not exist or is not active"
+                in context.exception
+            )

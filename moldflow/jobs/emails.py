@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 
 
 class EmailJob(EmailMessage):
-    def __init__(self, job, subject="", body="", receiver=["receiver@mail.com"]):
+    def __init__(self, job, receiver=None, subject="", body=""):
         self.subject = subject
         self.plain_body = body
         self.html_body = body
@@ -62,11 +62,8 @@ class EmailJobStaff(EmailJob):
         notification that a job has been added to staff
         """
         # url for the user uploaded project file
-        project_url = (
-            Site.objects.get_current().domain
-            + settings.MEDIA_URL
-            + str(self.job.project)
-        )
+        # .url gets relative url
+        project_url = Site.objects.get_current().domain + str(self.job.project.url)
 
         context = {
             "company": self.job.owner.company,
@@ -86,11 +83,14 @@ class EmailJobStaff(EmailJob):
         """
         Set the mail receivers to all staff members that are active
         """
-        receiver = self.job.owner.__class__.objects.filter(
-            is_staff=True, is_active=True
-        ).values_list("email", flat=True)
+        # transform to list to check if empty
+        receiver = list(
+            self.job.owner.__class__.objects.filter(
+                is_staff=True, is_active=True
+            ).values_list("email", flat=True)
+        )
 
-        if receiver is not None and receiver is not False:
+        if receiver is not None and receiver:
             self.receiver = receiver
             return True
         return False
@@ -110,9 +110,13 @@ class EmailJobClient(EmailJob):
         Compose the job email subject for client
         """
         if self.update:
-            self.subject = 'Your job "{0}" results have been updated!'.format(self.job.name)
+            self.subject = 'Your job "{0}" results have been updated!'.format(
+                self.job.name
+            )
         else:
-            self.subject = 'Your job "{0}" results have been uploaded!'.format(self.job.name)
+            self.subject = 'Your job "{0}" results have been uploaded!'.format(
+                self.job.name
+            )
 
     def _get_body(self):
         """
@@ -142,4 +146,3 @@ class EmailJobClient(EmailJob):
             return True
         else:
             return False
-

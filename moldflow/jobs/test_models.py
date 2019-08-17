@@ -1,4 +1,3 @@
-from django.conf import settings
 from mixer.backend.django import mixer
 from rest_framework.test import APITestCase
 
@@ -9,6 +8,10 @@ class TestJobView(APITestCase):
     def setUp(self):
         self.user = mixer.blend(
             "users.CustomUser", is_active=True, phone="+31230802611"
+        )
+        # this user is needed so that the email gets sent to staff
+        mixer.blend(
+            "users.CustomUser", is_staff=True, is_active=True, phone="+31230802611"
         )
         self.job = mixer.blend("jobs.Job", owner=self.user)
         self.client.force_authenticate(self.user)

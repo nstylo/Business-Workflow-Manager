@@ -103,9 +103,6 @@ class Job(models.Model):
             staff_email.send_mail()
             return
 
-        super().save(*args, **kwargs)
-        self.__original_result = self.result
-
     def get_admin_url(self):
         """
         Return the url for the created job
