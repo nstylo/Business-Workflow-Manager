@@ -22,7 +22,7 @@ class TestEmailJobStaff(TestCase):
         assert mail.outbox[0].body == email.plain_body, "Email body has to match"
 
     def test_compose_job_subject_staff(self):
-        self.job_email._compose_subject_staff()
+        self.job_email._get_subject()
 
         subject = "A new job has been posted for {0}.".format(
             self.user.company)

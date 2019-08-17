@@ -197,6 +197,21 @@ REST_REGISTRATION = {
         "groups",
         "date_joined",
     ),
+    "REGISTER_VERIFICATION_EMAIL_TEMPLATES": {
+        "subject": BASE_DIR + "/jobs/email_templates/register/subject.txt",
+        "text_body": BASE_DIR + "/jobs/email_templates/register/body.txt",
+        "html_body": BASE_DIR + "/jobs/email_templates/register/body.html",
+    },
+    "REGISTER_EMAIL_VERIFICATION_EMAIL_TEMPLATES": {
+        "subject": BASE_DIR + "/jobs/email_templates/register_email/subject.txt",
+        "text_body": BASE_DIR + "/jobs/email_templates/register_email/body.txt",
+        "html_body": BASE_DIR + "/jobs/email_templates/register_email/body.html",
+    },
+    "RESET_PASSWORD_VERIFICATION_EMAIL_TEMPLATES": {
+        "subject": BASE_DIR + "/jobs/email_templates/reset_password/subject.txt",
+        "text_body": BASE_DIR + "/jobs/email_templates/reset_password/body.txt",
+        "html_body": BASE_DIR + "/jobs/email_templates/reset_password/body.html",
+    },
 }
 
 # Internationalization
