@@ -38,7 +38,6 @@ export async function handleSubmit(constants, values, bag, config = {}) {
  */
 export async function logout() {
   await post(FORM_CONST.logout.request_url, { revoke_token: true })
-    .then(() => {})
     .catch(() => {})
     .finally(response => history.push(FORM_CONST.logout.redirect_url));
 }
