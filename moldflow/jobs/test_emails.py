@@ -115,22 +115,39 @@ class TestEmailJobClient(TestCase):
             "users.CustomUser", is_active=True, is_staff=True, phone="+31230802611"
         )
         self.job = mixer.blend("jobs.Job", owner=self.user)
-        self.job_email = EmailJobClient(job=self.job)
+        mail.outbox.clear()
 
-    def test_send_mail_client(self):
+    def test_send_mail_client_no_update(self):
         self.job.result = "test"
         self.job.save()
 
-        assert len(mail.outbox) == 2, "Both Staff and customer emails have to be sent"
+        assert len(mail.outbox) == 1, "The client should receive a result upload email."
+        assert len(
+            mail.outbox[0].to) == 1, "Only the client should receive an email."
+
+        assert self.job.name in mail.outbox[0].subject
+        assert self.job.name in mail.outbox[0].body
+        assert "/user/projects/" in mail.outbox[0].body, "The url needs to be there"
+        assert "Kind Regards," in mail.outbox[0].body, "A closer needs to exist"
+        assert "have been uploaded!" in mail.outbox[0].body, "The result first gets uploaded, not updated."
+        assert "Dear Sir/Madam," in mail.outbox[0].body, "A greeting needs to exist"
+        assert "***REMOVED***" in mail.outbox[0].body, "***REMOVED*** company name needs to be there"
+
+    def test_send_mail_client_update(self):
+        self.job_email = EmailJobClient(job=self.job, update=True)
+        self.job_email.send_mail()
+
+        assert len(mail.outbox) == 1, "The client should receive an email with the job results update"
         assert len(
             mail.outbox[0].to) == 1, "There is exactly 1 receiving client member"
 
-        assert self.job.name in mail.outbox[1].subject
-        assert self.job.name in mail.outbox[1].body
-        assert "/user/projects/" in mail.outbox[1].body, "The url needs to be there"
-        assert "Kind Regards," in mail.outbox[1].body, "The url needs to be there"
-        assert "Dear Sir/Madam," in mail.outbox[1].body, "The url needs to be there"
-        assert "***REMOVED***" in mail.outbox[1].body, "The url needs to be there"
+        assert self.job.name in mail.outbox[0].subject
+        assert self.job.name in mail.outbox[0].body
+        assert "/user/projects/" in mail.outbox[0].body, "The url needs to be there"
+        assert "Kind Regards," in mail.outbox[0].body, "A closer needs to exist"
+        assert "have been updated!" in mail.outbox[0].body, "The result first gets uploaded, not updated."
+        assert "Dear Sir/Madam," in mail.outbox[0].body, "A greeting needs to exist"
+        assert "***REMOVED***" in mail.outbox[0].body, "***REMOVED*** company name needs to be there"
 
 
 class TestEmailJobClientBad(TestCase):
@@ -143,9 +160,19 @@ class TestEmailJobClientBad(TestCase):
             "users.CustomUser", is_active=True, is_staff=True, phone="+31230802611"
         )
         self.job = mixer.blend("jobs.Job", owner=self.user)
-        self.job_email = EmailJobClient(job=self.job)
 
-    def test_send_mail_client(self):
+    def test_send_mail_client_update(self):
+        self.job_email = EmailJobClient(job=self.job, update=True)
+        with self.assertRaises(ValueError) as context:
+            self.job_email.send_mail()
+
+            self.assertTrue(
+                "The receiver of the email either does not exist or is not active"
+                in context.exception
+            )
+
+    def test_send_mail_client_no_update(self):
+        self.job_email = EmailJobClient(job=self.job, update=False)
         with self.assertRaises(ValueError) as context:
             self.job_email.send_mail()
 

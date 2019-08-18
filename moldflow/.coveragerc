@@ -10,7 +10,11 @@ omit =
     *init*,
     */test_*,
     */urls.py
-exclude_lines = __str__
+exclude_lines =
+    pragma: no cover
+    __str__
+    pass
+
 fail_under = 80
 skip_covered = True
 show_missing = True

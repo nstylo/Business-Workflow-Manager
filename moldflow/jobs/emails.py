@@ -1,10 +1,12 @@
+from abc import ABC, abstractmethod
+
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMessage, send_mail
 from django.template.loader import render_to_string
 
 
-class EmailJob(EmailMessage):
+class EmailJob(EmailMessage, ABC):
     def __init__(self, job, receiver=None, subject="", body=""):
         self.subject = subject
         self.plain_body = body
@@ -13,14 +15,17 @@ class EmailJob(EmailMessage):
         self.receiver = receiver
         self.job = job
 
+    @abstractmethod
     def _get_recipients(self):
-        return self.receiver
+        pass
 
+    @abstractmethod
     def _get_subject(self):
-        return self.subject
+        pass
 
+    @abstractmethod
     def _get_body(self):
-        return self.plain_body
+        pass
 
     def send_mail(self):
         """
