@@ -33,6 +33,10 @@ class TestJobViewNonStaff(APITestCase):
         self.user = mixer.blend(
             "users.CustomUser", is_active=True, phone="+31230802611"
         )
+        # this user is needed so that the email gets sent to staff
+        mixer.blend(
+            "users.CustomUser", is_staff=True, is_active=True, phone="+31230802611"
+        )
         self.client.force_authenticate(self.user)
 
     def test_get_list_empty(self):

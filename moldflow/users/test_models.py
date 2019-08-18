@@ -65,7 +65,6 @@ class CustomSuperUserManagerTests(TestCase):
             password="testingpassw123.",
         )
 
-    # TODO: Change from True to False when emailing is done
     def test_is_active(self):
         self.assertTrue(self.user.is_active)
 

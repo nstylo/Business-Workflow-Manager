@@ -182,7 +182,6 @@ REST_REGISTRATION = {
     "REGISTER_EMAIL_VERIFICATION_ENABLED": True,
     "RESET_PASSWORD_VERIFICATION_ENABLED": True,
     "VERIFICATION_FROM_EMAIL": EMAIL_HOST_USER,
-    # TODO: route frontend urls
     # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/register.html#verification-workflow
     "REGISTER_VERIFICATION_URL": "/auth/verify-user/",
     "REGISTER_EMAIL_VERIFICATION_URL": "/",
