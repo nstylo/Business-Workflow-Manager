@@ -40,7 +40,7 @@ class CustomUserManager(BaseUserManager):
             address=address,
         )
 
-        user.is_active = False  # TODO: change to False when email is in place
+        user.is_active = False
         user.set_password(password)
         user.last_login = timezone.now()
         user.save()
@@ -62,7 +62,7 @@ class CustomUserManager(BaseUserManager):
             address=address,
         )
 
-        user.is_active = True  # TODO: change to False when email is in place
+        user.is_active = True
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True

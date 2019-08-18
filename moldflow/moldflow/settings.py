@@ -41,7 +41,7 @@ if DJANGO_ENV == "development":
     EMAIL_HOST_USER = "test@gmail.com"
     EMAIL_HOST_PASSWORD = None
     EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-    EMAIL_FILE_PATH = '/tmp/emails'
+    EMAIL_FILE_PATH = "/tmp/emails"
 else:  # deployment env
     DEBUG = False
     ALLOWED_HOSTS = [os.getenv("HOST")]
@@ -182,7 +182,6 @@ REST_REGISTRATION = {
     "REGISTER_EMAIL_VERIFICATION_ENABLED": True,
     "RESET_PASSWORD_VERIFICATION_ENABLED": True,
     "VERIFICATION_FROM_EMAIL": EMAIL_HOST_USER,
-    # TODO: route frontend urls
     # https://django-rest-registration.readthedocs.io/en/latest/detailed_configuration/register.html#verification-workflow
     "REGISTER_VERIFICATION_URL": "/auth/verify-user/",
     "REGISTER_EMAIL_VERIFICATION_URL": "/",
@@ -197,6 +196,21 @@ REST_REGISTRATION = {
         "groups",
         "date_joined",
     ),
+    "REGISTER_VERIFICATION_EMAIL_TEMPLATES": {
+        "subject": BASE_DIR + "/jobs/email_templates/register/subject.txt",
+        "text_body": BASE_DIR + "/jobs/email_templates/register/body.txt",
+        "html_body": BASE_DIR + "/jobs/email_templates/register/body.html",
+    },
+    "REGISTER_EMAIL_VERIFICATION_EMAIL_TEMPLATES": {
+        "subject": BASE_DIR + "/jobs/email_templates/register_email/subject.txt",
+        "text_body": BASE_DIR + "/jobs/email_templates/register_email/body.txt",
+        "html_body": BASE_DIR + "/jobs/email_templates/register_email/body.html",
+    },
+    "RESET_PASSWORD_VERIFICATION_EMAIL_TEMPLATES": {
+        "subject": BASE_DIR + "/jobs/email_templates/reset_password/subject.txt",
+        "text_body": BASE_DIR + "/jobs/email_templates/reset_password/body.txt",
+        "html_body": BASE_DIR + "/jobs/email_templates/reset_password/body.html",
+    },
 }
 
 # Internationalization
