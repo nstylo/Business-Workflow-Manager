@@ -3,9 +3,8 @@ import { withFormik, Form, Field } from 'formik';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { handleSubmit } from '../../../utils/requests';
-import FORM_CONST from '../../../utils/form_const';
-import history from '../../../history';
+import { handleSubmit } from '../../../utils/form_submit';
+import form_const from '../../../utils/form_const';
 
 import CountrySelector from '../../other/CountrySelector';
 import countryList from 'react-select-country-list';
@@ -14,7 +13,7 @@ import CheckBox from '../../other/CheckBox';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
 const FormItem = AntForm.Item;
-const countries = countryList(); // list data
+const countries = countryList();
 
 const RegistrationView = props => {
   const { isSubmitting, touched, errors } = props;
@@ -123,10 +122,6 @@ export default withFormik({
     conditions: false
   }),
   handleSubmit: async (values, options) => {
-    await handleSubmit(FORM_CONST.register, values, options).then(response => {
-      if (response.status === FORM_CONST.register.status.successful) {
-        history.push(FORM_CONST.register.redirect_url);
-      }
-    });
+    await handleSubmit(form_const.register, values, options);
   }
 })(RegistrationView);

@@ -1,9 +1,9 @@
 import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
-// import FILETYPES from '../../../utils/filetypes';
+// import MIMETYPES from '../../../utils/mimetypes';
 
-import { handleSubmit } from '../../../utils/requests';
+import { handleSubmit } from '../../../utils/form_submit';
 import FORM_CONST from '../../../utils/form_const';
 
 import FileUploader from '../../other/FileUploader';

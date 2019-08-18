@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { get } from '../../../utils/baseRequests';
+import { get } from '../../../utils/requests';
 import { Table } from 'antd';
 
 export default class UserProjectPage extends Component {

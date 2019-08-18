@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import LoginForm from '../../forms/auth/LoginForm';
-import { AuthContext } from '../../../App';
 
-export default () => {
-  const { setAuthenticated } = useContext(AuthContext);
-  return <LoginForm setAuthenticated={setAuthenticated} />;
+const LoginPage = () => {
+  return <LoginForm />;
 };
+
+export default LoginPage;
