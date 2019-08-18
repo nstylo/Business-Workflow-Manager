@@ -1,6 +1,5 @@
 import React from 'react';
-import history from '../../history';
-import { post } from '../../utils/requests';
+import { logout } from '../../utils/requests';
 import RoutingMenuItem from '../other/RoutingMenuItem';
 import { Layout, Menu, Icon } from 'antd';
 
@@ -8,16 +7,6 @@ const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 export default props => {
-  /**
-   * logs out the user
-   * TODO: handle error
-   */
-  async function logout() {
-    await post('/auth/logout/', { revoke_token: true }).then(response =>
-      history.push('/auth/login/')
-    );
-  }
-
   return (
     <Layout style={{ height: '100vh' }}>
       <Header className="header" style={{ height: '50px' }}>
