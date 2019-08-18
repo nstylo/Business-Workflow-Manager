@@ -37,7 +37,7 @@ export default {
     request_url: '/jobs/',
     status: {
       successful: 201,
-      unsuccessful: 401
+      unsuccessful: 400
     }
   },
   logout: {

@@ -7,14 +7,14 @@ import { handleSubmit } from '../../../utils/requests';
 import FORM_CONST from '../../../utils/form_const';
 import history from '../../../history';
 
-import CountrySelector from '../../other/CountrySelector';
-import countryList from 'react-select-country-list';
+import Selector from '../../other/Selector';
+import countryList from 'react-select-country-list'; // country data
 import InputField from '../../other/InputField';
 import CheckBox from '../../other/CheckBox';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
 const FormItem = AntForm.Item;
-const countries = countryList(); // list data
+const countries = countryList(); // country data
 
 const RegistrationView = props => {
   const { isSubmitting, touched, errors } = props;
@@ -56,12 +56,12 @@ const RegistrationView = props => {
         name="country"
         placeholder="Select your country"
         options={countries}
-        component={CountrySelector}
+        component={Selector}
       />
       <Field name="company" placeholder="Company" component={InputField} />
       <FormItem
         help={touched.conditions && errors.conditions}
-        validateStatus={errors.conditions ? 'error' : null}
+        validateStatus="error"
       >
         <Field name="conditions" type="checkbox" component={CheckBox}>
           I have read the
