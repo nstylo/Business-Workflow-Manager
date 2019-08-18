@@ -3,17 +3,18 @@ import { withFormik, Form, Field } from 'formik';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { handleSubmit } from '../../../utils/form_submit';
-import form_const from '../../../utils/form_const';
+import { handleSubmit } from '../../../utils/requests';
+import FORM_CONST from '../../../utils/form_const';
+import history from '../../../history';
 
-import CountrySelector from '../../other/CountrySelector';
-import countryList from 'react-select-country-list';
+import Selector from '../../other/Selector';
+import countryList from 'react-select-country-list'; // country data
 import InputField from '../../other/InputField';
 import CheckBox from '../../other/CheckBox';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
 const FormItem = AntForm.Item;
-const countries = countryList();
+const countries = countryList(); // country data
 
 const RegistrationView = props => {
   const { isSubmitting, touched, errors } = props;
@@ -55,12 +56,12 @@ const RegistrationView = props => {
         name="country"
         placeholder="Select your country"
         options={countries}
-        component={CountrySelector}
+        component={Selector}
       />
       <Field name="company" placeholder="Company" component={InputField} />
       <FormItem
         help={touched.conditions && errors.conditions}
-        validateStatus={errors.conditions ? 'error' : null}
+        validateStatus="error"
       >
         <Field name="conditions" type="checkbox" component={CheckBox}>
           I have read the
@@ -122,6 +123,10 @@ export default withFormik({
     conditions: false
   }),
   handleSubmit: async (values, options) => {
-    await handleSubmit(form_const.register, values, options);
+    await handleSubmit(FORM_CONST.register, values, options).then(response => {
+      if (response.status === FORM_CONST.register.status.successful) {
+        history.push(FORM_CONST.register.redirect_url);
+      }
+    });
   }
 })(RegistrationView);

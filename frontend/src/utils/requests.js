@@ -1,61 +1,61 @@
-import axios from 'axios';
-import { API_URL } from './url_config';
-
-// TODO: dont make global settings for axios
-// axios headers
-axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = API_URL;
+import FORM_CONST from './form_const';
+import history from '../history';
+import { post, get } from './baseRequests';
 
 /**
- * handles post requests globally
- * @param { string } url the api endpoint of the request
- * @param { object } values the payload of the request
- * @param { object } [headers] the payload of the request
+ * This interface requires an api request callback and 'instructions'
+ * on how to handle those depending on status codes
+ * @param {object} constants holds status codes and route url on success
+ * @param {object} values the payload of the api call
+ * @param {object} bag formik helper functions
  */
-export async function post(url, values, config = {}) {
-  return await axios
-    .post(url, values, config)
-    .then(response => {
-      return response;
-    })
-    .catch(err => {
-      // .response .request .message are defined by axios
-      if (err.response) {
-        // if axios returned status =/= 2xx
-        return err.response;
-      }
-      if (err.request) {
-        // request was made but nothing received
-        return err.request;
-      }
-      return err.message; // something went wrong with setting up the request
-    });
+export async function handleSubmit(constants, values, bag, config = {}) {
+  const { setErrors, setSubmitting, resetForm } = bag;
+  const { status, request_url } = constants;
+
+  const response = await post(request_url, values, config); // make request
+
+  // .status .data defined by axios
+  switch (response.status) {
+    case status.successful:
+      resetForm();
+      break;
+    case status.unsuccessful:
+      setErrors(response.data); // errors for the right label
+      setSubmitting(false); // enable submit button on failure
+      break;
+    default:
+      // set default errors if unexpected event
+      setErrors(FORM_CONST.default_errors.errors);
+      setSubmitting(false); // enable submit button on failure
+  }
+  return response;
 }
 
 /**
- * handles get requests globally
- * @param { string } url the api endpoint of the request
+ * logs out the user and then reroutes to login page
+ * TODO: handle error, for now just always redirect even if logout unsuccessful
  */
-export async function get(url, config = {}) {
-  return await axios
-    .get(url, config)
+export async function logout() {
+  await post(FORM_CONST.logout.request_url, { revoke_token: true })
+    .catch(() => {})
+    .finally(response => history.push(FORM_CONST.logout.redirect_url));
+}
+
+/**
+ * queries the backend if user authenticated
+ * @return { boolean } whether user is logged in
+ */
+export async function checkAuthenticated() {
+  return await get('/auth/logout/')
     .then(response => {
-      return response;
+      if (response.status === FORM_CONST.checkAuthenticated.status.successful) {
+        return true;
+      } else {
+        return false;
+      }
     })
-    .catch(err => {
-      // .response .request .message are defined by axios
-      if (err.response) {
-        // if axios returned status =/= 2xx
-        return err.response;
-      }
-      if (err.request) {
-        // request was made but nothing received
-        return err.request;
-      }
-      return err.message; // something went wrong with setting up the request
-    });
+    .catch(err => false);
 }
 
 /**
@@ -72,4 +72,4 @@ export function getQueryParams() {
 }
 
 // for testing reasons
-export default { post, get, getQueryParams };
+export default { handleSubmit, logout, checkAuthenticated, getQueryParams };
