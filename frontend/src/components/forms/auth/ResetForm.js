@@ -2,8 +2,9 @@ import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
-import { handleSubmit } from '../../../utils/form_submit';
-import form_const from '../../../utils/form_const';
+import history from '../../../history';
+import { handleSubmit } from '../../../utils/requests';
+import FORM_CONST from '../../../utils/form_const';
 
 import InputField from '../../other/InputField';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
@@ -63,12 +64,16 @@ const validationSchema = yup.object().shape({
 export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ password: '' }),
-  handleSubmit: async (values, options) => {
-    const queryParams = options.props.getQueryParams(); // get query params
+  handleSubmit: async (values, bag) => {
+    const queryParams = bag.props.getQueryParams(); // get query params
     await handleSubmit(
-      form_const.reset,
+      FORM_CONST.reset,
       { ...values, ...queryParams }, // submit query params and password
-      options
-    );
+      bag
+    ).then(response => {
+      if (response.status === FORM_CONST.reset.status.successful) {
+        history.push(FORM_CONST.reset.redirect_url); // redirect
+      }
+    });
   }
 })(ResetView);

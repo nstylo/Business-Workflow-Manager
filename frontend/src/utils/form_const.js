@@ -6,11 +6,6 @@ export default {
     status: {
       successful: 200,
       unsuccessful: 400
-    },
-    mock_errors: {
-      errors: {
-        email: 'email is not registered'
-      }
     }
   },
   register: {
@@ -19,11 +14,6 @@ export default {
     status: {
       successful: 201,
       unsuccessful: 400
-    },
-    mock_errors: {
-      errors: {
-        email: 'email is already registered'
-      }
     }
   },
   requestReset: {
@@ -32,11 +22,6 @@ export default {
     status: {
       successful: 200,
       unsuccessful: 404
-    },
-    mock_errors: {
-      errors: {
-        email: 'email is not registered'
-      }
     }
   },
   reset: {
@@ -45,11 +30,6 @@ export default {
     status: {
       successful: 200,
       unsuccessful: 400
-    },
-    mock_errors: {
-      errors: {
-        password: 'please enter a valid password'
-      }
     }
   },
   postFiles: {
@@ -58,11 +38,22 @@ export default {
     status: {
       successful: 201,
       unsuccessful: 401
-    },
-    mock_errors: {
-      errors: {
-        files: 'uploaded invalid files'
-      }
+    }
+  },
+  logout: {
+    redirect_url: '/auth/login/',
+    request_url: '/auth/logout/',
+    status: {
+      successful: 200,
+      unsuccessful: 403
+    }
+  },
+  checkAuthenticated: {
+    redirect_url: null,
+    request_url: '/auth/logout/',
+    status: {
+      successful: 405,
+      unsuccessful: 403
     }
   },
   default_errors: {

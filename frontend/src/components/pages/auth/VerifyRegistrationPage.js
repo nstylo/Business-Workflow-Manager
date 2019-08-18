@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getQueryParams, post } from '../../../utils/requests';
+import { getQueryParams } from '../../../utils/requests';
+import { post } from '../../../utils/baseRequests';
 
 const VerifyRegistrationPage = props => {
   const [isVerified, setIsVerified] = useState(null);
