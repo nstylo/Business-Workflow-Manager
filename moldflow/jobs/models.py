@@ -1,10 +1,9 @@
-from django.utils import timezone
-
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from .emails import EmailJobClient, EmailJobStaff
 
@@ -63,8 +62,6 @@ class Job(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)], default=0
     )
 
-    __original_result = None
-
     class Meta:
         indexes = [models.Index(fields=["created"])]
         ordering = ["created"]
@@ -81,20 +78,28 @@ class Job(models.Model):
         was added, or send en email to the client, when the results are uploaded
         """
         if self.pk:  # only happens if object is in db
+            old_result = (
+                self.__class__._default_manager.filter(pk=self.pk)
+                .values("result")
+                .get()["result"]
+            )
             # gets triggered if the result file gets uploaded, only if it was null
-            if self.result != self.__original_result:
+            if self.result != old_result:
                 # It's the first result file
-                if not self.__original_result:
+                if not old_result:
                     self.progress = 100  # if a result is uploaded, the job is finished
                     self.estimated = timezone.now()
                     super().save(*args, **kwargs)
-                    client_email = EmailJobClient(job=self)  # notify the client
+                    client_email = EmailJobClient(
+                        job=self)  # notify the client
                     client_email.send_mail()
                     return
                 # The results are updated
                 else:
                     super().save(*args, **kwargs)
-                    client_email = EmailJobClient(job=self, update=True)  # notify the client
+                    client_email = EmailJobClient(
+                        job=self, update=True
+                    )  # notify the client
                     client_email.send_mail()
                     return
         else:  # the job is not in the database yet, a new job gets created
