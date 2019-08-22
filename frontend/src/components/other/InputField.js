@@ -4,7 +4,9 @@ import { Form, Input } from 'antd';
 const FormItem = Form.Item;
 
 export default ({ field, form: { touched, errors }, ...props }) => {
-  const errorMessage = touched[field.name] && errors[field.name];
+  const { name } = field;
+
+  const errorMessage = touched[name] && errors[name];
   return (
     <FormItem
       help={errorMessage}

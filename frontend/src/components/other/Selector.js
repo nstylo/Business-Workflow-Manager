@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { Select, Form } from 'antd';
+
 const { Option } = Select;
 const FormItem = Form.Item;
 
@@ -17,7 +17,10 @@ export default ({ field, form, ...props }) => {
 
   const errorMessage = touched[name] && errors[name];
   return (
-    <FormItem help={errorMessage} validateStatus="error">
+    <FormItem
+      help={errorMessage}
+      validateStatus={errorMessage ? 'error' : null}
+    >
       <Select
         name={name}
         placeholder={placeholder}
