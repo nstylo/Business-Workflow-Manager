@@ -32,10 +32,8 @@ const LoginView = props => {
         placeholder="Password"
         component={InputField}
       />
-      <FormItem>
-        <Field name="remember" component={CheckBox}>
-          Remember me!
-        </Field>
+      <Field name="remember" component={CheckBox}>
+        Remember me!
         <Link style={{ float: 'right' }} to="/auth/request-reset/">
           Forgot Password
         </Link>
@@ -49,7 +47,7 @@ const LoginView = props => {
           Log in
         </Button>
         Or <Link to="/auth/register/">register now!</Link>
-      </FormItem>
+      </Field>
       {errors.detail ? (
         <FormItem>
           <Alert type="error" message={errors.detail} showIcon />
