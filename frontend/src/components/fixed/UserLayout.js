@@ -1,27 +1,13 @@
 import React from 'react';
-import { logout } from '../../utils/requests';
 import RoutingMenuItem from '../other/RoutingMenuItem';
 import { Layout, Menu, Icon } from 'antd';
 
 const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 export default props => {
   return (
     <Layout style={{ height: '100vh' }}>
-      <Header className="header" style={{ height: '50px' }}>
-        <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          style={{ height: '100%', float: 'right' }}
-        >
-          <Menu.Item key="1" onClick={logout}>
-            Logout
-          </Menu.Item>
-          <Menu.Item key="2">Profile</Menu.Item>
-        </Menu>
-      </Header>
       <Content>
         <Layout
           style={{ padding: '24px 0', background: '#fff', height: '100%' }}
