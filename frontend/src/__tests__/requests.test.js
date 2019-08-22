@@ -227,33 +227,34 @@ describe('logout()', () => {
   });
   /* end test post */
 
+  // DOES NOT PUSH ANYMORE
   /* test history.push() */
-  it('should push to history after successful', async () => {
-    await logout();
-    expect(history.push).toHaveBeenCalledTimes(1);
-  });
-
-  it('should push to the correct url', async () => {
-    requests.post = jest.fn(() => Promise.resolve());
-    history.push = jest.fn();
-
-    await logout();
-    expect(history.push).toHaveBeenCalledWith(FORM_CONST.logout.redirect_url);
-  });
-
-  it('should push to history on error', async () => {
-    requests.post = jest.fn(() => Promise.reject());
-    await logout();
-    expect(history.push).toHaveBeenCalledTimes(1);
-  });
-
-  it('should push to the correct url on error', async () => {
-    requests.post = jest.fn(() => Promise.reject());
-    history.push = jest.fn();
-
-    await logout();
-    expect(history.push).toHaveBeenCalledWith(FORM_CONST.logout.redirect_url);
-  });
+  // it('should push to history after successful', async () => {
+  //   await logout();
+  //   expect(history.push).toHaveBeenCalledTimes(1);
+  // });
+  //
+  // it('should push to the correct url', async () => {
+  //   requests.post = jest.fn(() => Promise.resolve());
+  //   history.push = jest.fn();
+  //
+  //   await logout();
+  //   expect(history.push).toHaveBeenCalledWith(FORM_CONST.logout.redirect_url);
+  // });
+  //
+  // it('should push to history on error', async () => {
+  //   requests.post = jest.fn(() => Promise.reject());
+  //   await logout();
+  //   expect(history.push).toHaveBeenCalledTimes(1);
+  // });
+  //
+  // it('should push to the correct url on error', async () => {
+  //   requests.post = jest.fn(() => Promise.reject());
+  //   history.push = jest.fn();
+  //
+  //   await logout();
+  //   expect(history.push).toHaveBeenCalledWith(FORM_CONST.logout.redirect_url);
+  // });
   /* end test history.push() */
 });
 
