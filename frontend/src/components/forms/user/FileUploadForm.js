@@ -18,11 +18,8 @@ const UploadView = props => {
   return (
     <Form
       style={{
-        width: '80%',
-        margin: 'auto auto',
-        padding: '20px 30px',
-        border: 'solid rgba(0,0,0,.25) 1px',
-        borderRadius: '5px'
+        width: '90%',
+        margin: 'auto auto'
       }}
     >
       <Field

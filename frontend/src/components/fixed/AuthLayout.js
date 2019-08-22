@@ -4,8 +4,8 @@ import { Layout, Menu, Icon } from 'antd';
 const { Header, Content, Footer } = Layout;
 
 export default props => (
-  <Layout className="layout">
-    <Header style={{ height: '48px' }}>
+  <Layout>
+    <Header className="auth-header">
       <div className="logo" />
       <Menu
         theme="dark"

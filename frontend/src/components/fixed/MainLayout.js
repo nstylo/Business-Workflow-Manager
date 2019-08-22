@@ -10,8 +10,9 @@ const { Search } = Input;
 export default props => {
   return (
     <Layout>
-      <Header>
+      <Header className="main-header">
         <div className="logo-wrapper">
+          {/*center logo*/}
           <span className="helper"></span>
           <img className="logo-main" src={logo} alt="***REMOVED*** logo" />
         </div>
@@ -69,7 +70,6 @@ const Utils = () => {
             <Link to="/auth/login">login</Link>
           </>
         )}
-        <Divider type="vertical" />
       </div>
       <div className="util-item">
         <Search
