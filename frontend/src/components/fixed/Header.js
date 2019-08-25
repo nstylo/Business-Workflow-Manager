@@ -55,7 +55,7 @@ const Sections = () => {
 };
 
 const Utils = () => {
-  const { isAuthenticated, setAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <div className="utils">
@@ -73,17 +73,7 @@ const Utils = () => {
           />
         </div>
         {isAuthenticated === true ? (
-          <>
-            <Dropdown
-              overlay={UserMenu({ setAuthenticated })}
-              placement="bottomRight"
-              trigger={['click']}
-            >
-              <Button style={{ height: '80%' }} type="primary">
-                <Icon type="user" />
-              </Button>
-            </Dropdown>
-          </>
+          <UserDropDown />
         ) : (
           <>
             <Link to="/auth/register">register</Link>
@@ -93,6 +83,22 @@ const Utils = () => {
         )}
       </div>
     </div>
+  );
+};
+
+const UserDropDown = () => {
+  const { setAuthenticated } = useContext(AuthContext);
+
+  return (
+    <Dropdown
+      overlay={UserMenu({ setAuthenticated })}
+      placement="bottomRight"
+      trigger={['hover']}
+    >
+      <Button style={{ height: '80%' }} type="primary">
+        <Icon type="user" />
+      </Button>
+    </Dropdown>
   );
 };
 
