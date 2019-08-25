@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import filters, viewsets
 
 from users.permissions import IsLoggedInUserOrStaff
 
@@ -10,7 +10,11 @@ class JobView(viewsets.ModelViewSet):
     permission_classes = [IsLoggedInUserOrStaff]
     serializer_class = JobSerializer
     # https://docs.djangoproject.com/en/2.2/ref/models/querysets/#order-by
-    queryset = Job.objects.all().order_by("created")
+    queryset = Job.objects.all()
+
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ["name", "created"]
+    ordering = ["created"]
 
     def get_queryset(self):
         """
