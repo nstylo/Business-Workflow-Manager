@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import history from '../../history';
 import { AuthContext } from '../../App';
 import logo from '../../res/***REMOVED***.png';
 import { Layout, Menu, Divider, Input, Icon, Button, Dropdown } from 'antd';
@@ -27,25 +28,28 @@ export default props => {
 };
 
 const Sections = () => {
+  // extract last word of url, if valid menu item key => highlight
+  const pathKey = history.location.pathname.replace(/\/$/, '').match(/\w*$/)[0];
+
   return (
     <Menu
       className="sections"
       theme="dark"
       mode="horizontal"
-      defaultSelectedKeys={['2']}
+      defaultSelectedKeys={[pathKey]}
     >
-      <Menu.Item className="section-item" key="1">
-        <Link to="/">Home</Link>
-      </Menu.Item>
-      <Menu.Item className="section-item" key="2">
-        <Link to="/">Solutions</Link>
-      </Menu.Item>
-      <Menu.Item className="section-item" key="3">
-        <Link to="/">About</Link>
-      </Menu.Item>
-      <Menu.Item className="section-item" key="4">
-        <Link to="/">Contact</Link>
-      </Menu.Item>
+      <RoutingMenuItem className="section-item" to="/" key="home">
+        <span>Home</span>
+      </RoutingMenuItem>
+      <RoutingMenuItem className="section-item" to="/solutions" key="solutions">
+        <span>Solutions</span>
+      </RoutingMenuItem>
+      <RoutingMenuItem className="section-item" to="/about" key="about">
+        <span>About</span>
+      </RoutingMenuItem>
+      <RoutingMenuItem className="section-item" to="/contact" key="contact">
+        <span>Contact</span>
+      </RoutingMenuItem>
     </Menu>
   );
 };

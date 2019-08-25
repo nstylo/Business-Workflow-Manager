@@ -1,7 +1,11 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
-const MainPage = props => {
-  return <div>MainPage</div>;
+export default props => {
+  return (
+    <div>
+      <Redirect to="/home" />
+      MainPage
+    </div>
+  );
 };
-
-export default MainPage;

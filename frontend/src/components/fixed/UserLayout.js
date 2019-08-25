@@ -3,7 +3,6 @@ import history from '../../history';
 import RoutingMenuItem from '../other/RoutingMenuItem';
 import { Layout, Menu, Icon } from 'antd';
 
-const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
 
 export default props => {
