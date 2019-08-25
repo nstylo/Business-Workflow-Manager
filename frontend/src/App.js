@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import history from './history';
 import { checkAuthenticated } from './utils/requests';
 import './App.less';
@@ -42,6 +42,12 @@ export default class App extends Component {
         >
           <Router history={history}>
             <Switch>
+              {/* Reroute to home when enter index */}
+              <Route
+                exact
+                path={'/'}
+                component={() => <Redirect to="/home" />}
+              />
               <Route path="/auth" component={AuthRouter} />
               <Header>
                 <Switch>

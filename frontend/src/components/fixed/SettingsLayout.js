@@ -3,9 +3,12 @@ import history from '../../history';
 import RoutingMenuItem from '../other/RoutingMenuItem';
 import { Layout, Menu, Icon } from 'antd';
 
-const { Content, Sider } = Layout;
+const { Sider, Content } = Layout;
 
 export default props => {
+  // extract last word of url, if valid menu item key => highlight
+  const pathKey = history.location.pathname.replace(/\/$/, '').match(/\w*$/)[0];
+
   return (
     <Layout style={{ height: '100vh' }}>
       <Content>
@@ -13,7 +16,7 @@ export default props => {
           style={{ padding: '24px 0', background: '#fff', height: '100%' }}
         >
           <Sider width={200} style={{ background: '#fff' }}>
-            <UserMenu />
+            <Settings pathKey={pathKey} />
           </Sider>
           <Content style={{ padding: '0 24px', minHeight: 280 }}>
             {props.children}
@@ -24,9 +27,8 @@ export default props => {
   );
 };
 
-const UserMenu = props => {
-  // extract last word of url, if valid menu item key => highlight
-  const pathKey = history.location.pathname.replace(/\/$/, '').match(/\w*$/)[0];
+const Settings = props => {
+  const { pathKey } = props;
 
   return (
     <Menu
@@ -34,13 +36,17 @@ const UserMenu = props => {
       style={{ height: '100%' }}
       defaultSelectedKeys={[pathKey]}
     >
-      <RoutingMenuItem key="upload" to="/user/upload/">
+      <RoutingMenuItem key="account" to="/user/settings/account">
         <Icon type="file-add" theme="twoTone" />
-        Add project
+        Account
       </RoutingMenuItem>
-      <RoutingMenuItem key="projects" to="/user/projects/">
-        <Icon type="container" theme="twoTone" />
-        All projects
+      <RoutingMenuItem key="profile" to="/user/settings/profile">
+        <Icon type="file-add" theme="twoTone" />
+        Profile
+      </RoutingMenuItem>
+      <RoutingMenuItem key="billing" to="/user/settings/billing">
+        <Icon type="file-add" theme="twoTone" />
+        Billing
       </RoutingMenuItem>
     </Menu>
   );
