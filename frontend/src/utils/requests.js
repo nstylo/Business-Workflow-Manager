@@ -1,5 +1,4 @@
 import FORM_CONST from './form_const';
-import history from '../history';
 import { post, get } from './baseRequests';
 
 /**
@@ -37,9 +36,9 @@ export async function handleSubmit(constants, values, bag, config = {}) {
  * TODO: handle error, for now just always redirect even if logout unsuccessful
  */
 export async function logout() {
-  await post(FORM_CONST.logout.request_url, { revoke_token: true })
-    .catch(() => {})
-    .finally(response => history.push(FORM_CONST.logout.redirect_url));
+  await post(FORM_CONST.logout.request_url, { revoke_token: true }).catch(
+    () => {}
+  );
 }
 
 /**

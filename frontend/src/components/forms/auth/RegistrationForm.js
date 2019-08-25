@@ -17,7 +17,7 @@ const FormItem = AntForm.Item;
 const countries = countryList(); // country data
 
 const RegistrationView = props => {
-  const { isSubmitting, touched, errors } = props;
+  const { isSubmitting, errors } = props;
   return (
     <Form className="form-auth">
       <Field
@@ -59,24 +59,19 @@ const RegistrationView = props => {
         component={Selector}
       />
       <Field name="company" placeholder="Company" component={InputField} />
-      <FormItem
-        help={touched.conditions && errors.conditions}
-        validateStatus="error"
+      <Field name="conditions" component={CheckBox}>
+        I have read the
+        <Link to="/terms-and-conditions"> Terms &amp; Conditions</Link>
+      </Field>
+      <Button
+        style={{ width: '100%' }}
+        type="primary"
+        htmlType="submit"
+        className="login-form-button"
+        disabled={isSubmitting}
       >
-        <Field name="conditions" type="checkbox" component={CheckBox}>
-          I have read the
-        </Field>
-        <Link to="/terms-and-conditions">Terms &amp; Conditions</Link>
-        <Button
-          style={{ width: '100%' }}
-          type="primary"
-          htmlType="submit"
-          className="login-form-button"
-          disabled={isSubmitting}
-        >
-          Register now
-        </Button>
-      </FormItem>
+        Register now
+      </Button>
       {errors.detail ? (
         <FormItem>
           <Alert type="error" message={errors.detail} showIcon />

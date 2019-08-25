@@ -9,6 +9,7 @@ import AuthRouter from './routers/AuthRouter';
 import UserRouter from './routers/UserRouter';
 import PublicRouter from './routers/PublicRouter';
 import ProtectedRoute from './routers/ProtectedRoute';
+import Header from './components/fixed/Header';
 
 export const AuthContext = React.createContext();
 
@@ -42,9 +43,13 @@ export default class App extends Component {
           <Router history={history}>
             <Switch>
               <Route path="/auth" component={AuthRouter} />
-              <ProtectedRoute path="/user" component={UserRouter} />
-              <Route path="/" component={PublicRouter} />
-              <Route component={NotFound} />
+              <Header>
+                <Switch>
+                  <ProtectedRoute path="/user" component={UserRouter} />
+                  <Route path="/" component={PublicRouter} />
+                  <Route component={NotFound} />
+                </Switch>
+              </Header>
             </Switch>
           </Router>
         </AuthContext.Provider>

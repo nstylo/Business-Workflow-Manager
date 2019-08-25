@@ -10,6 +10,11 @@
   float: left;
 }
 
+/* white background of search bar shined through */
+.ant-input-group-addon {
+    background-color: transparent !important;
+}
+
 .form-auth {
     width: 480px;
     height: auto;
@@ -17,4 +22,66 @@
     padding: 25px;
     background-color: white;
     box-shadow: @box-shadow-base;
+}
+
+.main-header {
+    display: grid;
+    height: 120px !important;
+    grid-template-columns: 20% auto;
+    grid-template-rows: 50% auto;
+}
+
+.auth-header {
+    /* display: grid; */
+    height: 48px !important;
+    /* grid-template-columns: 20% auto; */
+    /* grid-template-rows: 50% auto; */
+}
+
+.logo-wrapper {
+   align-items: center;
+   justify-items: center;
+   grid-column: 1;
+   grid-row: span 2;
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.logo-main {
+    vertical-align: middle;
+    width: 100%;
+    max-width: 189px;
+    height: auto;
+    max-height: 67px;
+}
+
+.utils {
+    display: flex;
+    justify-content: flex-end;
+    height: 40px;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.util-item {
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.sections {
+    display: flex;
+    justify-content: flex-end;
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.section-item {
+    float: right;
 }
