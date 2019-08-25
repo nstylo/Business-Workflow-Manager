@@ -38,7 +38,7 @@ const Sections = () => {
       mode="horizontal"
       defaultSelectedKeys={[pathKey]}
     >
-      <RoutingMenuItem className="section-item" to="/" key="home">
+      <RoutingMenuItem className="section-item" to="/home" key="home">
         <span>Home</span>
       </RoutingMenuItem>
       <RoutingMenuItem className="section-item" to="/solutions" key="solutions">
