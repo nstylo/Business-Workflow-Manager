@@ -1,4 +1,5 @@
 import React from 'react';
+import history from '../../history';
 import RoutingMenuItem from '../other/RoutingMenuItem';
 import { Layout, Menu, Icon } from 'antd';
 
@@ -13,23 +14,44 @@ export default props => {
           style={{ padding: '24px 0', background: '#fff', height: '100%' }}
         >
           <Sider width={200} style={{ background: '#fff' }}>
-            <Menu mode="inline" style={{ height: '100%' }}>
+            <Menu
+              mode="inline"
+              style={{ height: '100%' }}
+              defaultSelectedKeys={[
+                // extract last word of url, if valid menu item key => highlight
+                history.location.pathname.replace(/\/$/, '').match(/\w*$/)[0]
+              ]}
+            >
               <SubMenu
                 key="projects"
                 title={
                   <span>
                     <Icon type="folder" theme="twoTone" />
-                    projects
+                    Projects
                   </span>
                 }
               >
-                <RoutingMenuItem key="1" url="/user/upload/">
+                <RoutingMenuItem key="upload" to="/user/upload/">
                   <Icon type="file-add" theme="twoTone" />
                   Add project
                 </RoutingMenuItem>
-                <RoutingMenuItem key="2" url="/user/projects/">
+                <RoutingMenuItem key="projects" to="/user/projects/">
                   <Icon type="container" theme="twoTone" />
                   All projects
+                </RoutingMenuItem>
+              </SubMenu>
+              <SubMenu
+                key="settings"
+                title={
+                  <span>
+                    <Icon type="setting" theme="twoTone" />
+                    Settings
+                  </span>
+                }
+              >
+                <RoutingMenuItem key="account" to="/user/settings/account">
+                  <Icon type="file-add" theme="twoTone" />
+                  Account
                 </RoutingMenuItem>
               </SubMenu>
             </Menu>
