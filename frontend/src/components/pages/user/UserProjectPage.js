@@ -26,7 +26,9 @@ export default class UserProjectPage extends Component {
       {
         title: 'Created',
         dataIndex: 'created',
-        key: 'created'
+        key: 'created',
+        render: (text, record, index) => text.datetime
+        // sorter: (a, b) => b.created.milliseconds - a.created.milliseconds
       },
       {
         title: 'Action',
@@ -75,7 +77,10 @@ export default class UserProjectPage extends Component {
           key: item.url,
           name: item.name,
           description: item.description,
-          created: this.parseDateTime(item.created),
+          created: {
+            datetime: this.parseDateTime(item.created),
+            milliseconds: Date.parse(item.created)
+          },
           estimated: item.estimated,
           file: this.parseFileName(item.project), // TODO: parse file name
           result: item.result

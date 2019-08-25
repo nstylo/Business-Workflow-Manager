@@ -4,24 +4,34 @@ import { Route, Switch } from 'react-router-dom';
 import UserUploadPage from '../components/pages/user/UserUploadPage';
 import UserProjectPage from '../components/pages/user/UserProjectPage';
 import UserMainPage from '../components/pages/user/UserMainPage';
+import SettingsRouter from './SettingsRouter';
 
-import UserRoute from './UserRoute';
+import LayoutRoute from './LayoutRoute';
+import UserLayout from '../components/fixed/UserLayout';
 import NotFound from '../components/pages/public/NotFound';
 
 export default ({ match }) => {
   return (
     <Switch>
-      <UserRoute exact path={`${match.url}`} component={UserMainPage} />
-      <UserRoute
+      <LayoutRoute
         exact
-        path={`${match.url}/upload/`}
+        path={`${match.url}`}
+        layout={UserLayout}
+        component={UserMainPage}
+      />
+      <LayoutRoute
+        exact
+        path={`${match.url}/upload`}
+        layout={UserLayout}
         component={UserUploadPage}
       />
-      <UserRoute
+      <LayoutRoute
         exact
-        path={`${match.url}/projects/`}
+        path={`${match.url}/projects`}
+        layout={UserLayout}
         component={UserProjectPage}
       />
+      <Route path={`${match.url}/settings`} component={SettingsRouter} />
       <Route component={NotFound} />
     </Switch>
   );
