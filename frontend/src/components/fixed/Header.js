@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../App';
 import logo from '../../res/***REMOVED***.png';
-import { Layout, Menu, Divider, Input } from 'antd';
+import { Layout, Menu, Divider, Input, Icon, Button, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
 import { logout } from '../../utils/requests';
+import RoutingMenuItem from '../other/RoutingMenuItem';
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -55,13 +56,29 @@ const Utils = () => {
   return (
     <div className="utils">
       <div className="util-item">
+        <div className="util-item">
+          <Search
+            placeholder="search"
+            enterButton="Go"
+            size="small"
+            style={{
+              width: '200px',
+              height: '80%'
+            }}
+            onSearch={value => console.log(value)} // TODO: global search
+          />
+        </div>
         {isAuthenticated === true ? (
           <>
-            <Link to="/user">My Account</Link>
-            <Divider type="vertical" />
-            <Link to="/" onClick={() => logout() && setAuthenticated(false)}>
-              logout
-            </Link>
+            <Dropdown
+              overlay={UserMenu({ setAuthenticated })}
+              placement="bottomRight"
+              trigger={['click']}
+            >
+              <Button style={{ height: '80%' }} type="primary">
+                <Icon type="user" />
+              </Button>
+            </Dropdown>
           </>
         ) : (
           <>
@@ -71,15 +88,23 @@ const Utils = () => {
           </>
         )}
       </div>
-      <div className="util-item">
-        <Search
-          placeholder="search"
-          enterButton="Go"
-          size="small"
-          style={{ width: 200 }}
-          onSearch={value => console.log(value)}
-        />
-      </div>
     </div>
+  );
+};
+
+const UserMenu = props => {
+  return (
+    <Menu style={{ width: '200px' }}>
+      <RoutingMenuItem to="/user">
+        <span>My Profile</span>
+      </RoutingMenuItem>
+      <RoutingMenuItem to="/user/settings">
+        <span>Settings</span>
+      </RoutingMenuItem>
+      <hr style={{ width: '90%' }} />
+      <Menu.Item onClick={() => logout() && props.setAuthenticated()}>
+        <span>Logout</span>
+      </Menu.Item>
+    </Menu>
   );
 };
