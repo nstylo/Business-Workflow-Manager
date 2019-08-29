@@ -7,6 +7,7 @@ import { post, get } from './baseRequests';
  * @param {object} constants holds status codes and route url on success
  * @param {object} values the payload of the api call
  * @param {object} bag formik helper functions
+ * @param {object} config axios config
  */
 export async function handleSubmit(constants, values, bag, config = {}) {
   const { setErrors, setSubmitting, resetForm } = bag;

@@ -6,15 +6,16 @@ const FormItem = Form.Item;
 
 /**
  * wrapped antd selector which reads a dictionary of data
- * @param { object } field refers back to formik field
- * @param { object } form refers back to formik form
+ * @param { object } field information about the field, e.g. name, value
+ * @param { object } form information about the form, used for displaying error
  * @param { object } props anything else you want to pass on
  */
 export default ({ field, form, ...props }) => {
   const { touched, errors } = form;
-  const { name } = field;
+  const { name, value } = field; // name and initial value of selector
   const { options, placeholder } = props; // population data and field placeholder
 
+  // set errors only when touched
   const errorMessage = touched[name] && errors[name];
   return (
     <FormItem
