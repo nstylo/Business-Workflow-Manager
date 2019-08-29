@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom';
 
 import UserUploadPage from '../components/pages/user/UserUploadPage';
 import UserProjectPage from '../components/pages/user/UserProjectPage';
-import UserMainPage from '../components/pages/user/UserMainPage';
 import SettingsRouter from './SettingsRouter';
 
 import LayoutRoute from './LayoutRoute';
@@ -13,12 +12,6 @@ import NotFound from '../components/pages/public/NotFound';
 export default ({ match }) => {
   return (
     <Switch>
-      <LayoutRoute
-        exact
-        path={`${match.url}`}
-        layout={UserLayout}
-        component={UserMainPage}
-      />
       <LayoutRoute
         exact
         path={`${match.url}/upload`}

@@ -1,7 +1,7 @@
 // this file contains constants for form submissions
 export default {
   login: {
-    redirect_url: '/user/',
+    redirect_url: '/user/upload/',
     request_url: '/auth/login/',
     status: {
       successful: 200,
