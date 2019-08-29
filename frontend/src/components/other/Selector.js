@@ -24,6 +24,7 @@ export default ({ field, form, ...props }) => {
     >
       <Select
         name={name}
+        value={value}
         placeholder={placeholder}
         showSearch
         style={{ width: 300 }}
