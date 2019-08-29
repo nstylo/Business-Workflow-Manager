@@ -58,4 +58,28 @@ export async function get(url, config = {}) {
     });
 }
 
-export default { get, post };
+/**
+ * handles put requests globally
+ * @param { string } url the api endpoint of the request
+ */
+export async function patch(url, values, config = {}) {
+  return await axios
+    .patch(url, values, config)
+    .then(response => {
+      return response;
+    })
+    .catch(err => {
+      // .response .request .message are defined by axios
+      if (err.response) {
+        // if axios returned status =/= 2xx
+        return err.response;
+      }
+      if (err.request) {
+        // request was made but nothing received
+        return err.request;
+      }
+      return err.message; // something went wrong with setting up the request
+    });
+}
+
+export default { get, post, patch };

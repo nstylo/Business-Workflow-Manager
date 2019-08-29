@@ -6,9 +6,6 @@ import { Layout, Menu, Icon } from 'antd';
 const { Sider, Content } = Layout;
 
 export default props => {
-  // extract last word of url, if valid menu item key => highlight
-  const pathKey = history.location.pathname.replace(/\/$/, '').match(/\w*$/)[0];
-
   return (
     <Layout style={{ height: '100vh' }}>
       <Content>
@@ -16,7 +13,7 @@ export default props => {
           style={{ padding: '24px 0', background: '#fff', height: '100%' }}
         >
           <Sider width={200} style={{ background: '#fff' }}>
-            <Settings pathKey={pathKey} />
+            <Settings />
           </Sider>
           <Content style={{ padding: '0 24px', minHeight: 280 }}>
             {props.children}
@@ -27,8 +24,9 @@ export default props => {
   );
 };
 
-const Settings = props => {
-  const { pathKey } = props;
+const Settings = () => {
+  // extract last word of url, if valid menu item key => highlight
+  const pathKey = history.location.pathname.replace(/\/$/, '').match(/\w*$/)[0];
 
   return (
     <Menu
