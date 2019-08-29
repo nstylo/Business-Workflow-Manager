@@ -30,9 +30,7 @@ export default ({ field, form, ...props }) => {
         filterOption={(input, option) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
-        onSelect={option => {
-          return form.setFieldValue(name, option);
-        }}
+        onSelect={option => form.setFieldValue(name, option)}
       >
         {options.data.map(option => (
           <Option key={option.value}>{option.label}</Option>

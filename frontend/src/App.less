@@ -15,6 +15,11 @@
     background-color: transparent !important;
 }
 
+/* input padding after prefix */
+.ant-input-affix-wrapper .ant-input:not(:first-child) {
+    padding-left: 40px !important;
+}
+
 .form-auth {
     width: 480px;
     height: auto;
@@ -32,10 +37,7 @@
 }
 
 .auth-header {
-    /* display: grid; */
     height: 48px !important;
-    /* grid-template-columns: 20% auto; */
-    /* grid-template-rows: 50% auto; */
 }
 
 .logo-wrapper {
@@ -84,4 +86,12 @@
 
 .section-item {
     float: right;
+}
+
+.settings-pane {
+    display: grid;
+    grid-template-columns: 35% auto;
+    grid-gap: 1.8em;
+    margin: 0 auto;
+    width: 90%;
 }

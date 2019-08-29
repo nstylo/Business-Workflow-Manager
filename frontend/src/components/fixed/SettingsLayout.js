@@ -37,15 +37,15 @@ const Settings = props => {
       defaultSelectedKeys={[pathKey]}
     >
       <RoutingMenuItem key="account" to="/user/settings/account">
-        <Icon type="file-add" theme="twoTone" />
+        <Icon type="setting" theme="twoTone" />
         Account
       </RoutingMenuItem>
       <RoutingMenuItem key="profile" to="/user/settings/profile">
-        <Icon type="file-add" theme="twoTone" />
+        <Icon type="sliders" theme="twoTone" />
         Profile
       </RoutingMenuItem>
       <RoutingMenuItem key="billing" to="/user/settings/billing">
-        <Icon type="file-add" theme="twoTone" />
+        <Icon type="credit-card" theme="twoTone" />
         Billing
       </RoutingMenuItem>
     </Menu>
