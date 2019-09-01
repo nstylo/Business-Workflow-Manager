@@ -78,7 +78,6 @@ class TestJobViewNonStaff(APITestCase):
         # assert resp.data.get("url") == "http://testserver/api/jobs/{0}/".format(
         # self.user.pk
         # )
-        print(resp.data)
         assert resp.data.get("name") == job_name
         assert resp.data.get("description") == job_description
         assert resp.data.get("estimated") is None

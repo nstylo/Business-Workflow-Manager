@@ -102,6 +102,7 @@ class Job(models.Model):
                     )  # notify the client
                     client_email.send_mail()
                     return
+            super().save(*args, **kwargs)
         else:  # the job is not in the database yet, a new job gets created
             super().save(*args, **kwargs)
             staff_email = EmailJobStaff(self)
