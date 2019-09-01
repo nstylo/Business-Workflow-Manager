@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { get } from '../../../utils/baseRequests';
 import { Table } from 'antd';
 import { Line } from 'rc-progress';
+import download_pdf from '../../../res/download_pdf.svg';
 
 export default class UserProjectPage extends Component {
   state = {
@@ -14,15 +15,14 @@ export default class UserProjectPage extends Component {
         key: 'name'
       },
       {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description'
-      },
-      {
         title: 'File',
         dataIndex: 'file',
         key: 'file',
-        render: text => <a href={text.input}>{text}</a>
+        render: text => (
+          <a href={text.input} download>
+            {text}
+          </a>
+        )
       },
       {
         title: 'Created',
@@ -46,7 +46,15 @@ export default class UserProjectPage extends Component {
       {
         title: 'Action',
         key: 'action',
-        render: (text, record) => <span>Download as PDF</span> // TODO
+        render: data => (
+          <a href={data.result} download>
+            <img
+              style={{ height: '35px', width: '35px' }}
+              src={download_pdf}
+              alt="download as pdf"
+            />
+          </a>
+        )
       }
     ]
   };
