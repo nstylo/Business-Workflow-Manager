@@ -2,8 +2,8 @@ import FORM_CONST from './form_const';
 import { post, get } from './baseRequests';
 
 /**
- * This interface requires an api request callback and 'instructions'
- * on how to handle those depending on status codes
+ * This function handles standard form submits, i.e. post requests with
+ * standard behavior
  * @param {object} constants holds status codes and route url on success
  * @param {object} values the payload of the api call
  * @param {object} bag formik helper functions
