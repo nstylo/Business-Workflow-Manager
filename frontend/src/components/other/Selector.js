@@ -27,7 +27,7 @@ export default ({ field, form, ...props }) => {
         value={value}
         placeholder={placeholder}
         showSearch
-        style={{ width: 300 }}
+        style={{ width: 300 }} // TODO: width as props
         optionFilterProp="children"
         filterOption={(input, option) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

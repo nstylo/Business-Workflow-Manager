@@ -1,12 +1,12 @@
 import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
-// import FILETYPES from '../../../utils/filetypes';
 
 import { handleSubmit } from '../../../utils/requests';
 import FORM_CONST from '../../../utils/form_const';
 
 import FileUploader from '../../other/FileUploader';
+import Selector from '../../other/Selector';
 import InputField from '../../other/InputField';
 import TextArea from '../../other/TextArea';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
@@ -36,6 +36,12 @@ const UploadView = props => {
         />
       </FormItem>
       <Field
+        name="material"
+        placeholder="Select the material"
+        options={{ data: [{ value: 'material_1', label: 'material_1' }] }} // TODO: add materials
+        component={Selector}
+      />
+      <Field
         name="description"
         prefix={<Icon type="" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Describe your project ..."
@@ -64,10 +70,6 @@ const UploadView = props => {
 // define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   project: yup.mixed().required('Upload your file'),
-  // .test('fileSize', 'File Size is too large', value => value.size <= 1e9)
-  // .test('fileType', 'Unsupported file format', value =>
-  // MIMETYPES.includes(value.type)
-  // ),
   name: yup.string().required(),
   description: yup.string()
 });

@@ -113,7 +113,7 @@ export default withFormik({
     password_confirm: '',
     phone: '',
     address: '',
-    country: '',
+    country: undefined, // null overrides placeholder
     company: '',
     conditions: false
   }),

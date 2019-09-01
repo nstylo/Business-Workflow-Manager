@@ -2,9 +2,6 @@ import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
-import { handleSubmit } from '../../../utils/requests';
-import FORM_CONST from '../../../utils/form_const';
-
 import InputField from '../../other/InputField';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
