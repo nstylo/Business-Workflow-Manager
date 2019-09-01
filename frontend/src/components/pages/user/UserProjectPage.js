@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { get } from '../../../utils/baseRequests';
 import { Table } from 'antd';
+import { Line } from 'rc-progress';
 
 export default class UserProjectPage extends Component {
   state = {
@@ -29,6 +30,18 @@ export default class UserProjectPage extends Component {
         key: 'created',
         render: (text, record, index) => text.datetime
         // sorter: (a, b) => b.created.milliseconds - a.created.milliseconds
+      },
+      {
+        title: 'Progress',
+        dataIndex: 'progress',
+        key: 'progress',
+        // TODO: gradient, see https://www.npmjs.com/package/rc-progress
+        render: progress => (
+          <div>
+            <Line percent={progress} strokeWidth="5" trailWidth="5" />
+            {progress}%
+          </div>
+        )
       },
       {
         title: 'Action',
@@ -83,6 +96,7 @@ export default class UserProjectPage extends Component {
           },
           estimated: item.estimated,
           file: this.parseFileName(item.project), // TODO: parse file name
+          progress: item.progress,
           result: item.result
         };
       })
