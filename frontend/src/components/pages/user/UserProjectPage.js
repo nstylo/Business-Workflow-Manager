@@ -121,7 +121,7 @@ export default class UserProjectPage extends Component {
             milliseconds: Date.parse(item.created)
           },
           estimated: item.estimated,
-          file: parseFileName(item.project), // TODO: parse file name
+          file: parseFileName(item.project),
           progress: item.progress,
           result: item.result
         };

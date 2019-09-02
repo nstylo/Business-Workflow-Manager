@@ -71,12 +71,18 @@ const UploadView = props => {
 const validationSchema = yup.object().shape({
   project: yup.mixed().required('Upload your file'),
   name: yup.string().required(),
+  material: yup.string().required(),
   description: yup.string()
 });
 
 export default withFormik({
   validationSchema,
-  mapPropsToValues: () => ({ project: null, name: '', description: '' }),
+  mapPropsToValues: () => ({
+    project: null,
+    material: undefined, // null overrides placeholder
+    name: '',
+    description: ''
+  }),
   handleSubmit: async (values, bag) => {
     let formData = new FormData(); // make file/multipart upload
     formData.append('project', values.project);

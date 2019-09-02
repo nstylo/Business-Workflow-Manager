@@ -5,9 +5,9 @@ export default () => {
   return (
     <div className="settings-pane">
       <div>
-        <h1>
+        <h2>
           <b>Delete Account</b>
-        </h1>
+        </h2>
         <p>This action will irreversibly remove your user account.</p>
       </div>
       <div>

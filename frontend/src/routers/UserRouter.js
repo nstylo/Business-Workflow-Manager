@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import UserUploadPage from '../components/pages/user/UserUploadPage';
+import ProjectDetailsPage from '../components/pages/user/ProjectDetailsPage';
 import UserProjectPage from '../components/pages/user/UserProjectPage';
 import SettingsRouter from './SettingsRouter';
 
@@ -23,6 +24,12 @@ export default ({ match }) => {
         path={`${match.url}/projects`}
         layout={UserLayout}
         component={UserProjectPage}
+      />
+      <LayoutRoute
+        exact
+        path={`${match.url}/projects/:job_id`}
+        layout={UserLayout}
+        component={ProjectDetailsPage}
       />
       <Route path={`${match.url}/settings`} component={SettingsRouter} />
       <Route component={NotFound} />
