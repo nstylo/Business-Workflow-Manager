@@ -26,6 +26,8 @@ export const parsePathName = url => {
   return url.replace(/\/$/, '').match(/[\w_-]*$/)[0];
 };
 
+/* istanbul ignore next */
+
 /**
  * TODO: rework representation
  *
