@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { get } from '../../../utils/baseRequests';
 import {
   parseFileName,
-  parseAlphaNumeric,
+  parsePathName,
   parseDateTime
 } from '../../../utils/helpers';
 import { Table } from 'antd';
@@ -113,7 +113,7 @@ export default class UserProjectPage extends Component {
       total: data.count,
       results: data.results.map(item => {
         return {
-          key: parseAlphaNumeric(item.url),
+          key: parsePathName(item.url),
           name: item.name,
           description: item.description,
           created: {

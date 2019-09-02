@@ -22,14 +22,17 @@ export const parseFileName = url => {
  *
  * @param {string} url to parse url
  */
-export const parseAlphaNumeric = url => {
-  return url.replace(/\/$/, '').match(/\w*$/)[0];
+export const parsePathName = url => {
+  return url.replace(/\/$/, '').match(/[\w_-]*$/)[0];
 };
 
 /**
+ * TODO: rework representation
+ *
  * Reads ISO 8601 timestamp and returns human readable time in format:
  * DAY_OF_WEEK MONTH DAY YEAR - HH:MM [AM/PM]
- * e.g.: Sun Aug 25 2019 - 12:23 PM
+ * e.g.: Sun Aug 25 2019 - 00:23
+ * e.g.: Sun Aug 25 2019 - 16:23
  *
  * @param {string} dateTime ISO 8601 timestamp
  */
@@ -42,14 +45,9 @@ export const parseDateTime = dateTime => {
     minutes = '0' + minutes;
   }
 
-  let suffix = 'AM';
-  if (hours >= 12) {
-    suffix = 'PM';
-    hours = hours - 12;
-  }
-  if (hours === 0) {
-    hours = 12;
+  if (hours < 10) {
+    hours = '0' + hours;
   }
 
-  return time.toDateString() + ' - ' + hours + ':' + minutes + ' ' + suffix;
+  return time.toDateString() + ' - ' + hours + ':' + minutes;
 };
