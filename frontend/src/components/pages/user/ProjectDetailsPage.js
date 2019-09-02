@@ -15,7 +15,7 @@ export default props => {
     };
 
     getDetails();
-  }, []);
+  }, [props.match.params.job_id]);
 
   if (details) {
     return (

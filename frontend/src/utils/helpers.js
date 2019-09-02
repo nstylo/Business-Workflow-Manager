@@ -32,7 +32,7 @@ export const parsePathName = url => {
  * TODO: rework representation
  *
  * Reads ISO 8601 timestamp and returns human readable time in format:
- * DAY_OF_WEEK MONTH DAY YEAR - HH:MM [AM/PM]
+ * DAY_OF_WEEK MONTH DAY YEAR - HH:MM
  * e.g.: Sun Aug 25 2019 - 00:23
  * e.g.: Sun Aug 25 2019 - 16:23
  *
