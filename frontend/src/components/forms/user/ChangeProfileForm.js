@@ -6,7 +6,7 @@ import { get, patch } from '../../../utils/baseRequests';
 import FORM_CONST from '../../../utils/form_const';
 
 import Selector from '../../other/Selector';
-import countryList from 'react-select-country-list'; // country data
+import countryList from 'react-select-country-list';
 import InputField from '../../other/InputField';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
@@ -39,7 +39,6 @@ export default () => {
 
           const response = await patch('/auth/profile/', values); // make request
 
-          // .status .data defined by axios
           switch (response.status) {
             case 200:
               setInitialValues(response.data);
@@ -49,7 +48,6 @@ export default () => {
               setErrors(response.data); // errors for the right label
               break;
             default:
-              // set default errors if unexpected event
               setErrors(FORM_CONST.default_errors.errors);
           }
 
@@ -123,7 +121,6 @@ export default () => {
   }
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   email: yup
     .string()

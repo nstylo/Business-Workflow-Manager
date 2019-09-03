@@ -67,7 +67,6 @@ const UploadView = props => {
   );
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   project: yup.mixed().required('Upload your file'),
   name: yup.string().required(),

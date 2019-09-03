@@ -77,6 +77,5 @@ export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ current: '', new: '', newConfirm: '' }),
   handleSubmit: async (values, bag) => {
-    // await handleSubmit(FORM_CONST.postFiles, {}, bag, {});
   }
 })(ChangePasswordView);

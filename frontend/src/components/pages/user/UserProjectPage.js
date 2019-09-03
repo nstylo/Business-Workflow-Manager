@@ -36,7 +36,6 @@ export default class UserProjectPage extends Component {
         dataIndex: 'created',
         key: 'created',
         render: (text, record, index) => text.datetime
-        // sorter: (a, b) => b.created.milliseconds - a.created.milliseconds
         // TODO: sorting and searching
       },
       {
