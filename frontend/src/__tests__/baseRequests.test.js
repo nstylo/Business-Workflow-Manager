@@ -1,4 +1,4 @@
-import { post, get } from '../utils/baseRequests';
+import { post, get, patch } from '../utils/baseRequests';
 import mockAxios from 'axios';
 
 describe('post()', () => {
@@ -131,6 +131,77 @@ describe('get()', () => {
     mockAxios.get.mockReturnValue(Promise.reject(new Error(expectedResponse)));
 
     const actualResponse = await get(null, null);
+
+    expect(actualResponse).toBe(expectedResponse);
+  });
+});
+
+describe('patch()', () => {
+  afterEach(() => {
+    mockAxios.patch.mockClear();
+  });
+
+  it('should call mockAxios on call', async () => {
+    expect(mockAxios.patch).toHaveBeenCalledTimes(0);
+    await patch();
+    expect(mockAxios.patch).toHaveBeenCalledTimes(1);
+  });
+
+  it('should have called axios with the right params', async () => {
+    const values = { test: 'test' };
+
+    await patch('/test/url/', values);
+    expect(mockAxios.patch).toHaveBeenCalledWith(
+      '/test/url/',
+      values,
+      {} // config param is optional and by default empty object
+    );
+  });
+
+  it('should return axios response', async () => {
+    const expectedResponse = { test: 'test' };
+
+    mockAxios.patch.mockImplementationOnce(() =>
+      Promise.resolve(expectedResponse)
+    );
+
+    const actualResponse = await patch(null, null);
+
+    expect(actualResponse).toBe(expectedResponse);
+  });
+
+  it('should output response status =/= 2xx', async () => {
+    const expectedResponse = 'test response';
+
+    mockAxios.patch.mockReturnValue(
+      Promise.reject({ response: expectedResponse })
+    );
+
+    const actualResponse = await patch(null, null);
+
+    expect(actualResponse).toBe(expectedResponse);
+  });
+
+  it('should output request if nothing was received', async () => {
+    const expectedResponse = 'test request';
+
+    mockAxios.patch.mockReturnValue(
+      Promise.reject({ request: expectedResponse })
+    );
+
+    const actualResponse = await patch(null, null);
+
+    expect(actualResponse).toBe(expectedResponse);
+  });
+
+  it('should output error message if something failed when setting up request', async () => {
+    const expectedResponse = 'something failed';
+
+    mockAxios.patch.mockReturnValue(
+      Promise.reject(new Error(expectedResponse))
+    );
+
+    const actualResponse = await patch(null, null);
 
     expect(actualResponse).toBe(expectedResponse);
   });

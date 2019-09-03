@@ -2,7 +2,6 @@ import axios from 'axios';
 import { API_URL } from './url_config';
 
 // TODO: dont make global settings for axios
-// axios headers
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.withCredentials = true;
@@ -21,7 +20,6 @@ export async function post(url, values, config = {}) {
       return response;
     })
     .catch(err => {
-      // .response .request .message are defined by axios
       if (err.response) {
         // if axios returned status =/= 2xx
         return err.response;
@@ -30,7 +28,7 @@ export async function post(url, values, config = {}) {
         // request was made but nothing received
         return err.request;
       }
-      return err.message; // something went wrong with setting up the request
+      return err.message;
     });
 }
 
@@ -45,7 +43,6 @@ export async function get(url, config = {}) {
       return response;
     })
     .catch(err => {
-      // .response .request .message are defined by axios
       if (err.response) {
         // if axios returned status =/= 2xx
         return err.response;
@@ -54,8 +51,31 @@ export async function get(url, config = {}) {
         // request was made but nothing received
         return err.request;
       }
-      return err.message; // something went wrong with setting up the request
+      return err.message;
     });
 }
 
-export default { get, post };
+/**
+ * handles put requests globally
+ * @param { string } url the api endpoint of the request
+ */
+export async function patch(url, values, config = {}) {
+  return await axios
+    .patch(url, values, config)
+    .then(response => {
+      return response;
+    })
+    .catch(err => {
+      if (err.response) {
+        // if axios returned status =/= 2xx
+        return err.response;
+      }
+      if (err.request) {
+        // request was made but nothing received
+        return err.request;
+      }
+      return err.message;
+    });
+}
+
+export default { get, post, patch };

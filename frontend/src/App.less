@@ -2,17 +2,38 @@
 
 @input-height-base: 30px;
 
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.7em;
+}
+
+h3 {
+    font-size: 1.4em;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
 #components-layout-demo-top-side .logo {
-  width: 120px;
-  height: 31px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px 28px 16px 0;
-  float: left;
+    width: 120px;
+    height: 31px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px 28px 16px 0;
+    float: left;
 }
 
 /* white background of search bar shined through */
 .ant-input-group-addon {
     background-color: transparent !important;
+}
+
+/* input padding after prefix */
+.ant-input-affix-wrapper .ant-input:not(:first-child) {
+    padding-left: 40px !important;
 }
 
 .form-auth {
@@ -32,10 +53,7 @@
 }
 
 .auth-header {
-    /* display: grid; */
     height: 48px !important;
-    /* grid-template-columns: 20% auto; */
-    /* grid-template-rows: 50% auto; */
 }
 
 .logo-wrapper {
@@ -84,4 +102,12 @@
 
 .section-item {
     float: right;
+}
+
+.settings-pane {
+    display: grid;
+    grid-template-columns: 35% auto;
+    grid-gap: 1.8em;
+    margin: 0 auto;
+    width: 90%;
 }

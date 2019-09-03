@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import { get } from '../../../utils/baseRequests';
+import {
+  parseFileName,
+  parsePathName,
+  parseDateTime
+} from '../../../utils/helpers';
 import { Table } from 'antd';
+import { Line } from 'rc-progress';
+import { Link } from 'react-router-dom';
+import download_pdf from '../../../res/download_pdf.svg';
+import view_details from '../../../res/view_details.svg';
 
 export default class UserProjectPage extends Component {
   state = {
@@ -13,27 +22,56 @@ export default class UserProjectPage extends Component {
         key: 'name'
       },
       {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description'
-      },
-      {
         title: 'File',
         dataIndex: 'file',
         key: 'file',
-        render: text => <a href={text.input}>{text}</a>
+        render: text => (
+          <a href={text.input} download>
+            {text}
+          </a>
+        )
       },
       {
         title: 'Created',
         dataIndex: 'created',
         key: 'created',
         render: (text, record, index) => text.datetime
-        // sorter: (a, b) => b.created.milliseconds - a.created.milliseconds
+        // TODO: sorting and searching
+      },
+      {
+        title: 'Progress',
+        dataIndex: 'progress',
+        key: 'progress',
+        // TODO: gradient, see https://www.npmjs.com/package/rc-progress
+        // TODO: make percentage representation nicer
+        render: progress => (
+          <div>
+            <Line percent={progress} strokeWidth="5" trailWidth="5" />
+            {progress}%
+          </div>
+        )
       },
       {
         title: 'Action',
         key: 'action',
-        render: (text, record) => <span>Download as PDF</span> // TODO
+        render: data => (
+          <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <a href={data.result} download>
+              <img
+                style={{ height: '35px', width: '35px' }}
+                src={download_pdf}
+                alt="download as pdf"
+              />
+            </a>
+            <Link to={`/user/projects/${data.key}`}>
+              <img
+                style={{ height: '38px', width: '35px' }}
+                src={view_details}
+                alt="view job details"
+              />
+            </Link>
+          </div>
+        )
       }
     ]
   };
@@ -74,52 +112,20 @@ export default class UserProjectPage extends Component {
       total: data.count,
       results: data.results.map(item => {
         return {
-          key: item.url,
+          key: parsePathName(item.url),
           name: item.name,
           description: item.description,
           created: {
-            datetime: this.parseDateTime(item.created),
+            datetime: parseDateTime(item.created),
             milliseconds: Date.parse(item.created)
           },
           estimated: item.estimated,
-          file: this.parseFileName(item.project), // TODO: parse file name
+          file: parseFileName(item.project),
+          progress: item.progress,
           result: item.result
         };
       })
     };
-  };
-
-  /**
-   * reads filename from server as url and parses into filename
-   * @param {string} url to parse url
-   */
-  parseFileName = url => {
-    return url.match(/[\w\-. ]*$/);
-  };
-
-  /**
-   * Format dateTime for better readability
-   * @param {string} dateTime the timestamp of the item
-   */
-  parseDateTime = dateTime => {
-    let time = new Date(dateTime);
-    let hours = time.getHours();
-    let minutes = time.getMinutes();
-
-    if (minutes < 10) {
-      minutes = '0' + minutes;
-    }
-
-    let suffix = 'AM';
-    if (hours >= 12) {
-      suffix = 'PM';
-      hours = hours - 12;
-    }
-    if (hours === 0) {
-      hours = 12;
-    }
-
-    return time.toDateString() + ' - ' + hours + ':' + minutes + ' ' + suffix;
   };
 
   /**

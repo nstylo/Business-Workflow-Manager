@@ -105,10 +105,10 @@ const UserDropDown = () => {
 const UserMenu = props => {
   return (
     <Menu style={{ width: '200px' }}>
-      <RoutingMenuItem to="/user">
+      <RoutingMenuItem to="/user/upload">
         <span>My Profile</span>
       </RoutingMenuItem>
-      <RoutingMenuItem to="/user/settings">
+      <RoutingMenuItem to="/user/settings/account">
         <span>Settings</span>
       </RoutingMenuItem>
       <hr style={{ width: '90%' }} />
