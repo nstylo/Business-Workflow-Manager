@@ -1,13 +1,11 @@
 import React from 'react';
 import history from '../../history';
+import { parsePathName } from '../../utils/helpers';
 import RoutingMenuItem from '../other/RoutingMenuItem';
 import { Layout, Menu, Icon } from 'antd';
 const { Header, Content, Footer } = Layout;
 
 export default props => {
-  // extract last word of url, if valid menu item key => highlight
-  const pathKey = history.location.pathname.replace(/\/$/, '').match(/\w*$/)[0];
-
   return (
     <Layout>
       <Header className="auth-header">
@@ -16,7 +14,7 @@ export default props => {
           theme="dark"
           mode="horizontal"
           style={{ lineHeight: '48px', float: 'right' }}
-          defaultSelectedKeys={[pathKey]}
+          defaultSelectedKeys={[parsePathName(history.location.pathname)]}
         >
           <RoutingMenuItem to="/auth/login" key="login">
             <Icon type="unlock" />

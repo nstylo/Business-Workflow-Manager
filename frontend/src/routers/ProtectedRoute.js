@@ -3,7 +3,10 @@ import { Route, Redirect } from 'react-router-dom';
 import { AuthContext } from '../App';
 
 /**
- * either renders the passed on component or reroutes to login page
+ * Redirects to login if not authenticated
+ *
+ * @param { component } component component to wrap
+ * @param { object } rest everything else you want to pass on
  */
 export default props => {
   const { isAuthenticated } = useContext(AuthContext);

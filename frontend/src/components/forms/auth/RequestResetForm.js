@@ -41,7 +41,6 @@ const RequestResetView = props => {
   );
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   login: yup
     .string()

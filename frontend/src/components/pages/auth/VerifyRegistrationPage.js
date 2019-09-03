@@ -8,6 +8,7 @@ const VerifyRegistrationPage = props => {
 
   useEffect(() => {
     const params = getQueryParams();
+    // TODO: pull out request definition from component
     post('/auth/verify-registration/', params)
       .then(response =>
         response.status === 200 ? setIsVerified(true) : setIsVerified(false)
@@ -15,6 +16,7 @@ const VerifyRegistrationPage = props => {
       .catch(err => null); // TODO: handle error
   }, []);
 
+  // TODO: flesh out visual representation
   if (isVerified === true) {
     return (
       <div>

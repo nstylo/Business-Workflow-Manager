@@ -11,6 +11,7 @@ import PublicRouter from './routers/PublicRouter';
 import ProtectedRoute from './routers/ProtectedRoute';
 import Header from './components/fixed/Header';
 
+// create global context
 export const AuthContext = React.createContext();
 
 /**
@@ -61,6 +62,7 @@ export default class App extends Component {
         </AuthContext.Provider>
       );
     } else {
+      // TODO: show placeholders on load
       return <p>loading...</p>;
     }
   }

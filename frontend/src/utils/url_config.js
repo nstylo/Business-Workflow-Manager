@@ -1,3 +1,4 @@
+// This file specifies the url for the backend api depending on the environment
 let BACKEND_URL;
 const hostname = window && window.location && window.location.hostname;
 

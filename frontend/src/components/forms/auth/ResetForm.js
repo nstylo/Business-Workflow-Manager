@@ -49,7 +49,6 @@ const ResetView = props => {
   );
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   password: yup
     .string()

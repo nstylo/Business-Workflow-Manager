@@ -1,4 +1,5 @@
 // this file contains constants for form submissions
+// TODO: incomplete
 export default {
   login: {
     redirect_url: '/user/upload/',

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import history from '../../history';
+import { parsePathName } from '../../utils/helpers';
 import { AuthContext } from '../../App';
 import logo from '../../res/***REMOVED***.png';
 import { Layout, Menu, Divider, Input, Icon, Button, Dropdown } from 'antd';
@@ -15,7 +16,6 @@ export default props => {
     <>
       <Header className="main-header">
         <div className="logo-wrapper">
-          {/*center logo*/}
           <span className="helper"></span>
           <img className="logo-main" src={logo} alt="***REMOVED*** logo" />
         </div>
@@ -28,15 +28,12 @@ export default props => {
 };
 
 const Sections = () => {
-  // extract last word of url, if valid menu item key => highlight
-  const pathKey = history.location.pathname.replace(/\/$/, '').match(/\w*$/)[0];
-
   return (
     <Menu
       className="sections"
       theme="dark"
       mode="horizontal"
-      defaultSelectedKeys={[pathKey]}
+      defaultSelectedKeys={[parsePathName(history.location.pathname)]}
     >
       <RoutingMenuItem className="section-item" to="/home" key="home">
         <span>Home</span>
@@ -69,7 +66,7 @@ const Utils = () => {
               width: '200px',
               height: '80%'
             }}
-            onSearch={value => console.log(value)} // TODO: global search
+            onSearch={() => {}} // TODO: global search
           />
         </div>
         {isAuthenticated === true ? (
@@ -87,14 +84,8 @@ const Utils = () => {
 };
 
 const UserDropDown = () => {
-  const { setAuthenticated } = useContext(AuthContext);
-
   return (
-    <Dropdown
-      overlay={UserMenu({ setAuthenticated })}
-      placement="bottomRight"
-      trigger={['hover']}
-    >
+    <Dropdown overlay={UserMenu()} placement="bottomRight" trigger={['hover']}>
       <Button style={{ height: '80%' }} type="primary">
         <Icon type="user" />
       </Button>
@@ -103,6 +94,9 @@ const UserDropDown = () => {
 };
 
 const UserMenu = props => {
+  // global setter
+  const { setAuthenticated } = useContext(AuthContext);
+
   return (
     <Menu style={{ width: '200px' }}>
       <RoutingMenuItem to="/user/upload">
@@ -112,7 +106,7 @@ const UserMenu = props => {
         <span>Settings</span>
       </RoutingMenuItem>
       <hr style={{ width: '90%' }} />
-      <Menu.Item onClick={() => logout() && props.setAuthenticated()}>
+      <Menu.Item onClick={() => logout() && setAuthenticated()}>
         <span>Logout</span>
       </Menu.Item>
     </Menu>

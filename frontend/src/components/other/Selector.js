@@ -6,6 +6,7 @@ const FormItem = Form.Item;
 
 /**
  * wrapped antd selector which reads a dictionary of data
+ *
  * @param { object } field information about the field, e.g. name, value
  * @param { object } form information about the form, used for displaying error
  * @param { object } props anything else you want to pass on

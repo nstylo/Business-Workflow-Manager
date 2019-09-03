@@ -78,7 +78,7 @@ export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({
     project: null,
-    material: undefined, // null overrides placeholder
+    material: undefined, // null, empty string overrides placeholder of selector
     name: '',
     description: ''
   }),

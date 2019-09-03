@@ -32,6 +32,7 @@ const LoginView = props => {
         placeholder="Password"
         component={InputField}
       />
+      {/* TODO: include remember me functionality */}
       <Field name="remember" component={CheckBox}>
         Remember me!
         <Link style={{ float: 'right' }} to="/auth/request-reset/">
@@ -57,7 +58,6 @@ const LoginView = props => {
   );
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   login: yup
     .string()

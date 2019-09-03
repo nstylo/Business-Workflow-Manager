@@ -11,11 +11,11 @@ export default props => {
     const getDetails = async () => {
       get(`/jobs/${props.match.params.job_id}`)
         .then(response => setDetails(response.data))
-        .catch(error => console.log(error.message)); // TODO: handle error
+        .catch(error => null); // TODO: handle error
     };
 
     getDetails();
-  }, [props.match.params.job_id]);
+  }, [props.match.params.job_id]); // if job_id changes, useEffect will get called again
 
   if (details) {
     return (
