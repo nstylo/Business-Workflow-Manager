@@ -48,13 +48,7 @@ export async function logout() {
  */
 export async function checkAuthenticated() {
   return await get('/auth/logout/')
-    .then(response => {
-      if (response.status === FORM_CONST.checkAuthenticated.status.successful) {
-        return true;
-      } else {
-        return false;
-      }
-    })
+    .then(response => response.status === FORM_CONST.checkAuthenticated.status.successful)
     .catch(err => false);
 }
 
