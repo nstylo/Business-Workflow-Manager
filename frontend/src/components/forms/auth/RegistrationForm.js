@@ -8,13 +8,13 @@ import FORM_CONST from '../../../utils/form_const';
 import history from '../../../history';
 
 import Selector from '../../other/Selector';
-import countryList from 'react-select-country-list'; // country data
+import countryList from 'react-select-country-list';
 import InputField from '../../other/InputField';
 import CheckBox from '../../other/CheckBox';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
 const FormItem = AntForm.Item;
-const countries = countryList(); // country data
+const countries = countryList();
 
 const RegistrationView = props => {
   const { isSubmitting, errors } = props;
@@ -81,7 +81,6 @@ const RegistrationView = props => {
   );
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   email: yup
     .string()
@@ -113,7 +112,7 @@ export default withFormik({
     password_confirm: '',
     phone: '',
     address: '',
-    country: undefined, // null overrides placeholder
+    country: undefined, // null, empty string overrides selector placeholder
     company: '',
     conditions: false
   }),

@@ -17,7 +17,6 @@ export default ({ field, form }) => {
   useEffect(() => {
     // update local state depending on form state
     if (field.value) {
-      // TODO: increase type safety
       // if field contains a file
       setFileArr([field.value]);
     } else {

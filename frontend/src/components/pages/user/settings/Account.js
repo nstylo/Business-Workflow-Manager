@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 
+// TODO: delete account does not work yet
 export default () => {
   return (
     <div className="settings-pane">

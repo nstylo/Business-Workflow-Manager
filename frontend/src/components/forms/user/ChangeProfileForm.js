@@ -11,7 +11,7 @@ import InputField from '../../other/InputField';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
 
 const FormItem = AntForm.Item;
-const countries = countryList(); // country data
+const countries = countryList();
 
 export default () => {
   const [initialValues, setInitialValues] = useState(null);
@@ -117,7 +117,7 @@ export default () => {
       </Formik>
     );
   } else {
-    return <div>loading ...</div>; // TODO: show placeholders instead
+    return <div>loading ...</div>; // TODO: show placeholders instead, see antd
   }
 };
 

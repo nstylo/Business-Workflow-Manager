@@ -1,5 +1,6 @@
 import React from 'react';
 import history from '../../history';
+import { parsePathName } from '../../utils/helpers';
 import RoutingMenuItem from '../other/RoutingMenuItem';
 import { Layout, Menu, Icon } from 'antd';
 
@@ -24,15 +25,14 @@ export default props => {
   );
 };
 
+// TODO: selectedKeys bug, may be solved with passing on pathname as
+// props, so component rerenders on changing pathname
 const UserMenu = props => {
-  // extract last word of url, if valid menu item key => highlight
-  const pathKey = history.location.pathname.replace(/\/$/, '').match(/\w*$/)[0];
-
   return (
     <Menu
       mode="inline"
       style={{ height: '100%' }}
-      defaultSelectedKeys={[pathKey]}
+      defaultSelectedKeys={[parsePathName(history.location.pathname)]}
     >
       <RoutingMenuItem key="upload" to="/user/upload/">
         <Icon type="file-add" theme="twoTone" />

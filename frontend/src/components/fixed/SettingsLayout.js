@@ -1,5 +1,6 @@
 import React from 'react';
 import history from '../../history';
+import { parsePathName } from '../../utils/helpers';
 import RoutingMenuItem from '../other/RoutingMenuItem';
 import { Layout, Menu, Icon } from 'antd';
 
@@ -25,14 +26,11 @@ export default props => {
 };
 
 const Settings = () => {
-  // extract last word of url, if valid menu item key => highlight
-  const pathKey = history.location.pathname.replace(/\/$/, '').match(/\w*$/)[0];
-
   return (
     <Menu
       mode="inline"
       style={{ height: '100%' }}
-      defaultSelectedKeys={[pathKey]}
+      defaultSelectedKeys={[parsePathName(history.location.pathname)]}
     >
       <RoutingMenuItem key="account" to="/user/settings/account">
         <Icon type="setting" theme="twoTone" />

@@ -17,19 +17,19 @@ const ChangePasswordView = props => {
       }}
     >
       <Field
-        name="current"
+        name="old_password"
         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Your current password ... "
         component={InputField}
       />
       <Field
-        name="new"
+        name="password"
         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Your new password ..."
         component={InputField}
       />
       <Field
-        name="newConfirm"
+        name="password_confirm"
         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
         placeholder="Confirm your new password ..."
         component={InputField}
@@ -54,19 +54,18 @@ const ChangePasswordView = props => {
   );
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
-  current: yup
+  old_password: yup
     .string()
     .min(8, 'password must be at least 8 characters')
     .max(256, 'password must be at most 256 characters')
     .required(),
-  new: yup
+  password: yup
     .string()
     .min(8, 'password must be at least 8 characters')
     .max(256, 'password must be at most 256 characters')
     .required(),
-  newConfirm: yup
+  password_confirm: yup
     .string()
     .min(8, 'password must be at least 8 characters')
     .max(256, 'password must be at most 256 characters')
@@ -75,7 +74,11 @@ const validationSchema = yup.object().shape({
 
 export default withFormik({
   validationSchema,
-  mapPropsToValues: () => ({ current: '', new: '', newConfirm: '' }),
-  handleSubmit: async (values, bag) => {
-  }
+  mapPropsToValues: () => ({
+    old_password: '',
+    password: '',
+    password_confirm: ''
+  }),
+  // TODO: make request to /auth/change-password
+  handleSubmit: async (values, bag) => {}
 })(ChangePasswordView);
