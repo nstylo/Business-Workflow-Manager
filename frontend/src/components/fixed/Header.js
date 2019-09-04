@@ -69,7 +69,7 @@ const Utils = () => {
             onSearch={() => {}} // TODO: global search
           />
         </div>
-        {isAuthenticated === true ? (
+        {isAuthenticated ? (
           <UserDropDown />
         ) : (
           <>
