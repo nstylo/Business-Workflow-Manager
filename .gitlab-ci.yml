@@ -15,7 +15,7 @@ test_django:
   stage: test
   cache: {}
   script:
-    - cd ***REMOVED***/
+    - cd backend/
     - apk add python3-dev postgresql-dev gcc musl-dev
     - python3 -m pip install --upgrade pip
     - pip3 install --upgrade pip setuptools
@@ -68,7 +68,7 @@ staging:
     - ssh-keyscan -p $PORT_STAGING -H $IP_STAGING >> ~/.ssh/known_hosts
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - rsync -ave "ssh -p $PORT_STAGING" frontend/build ***REMOVED*** $USER@$IP_STAGING:/home/$USER/deploy/
+    - rsync -ave "ssh -p $PORT_STAGING" frontend/build backend $USER@$IP_STAGING:/home/$USER/deploy/
     - ssh -p $PORT_STAGING $USER@$IP_STAGING "cd deploy/ && docker-compose down && docker-compose up --build -d"
   cache: {}
   only:
@@ -95,7 +95,7 @@ production:
     - ssh-keyscan -p $PORT_PRODUCTION -H $IP_PRODUCTION >> ~/.ssh/known_hosts
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - rsync -ave "ssh -p $PORT_PRODUCTION" frontend/build ***REMOVED*** $USER@$IP_PRODUCTION:/home/$USER/deploy/
+    - rsync -ave "ssh -p $PORT_PRODUCTION" frontend/build backend $USER@$IP_PRODUCTION:/home/$USER/deploy/
     - ssh -p $PORT_PRODUCTION $USER@$IP_PRODUCTION "cd deploy/ && docker-compose down && docker-compose up --build -d"
   cache: {}
   only:
