@@ -10,16 +10,16 @@ afterEach(() => {
   window.location = location; // reset global object
 });
 
-it('should set the correct url on hostname "***REMOVED***.ml"', () => {
-  window.location = { hostname: '***REMOVED***.ml' };
+it('should set the correct url on hostname "backend.ml"', () => {
+  window.location = { hostname: 'backend.ml' };
 
   const { API_URL } = require('../utils/url_config');
 
   expect(API_URL).toBe(`https://${window.location.hostname}/api`);
 });
 
-it('should set the correct url on hostname "***REMOVED***.ga"', () => {
-  window.location = { hostname: '***REMOVED***.ga' };
+it('should set the correct url on hostname "backend.ga"', () => {
+  window.location = { hostname: 'backend.ga' };
 
   const { API_URL } = require('../utils/url_config');
 

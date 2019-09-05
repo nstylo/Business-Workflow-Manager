@@ -1,4 +1,4 @@
-# ***REMOVED*** On Demand
+# backend On Demand
 
 Keep in mind that all sensitive variables are stored as env vars.
 
@@ -6,13 +6,13 @@ Keep in mind that all sensitive variables are stored as env vars.
 
 A browsable API is implemented on http://127.0.0.1:8000/api/.
 
-The models can be viewed in the _"***REMOVED***/app_name/model.py"_ files.
+The models can be viewed in the _"backend/app_name/model.py"_ files.
 
-The settings are defined in _"***REMOVED***/settings.py"_
+The settings are defined in _"backend/settings.py"_
 
-The top level url routing can be found in the _"***REMOVED***"_ folder.
+The top level url routing can be found in the _"backend"_ folder.
 
-All user uploaded and admin uploaded media files can be found in _"***REMOVED***/media"_.
+All user uploaded and admin uploaded media files can be found in _"backend/media"_.
 
 ## CI/CD Pipeline:
 
@@ -37,7 +37,7 @@ Env vars:
 -   Install requirements.txt into virtualenv
 -   Source virtualenv
 -   Start PostgreSQL instance
-    -   Create table "***REMOVED***"
+    -   Create table "backend"
 -   Django database manage.py:
     -   Make migrations for all tables
     -   Create superuser
@@ -88,7 +88,7 @@ The docker-compose file consists of:
 
 -   django (no image)
 
-    -   ***REMOVED*** root folder volume
+    -   backend root folder volume
     -   env vars:
         -   DJANGO_SECRET_KEY
         -   DB_NAME

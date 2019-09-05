@@ -29,7 +29,7 @@ export default props => {
       <Content style={{ padding: '0 50px', height: '100vh' }}>
         {props.children}
       </Content>
-      <Footer style={{ textAlign: 'center' }}>***REMOVED***.ml ©2019</Footer>
+      <Footer style={{ textAlign: 'center' }}>backend.ml ©2019</Footer>
     </Layout>
   );
 };
