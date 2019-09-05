@@ -1,49 +1,26 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { get } from '../utils/requests';
+import { AuthContext } from '../App';
 
 /**
- * either renders the passed on component or reroutes to login page
+ * Redirects to login if not authenticated
+ *
+ * @param { component } component component to wrap
+ * @param { object } rest everything else you want to pass on
  */
-export default class ProtectedRoute extends Component {
-  state = {
-    isAuthenticated: null // did not get response yet if null
-  };
-
-  /**
-   * check if user is logged in, i.e. get 405 back
-   */
-  componentDidMount() {
-    get('/auth/logout/').then(response => {
-      if (response.status === 405) {
-        this.setState({
-          isAuthenticated: true
-        });
-      } else {
-        this.setState({
-          isAuthenticated: false
-        });
+export default props => {
+  const { isAuthenticated } = useContext(AuthContext);
+  const { component: Component, ...rest } = props;
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        isAuthenticated === true ? (
+          <Component {...props} /> // render page
+        ) : (
+          <Redirect to="/auth/login/" /> // user is not logged in
+        )
       }
-    });
-  }
-
-  render() {
-    const { component: Component, ...rest } = this.props;
-    if (this.state.isAuthenticated === null) {
-      return <div>loading ...</div>;
-    } else {
-      return (
-        <Route
-          {...rest}
-          render={props =>
-            this.state.isAuthenticated === true ? (
-              <Component {...props} /> // render page
-            ) : (
-              <Redirect to="/auth/login/" /> // user is not logged in
-            )
-          }
-        />
-      );
-    }
-  }
-}
+    />
+  );
+};

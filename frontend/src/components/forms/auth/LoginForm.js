@@ -3,12 +3,14 @@ import { withFormik, Field, Form } from 'formik';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { handleSubmit } from '../../../utils/form_submit';
-import form_const from '../../../utils/form_const';
+import history from '../../../history';
+import { handleSubmit } from '../../../utils/requests';
+import FORM_CONST from '../../../utils/form_const';
 
 import InputField from '../../other/InputField';
 import CheckBox from '../../other/CheckBox';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
+
 const FormItem = AntForm.Item;
 
 const LoginView = props => {
@@ -30,10 +32,9 @@ const LoginView = props => {
         placeholder="Password"
         component={InputField}
       />
-      <FormItem>
-        <Field name="remember" component={CheckBox}>
-          Remember me!
-        </Field>
+      {/* TODO: include remember me functionality */}
+      <Field name="remember" component={CheckBox}>
+        Remember me!
         <Link style={{ float: 'right' }} to="/auth/request-reset/">
           Forgot Password
         </Link>
@@ -47,7 +48,7 @@ const LoginView = props => {
           Log in
         </Button>
         Or <Link to="/auth/register/">register now!</Link>
-      </FormItem>
+      </Field>
       {errors.detail ? (
         <FormItem>
           <Alert type="error" message={errors.detail} showIcon />
@@ -57,7 +58,6 @@ const LoginView = props => {
   );
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   login: yup
     .string()
@@ -75,6 +75,11 @@ export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ login: '', password: '' }),
   handleSubmit: async (values, bag) => {
-    await handleSubmit(form_const.login, values, bag);
+    await handleSubmit(FORM_CONST.login, values, bag).then(response => {
+      if (response.status === FORM_CONST.login.status.successful) {
+        bag.props.setAuthenticated(true); // set global login state
+        history.push(FORM_CONST.login.redirect_url); // redirect
+      }
+    });
   }
 })(LoginView);

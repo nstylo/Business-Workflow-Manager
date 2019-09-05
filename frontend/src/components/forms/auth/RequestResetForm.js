@@ -2,8 +2,9 @@ import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
-import { handleSubmit } from '../../../utils/form_submit';
-import form_const from '../../../utils/form_const';
+import history from '../../../history';
+import { handleSubmit } from '../../../utils/requests';
+import FORM_CONST from '../../../utils/form_const';
 
 import InputField from '../../other/InputField';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
@@ -40,7 +41,6 @@ const RequestResetView = props => {
   );
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   login: yup
     .string()
@@ -52,7 +52,11 @@ const validationSchema = yup.object().shape({
 export default withFormik({
   validationSchema,
   mapPropsToValues: () => ({ login: '' }),
-  handleSubmit: async (values, options) => {
-    await handleSubmit(form_const.requestReset, values, options);
+  handleSubmit: async (values, bag) => {
+    await handleSubmit(FORM_CONST.requestReset, values, bag).then(response => {
+      if (response.status === FORM_CONST.requestReset.status.successful) {
+        history.push(FORM_CONST.requestReset.redirect_url); // redirect
+      }
+    });
   }
 })(RequestResetView);

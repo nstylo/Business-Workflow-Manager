@@ -1,12 +1,12 @@
 import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as yup from 'yup';
-// import MIMETYPES from '../../../utils/mimetypes';
 
-import { handleSubmit } from '../../../utils/form_submit';
+import { handleSubmit } from '../../../utils/requests';
 import FORM_CONST from '../../../utils/form_const';
 
 import FileUploader from '../../other/FileUploader';
+import Selector from '../../other/Selector';
 import InputField from '../../other/InputField';
 import TextArea from '../../other/TextArea';
 import { Button, Icon, Alert, Form as AntForm } from 'antd';
@@ -18,11 +18,8 @@ const UploadView = props => {
   return (
     <Form
       style={{
-        width: '80%',
-        margin: 'auto auto',
-        padding: '20px 30px',
-        border: 'solid rgba(0,0,0,.25) 1px',
-        borderRadius: '5px'
+        width: '90%',
+        margin: 'auto auto'
       }}
     >
       <Field
@@ -38,6 +35,12 @@ const UploadView = props => {
           component={FileUploader}
         />
       </FormItem>
+      <Field
+        name="material"
+        placeholder="Select the material"
+        options={{ data: [{ value: 'material_1', label: 'material_1' }] }} // TODO: add materials
+        component={Selector}
+      />
       <Field
         name="description"
         prefix={<Icon type="" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -64,20 +67,21 @@ const UploadView = props => {
   );
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   project: yup.mixed().required('Upload your file'),
-  // .test('fileSize', 'File Size is too large', value => value.size <= 1e9)
-  // .test('fileType', 'Unsupported file format', value =>
-  // MIMETYPES.includes(value.type)
-  // ),
   name: yup.string().required(),
+  material: yup.string().required(),
   description: yup.string()
 });
 
 export default withFormik({
   validationSchema,
-  mapPropsToValues: () => ({ project: null, name: '', description: '' }),
+  mapPropsToValues: () => ({
+    project: null,
+    material: undefined, // null, empty string overrides placeholder of selector
+    name: '',
+    description: ''
+  }),
   handleSubmit: async (values, bag) => {
     let formData = new FormData(); // make file/multipart upload
     formData.append('project', values.project);

@@ -3,10 +3,11 @@ import { withFormik, Form, Field } from 'formik';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { handleSubmit } from '../../../utils/form_submit';
-import form_const from '../../../utils/form_const';
+import { handleSubmit } from '../../../utils/requests';
+import FORM_CONST from '../../../utils/form_const';
+import history from '../../../history';
 
-import CountrySelector from '../../other/CountrySelector';
+import Selector from '../../other/Selector';
 import countryList from 'react-select-country-list';
 import InputField from '../../other/InputField';
 import CheckBox from '../../other/CheckBox';
@@ -16,7 +17,7 @@ const FormItem = AntForm.Item;
 const countries = countryList();
 
 const RegistrationView = props => {
-  const { isSubmitting, touched, errors } = props;
+  const { isSubmitting, errors } = props;
   return (
     <Form className="form-auth">
       <Field
@@ -55,27 +56,22 @@ const RegistrationView = props => {
         name="country"
         placeholder="Select your country"
         options={countries}
-        component={CountrySelector}
+        component={Selector}
       />
       <Field name="company" placeholder="Company" component={InputField} />
-      <FormItem
-        help={touched.conditions && errors.conditions}
-        validateStatus={errors.conditions ? 'error' : null}
+      <Field name="conditions" component={CheckBox}>
+        I have read the
+        <Link to="/terms-and-conditions"> Terms &amp; Conditions</Link>
+      </Field>
+      <Button
+        style={{ width: '100%' }}
+        type="primary"
+        htmlType="submit"
+        className="login-form-button"
+        disabled={isSubmitting}
       >
-        <Field name="conditions" type="checkbox" component={CheckBox}>
-          I have read the
-        </Field>
-        <Link to="/terms-and-conditions">Terms &amp; Conditions</Link>
-        <Button
-          style={{ width: '100%' }}
-          type="primary"
-          htmlType="submit"
-          className="login-form-button"
-          disabled={isSubmitting}
-        >
-          Register now
-        </Button>
-      </FormItem>
+        Register now
+      </Button>
       {errors.detail ? (
         <FormItem>
           <Alert type="error" message={errors.detail} showIcon />
@@ -85,7 +81,6 @@ const RegistrationView = props => {
   );
 };
 
-// define the validation schema for the input fields
 const validationSchema = yup.object().shape({
   email: yup
     .string()
@@ -117,11 +112,15 @@ export default withFormik({
     password_confirm: '',
     phone: '',
     address: '',
-    country: '',
+    country: undefined, // null, empty string overrides selector placeholder
     company: '',
     conditions: false
   }),
   handleSubmit: async (values, options) => {
-    await handleSubmit(form_const.register, values, options);
+    await handleSubmit(FORM_CONST.register, values, options).then(response => {
+      if (response.status === FORM_CONST.register.status.successful) {
+        history.push(FORM_CONST.register.redirect_url);
+      }
+    });
   }
 })(RegistrationView);
