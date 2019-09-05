@@ -176,11 +176,11 @@ class TestEmailJobClient(TestCase):
         assert "Dear Sir/Madam," in self.plain_outbox_body, "A greeting needs to exist"
         assert "Dear Sir/Madam," in self.html_outbox_body, "A greeting needs to exist"
         assert (
-            "Company-1" in self.plain_outbox_body
-        ), "Company-1 company name needs to be there"
+            "Company" in self.plain_outbox_body
+        ), "Company company name needs to be there"
         assert (
-            "Company-1" in self.html_outbox_body
-        ), "Company-1 company name needs to be there"
+            "Company" in self.html_outbox_body
+        ), "Company company name needs to be there"
 
     def test_send_mail_client_update(self):
         self.job.result = "test"
@@ -222,11 +222,11 @@ class TestEmailJobClient(TestCase):
         assert "Dear Sir/Madam," in self.plain_outbox_body, "A greeting needs to exist"
         assert "Dear Sir/Madam," in self.html_outbox_body, "A greeting needs to exist"
         assert (
-            "Company-1" in self.plain_outbox_body
-        ), "Company-1 company name needs to be there"
+            "Company" in self.plain_outbox_body
+        ), "Company company name needs to be there"
         assert (
-            "Company-1" in self.html_outbox_body
-        ), "Company-1 company name needs to be there"
+            "Company" in self.html_outbox_body
+        ), "Company company name needs to be there"
 
 
 class TestEmailJobClientBad(TestCase):
