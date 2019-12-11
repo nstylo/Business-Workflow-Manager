@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import history from '../../history';
 import { parsePathName } from '../../utils/helpers';
 import { AuthContext } from '../../App';
-import logo from '../../res/***REMOVED***.png';
 import { Layout, Menu, Divider, Input, Icon, Button, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
 import { logout } from '../../utils/requests';
@@ -15,10 +14,6 @@ export default props => {
   return (
     <>
       <Header className="main-header">
-        <div className="logo-wrapper">
-          <span className="helper"></span>
-          <img className="logo-main" src={logo} alt="***REMOVED*** logo" />
-        </div>
         <Utils />
         <Sections />
       </Header>
