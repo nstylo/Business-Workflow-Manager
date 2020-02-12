@@ -1,5 +1,5 @@
 coverage==4.5.4
-Django==2.2.8
+Django==2.2.10
 django-cors-headers==3.0.2
 django-phonenumber-field==3.0.1
 djangorestframework==3.10.1

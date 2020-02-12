@@ -1,4 +1,4 @@
-Django==2.2.8
+Django==2.2.10
 django-jet==1.0.8
 feedparser==5.2.1
 django-cors-headers==3.0.2
